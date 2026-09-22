@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 350" width="1040" height="350" role="img" aria-label="Inside a run: queue, sign in, verify the business, download, store">
+<title>Inside a run: queue, sign in, verify the business, download, store</title>
+<style>
+svg{
+ --bg:#ffffff;--app:#fafbfc;--panel:#f4f6f8;--line:#dde2e8;--line2:#c4ccd5;
+ --text:#171b21;--muted:#4f5967;--primary:#2a45cc;--soft:#eef3ff;--sidebar:#0d1014;
+ --ok:#15803d;--okbg:#dcfce7;--warn:#b45309;--warnbg:#fef3c7;--bad:#b91c1c;--badbg:#fee2e2;
+ --info:#0369a1;--infobg:#e0f2fe;--otp:#7c3aed;--otpbg:#ede9fe;--dim:#97a2af;--dash:#c4ccd5;
+}
+@media (prefers-color-scheme: dark){svg{
+ --bg:#171b21;--app:#0d1014;--panel:#262c35;--line:#262c35;--line2:#3a424e;
+ --text:#f4f6f8;--muted:#97a2af;--primary:#3d5ce8;--soft:#1d2c69;--sidebar:#080a0d;
+ --ok:#4ade80;--okbg:#052e16;--warn:#fbbf24;--warnbg:#451a03;--bad:#f87171;--badbg:#450a0a;
+ --info:#38bdf8;--infobg:#082f49;--otp:#a78bfa;--otpbg:#2e1065;--dim:#97a2af;--dash:#3a424e;
+}}
+text{font-family:Inter,ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;font-size:14px;fill:var(--text)}
+.sm{font-size:12.5px;fill:var(--muted)}
+.sms{font-size:12.5px;fill:var(--text)}
+.h1{font-size:22px;font-weight:600}
+.h2{font-size:17px;font-weight:600}
+.b{font-weight:500}
+.bb{font-weight:600}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;font-size:12.5px}
+.card{fill:var(--bg);stroke:var(--line);stroke-width:1}
+.sub{fill:var(--panel);stroke:var(--line);stroke-width:1}
+.soft{fill:var(--soft);stroke:none}
+.arw{stroke:var(--line2);fill:none;stroke-width:1.5}
+.sep{stroke:var(--line);stroke-width:1}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+ markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--line2)"/></marker></defs>
+<rect width="1040" height="350" fill="var(--app)"/>
+<text x="18" y="30" class="h2" text-anchor="start">What happens inside a run</text><text x="18" y="50" class="sm" text-anchor="start">One run covers one brand. Inside it, each report is a separate job that succeeds or fails on its own.</text><rect x="18" y="76" width="180" height="132" rx="8" class="card" /><circle cx="36" cy="102" r="4.5" fill="var(--muted)"/><text x="50" y="107" class="b" text-anchor="start">Queued</text><text x="36" y="134" class="sm" text-anchor="start">Waits its turn if that</text><text x="36" y="152" class="sm" text-anchor="start">login is already busy.</text><path d="M202 138 L216 138" class="arw" marker-end="url(#a)"/><rect x="219" y="76" width="180" height="132" rx="8" class="card" /><circle cx="237" cy="102" r="4.5" fill="var(--ok)"/><text x="251" y="107" class="b" text-anchor="start">Signed in</text><text x="237" y="134" class="sm" text-anchor="start">Reuses the last session</text><text x="237" y="152" class="sm" text-anchor="start">if it is still valid —</text><text x="237" y="170" class="sm" text-anchor="start">no code needed.</text><path d="M403 138 L417 138" class="arw" marker-end="url(#a)"/><rect x="420" y="76" width="180" height="132" rx="8" class="soft" /><rect x="420" y="76" width="180" height="132" rx="8" class="card" style="fill:none;stroke:var(--primary);stroke-width:1.5"/><circle cx="438" cy="102" r="4.5" fill="var(--primary)"/><text x="452" y="107" class="b" text-anchor="start">Right business?</text><text x="438" y="134" class="sm" text-anchor="start">Reads back which business</text><text x="438" y="152" class="sm" text-anchor="start">the portal actually opened</text><text x="438" y="170" class="sm" text-anchor="start">and compares it.</text><path d="M604 138 L618 138" class="arw" marker-end="url(#a)"/><rect x="621" y="76" width="180" height="132" rx="8" class="card" /><circle cx="639" cy="102" r="4.5" fill="var(--ok)"/><text x="653" y="107" class="b" text-anchor="start">Downloaded</text><text x="639" y="134" class="sm" text-anchor="start">Each report in turn,</text><text x="639" y="152" class="sm" text-anchor="start">with the dates you asked</text><text x="639" y="170" class="sm" text-anchor="start">for.</text><path d="M805 138 L819 138" class="arw" marker-end="url(#a)"/><rect x="822" y="76" width="180" height="132" rx="8" class="card" /><circle cx="840" cy="102" r="4.5" fill="var(--ok)"/><text x="854" y="107" class="b" text-anchor="start">Stored</text><text x="840" y="134" class="sm" text-anchor="start">Byte for byte. Never</text><text x="840" y="152" class="sm" text-anchor="start">edited, never overwritten.</text><path d="M510.0 210 v26" class="arw" marker-end="url(#a)"/><rect x="392.0" y="238" width="236" height="30" rx="8" fill="var(--badbg)"/><path d="M406.5 249.5 l7 7 M413.5 249.5 l-7 7" stroke="var(--bad)" stroke-width="1.8" stroke-linecap="round"/><text x="422.0" y="258" class="sm" text-anchor="start" style="fill:var(--bad)">Not your business — stops, downloads nothing</text><rect x="18" y="290" width="496" height="48" rx="8" class="sub" /><text x="38" y="312" class="sm b" text-anchor="start">Tries again</text><text x="38" y="330" class="sm" text-anchor="start">A timeout, a slow portal or a changed page: up to two more attempts.</text><rect x="526" y="290" width="496" height="48" rx="8" class="sub" /><text x="546" y="312" class="sm b" text-anchor="start">Never tries again</text><text x="546" y="330" class="sm" text-anchor="start">A wrong password (locking the account is worse) or the wrong business.</text>
+</svg>

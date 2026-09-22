@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 248" width="1040" height="248" role="img" aria-label="The UniQCAI journey in five stages">
+<title>The UniQCAI journey in five stages</title>
+<style>
+svg{
+ --bg:#ffffff;--app:#fafbfc;--panel:#f4f6f8;--line:#dde2e8;--line2:#c4ccd5;
+ --text:#171b21;--muted:#4f5967;--primary:#2a45cc;--soft:#eef3ff;--sidebar:#0d1014;
+ --ok:#15803d;--okbg:#dcfce7;--warn:#b45309;--warnbg:#fef3c7;--bad:#b91c1c;--badbg:#fee2e2;
+ --info:#0369a1;--infobg:#e0f2fe;--otp:#7c3aed;--otpbg:#ede9fe;--dim:#97a2af;--dash:#c4ccd5;
+}
+@media (prefers-color-scheme: dark){svg{
+ --bg:#171b21;--app:#0d1014;--panel:#262c35;--line:#262c35;--line2:#3a424e;
+ --text:#f4f6f8;--muted:#97a2af;--primary:#3d5ce8;--soft:#1d2c69;--sidebar:#080a0d;
+ --ok:#4ade80;--okbg:#052e16;--warn:#fbbf24;--warnbg:#451a03;--bad:#f87171;--badbg:#450a0a;
+ --info:#38bdf8;--infobg:#082f49;--otp:#a78bfa;--otpbg:#2e1065;--dim:#97a2af;--dash:#3a424e;
+}}
+text{font-family:Inter,ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;font-size:14px;fill:var(--text)}
+.sm{font-size:12.5px;fill:var(--muted)}
+.sms{font-size:12.5px;fill:var(--text)}
+.h1{font-size:22px;font-weight:600}
+.h2{font-size:17px;font-weight:600}
+.b{font-weight:500}
+.bb{font-weight:600}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;font-size:12.5px}
+.card{fill:var(--bg);stroke:var(--line);stroke-width:1}
+.sub{fill:var(--panel);stroke:var(--line);stroke-width:1}
+.soft{fill:var(--soft);stroke:none}
+.arw{stroke:var(--line2);fill:none;stroke-width:1.5}
+.sep{stroke:var(--line);stroke-width:1}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+ markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--line2)"/></marker></defs>
+<rect width="1040" height="248" fill="var(--app)"/>
+<text x="18" y="30" class="h2" text-anchor="start">From a new brand to a downloaded report</text><rect x="18" y="54" width="182" height="168" rx="8" class="card" /><rect x="34" y="70" width="22" height="22" rx="11" fill="var(--soft)"/><text x="45" y="85" class="sm bb" text-anchor="middle" style="fill:var(--primary)">1</text><text x="34" y="116" class="b" text-anchor="start">Connect once</text><text x="34" y="138" class="sm" text-anchor="start">Add the brand, the platform</text><text x="34" y="156" class="sm" text-anchor="start">login, and the inbox that</text><text x="34" y="174" class="sm" text-anchor="start">receives its sign-in codes.</text><path d="M204 138 L216 138" class="arw" marker-end="url(#a)"/><rect x="220" y="54" width="182" height="168" rx="8" class="card" /><rect x="236" y="70" width="22" height="22" rx="11" fill="var(--soft)"/><text x="247" y="85" class="sm bb" text-anchor="middle" style="fill:var(--primary)">2</text><text x="236" y="116" class="b" text-anchor="start">Ask for reports</text><text x="236" y="138" class="sm" text-anchor="start">Press Run now, or set a</text><text x="236" y="156" class="sm" text-anchor="start">timetable and forget it.</text><path d="M406 138 L418 138" class="arw" marker-end="url(#a)"/><rect x="422" y="54" width="182" height="168" rx="8" class="card" /><rect x="438" y="70" width="22" height="22" rx="11" fill="var(--soft)"/><text x="449" y="85" class="sm bb" text-anchor="middle" style="fill:var(--primary)">3</text><text x="438" y="116" class="b" text-anchor="start">UniQCAI collects</text><text x="438" y="138" class="sm" text-anchor="start">Signs in, checks it is on the</text><text x="438" y="156" class="sm" text-anchor="start">right business, downloads</text><text x="438" y="174" class="sm" text-anchor="start">every report you picked.</text><path d="M608 138 L620 138" class="arw" marker-end="url(#a)"/><rect x="624" y="54" width="182" height="168" rx="8" class="card" /><rect x="640" y="70" width="22" height="22" rx="11" fill="var(--soft)"/><text x="651" y="85" class="sm bb" text-anchor="middle" style="fill:var(--primary)">4</text><text x="640" y="116" class="b" text-anchor="start">Files land in one place</text><text x="640" y="138" class="sm" text-anchor="start">Stored exactly as the portal</text><text x="640" y="156" class="sm" text-anchor="start">produced them, with the</text><text x="640" y="174" class="sm" text-anchor="start">dates on the filename.</text><path d="M810 138 L822 138" class="arw" marker-end="url(#a)"/><rect x="826" y="54" width="182" height="168" rx="8" class="card" /><rect x="842" y="70" width="22" height="22" rx="11" fill="var(--soft)"/><text x="853" y="85" class="sm bb" text-anchor="middle" style="fill:var(--primary)">5</text><text x="842" y="116" class="b" text-anchor="start">Your team downloads</text><text x="842" y="138" class="sm" text-anchor="start">Filter by brand, platform or</text><text x="842" y="156" class="sm" text-anchor="start">period. Take one file or</text><text x="842" y="174" class="sm" text-anchor="start">the whole set as a zip.</text><text x="18" y="238" class="sm" text-anchor="start">Steps 3 and 4 need nobody at a keyboard. Step 1 happens once per brand and platform.</text>
+</svg>

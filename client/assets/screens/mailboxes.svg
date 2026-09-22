@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="960" height="500" role="img" aria-label="Inboxes and code rules">
+<title>Inboxes and code rules</title>
+<style>
+svg{
+ --bg:#ffffff;--app:#fafbfc;--panel:#f4f6f8;--line:#dde2e8;--line2:#c4ccd5;
+ --text:#171b21;--muted:#4f5967;--primary:#2a45cc;--soft:#eef3ff;--sidebar:#0d1014;
+ --ok:#15803d;--okbg:#dcfce7;--warn:#b45309;--warnbg:#fef3c7;--bad:#b91c1c;--badbg:#fee2e2;
+ --info:#0369a1;--infobg:#e0f2fe;--otp:#7c3aed;--otpbg:#ede9fe;--dim:#97a2af;--dash:#c4ccd5;
+}
+@media (prefers-color-scheme: dark){svg{
+ --bg:#171b21;--app:#0d1014;--panel:#262c35;--line:#262c35;--line2:#3a424e;
+ --text:#f4f6f8;--muted:#97a2af;--primary:#3d5ce8;--soft:#1d2c69;--sidebar:#080a0d;
+ --ok:#4ade80;--okbg:#052e16;--warn:#fbbf24;--warnbg:#451a03;--bad:#f87171;--badbg:#450a0a;
+ --info:#38bdf8;--infobg:#082f49;--otp:#a78bfa;--otpbg:#2e1065;--dim:#97a2af;--dash:#3a424e;
+}}
+text{font-family:Inter,ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;font-size:14px;fill:var(--text)}
+.sm{font-size:12.5px;fill:var(--muted)}
+.sms{font-size:12.5px;fill:var(--text)}
+.h1{font-size:22px;font-weight:600}
+.h2{font-size:17px;font-weight:600}
+.b{font-weight:500}
+.bb{font-weight:600}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;font-size:12.5px}
+.card{fill:var(--bg);stroke:var(--line);stroke-width:1}
+.sub{fill:var(--panel);stroke:var(--line);stroke-width:1}
+.soft{fill:var(--soft);stroke:none}
+.arw{stroke:var(--line2);fill:none;stroke-width:1.5}
+.sep{stroke:var(--line);stroke-width:1}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+ markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--line2)"/></marker></defs>
+<rect width="960" height="500" fill="var(--app)"/>
+<g transform="translate(906,4)"><rect x="0" y="0" width="50" height="20" rx="10" fill="var(--okbg)"/><text x="9" y="14.5" class="sm" text-anchor="start" style="fill:var(--ok)">Built</text></g><rect x="0" y="30" width="960" height="470" rx="12" class="card" /><rect x="0" y="30" width="152" height="470" rx="12" fill="var(--sidebar)"/><rect x="138" y="30" width="14" height="470" rx="0" fill="var(--sidebar)"/><text x="20" y="64" class="bb" text-anchor="start" style="fill:#ffffff">UniQCAI</text><text x="20" y="80" class="sm" text-anchor="start" style="fill:#97a2af">by Digital Upshot</text><text x="22" y="124" class="" text-anchor="start" style="fill:#97a2af">Overview</text><text x="22" y="156" class="" text-anchor="start" style="fill:#97a2af">Brands</text><text x="22" y="188" class="" text-anchor="start" style="fill:#97a2af">Runs</text><text x="22" y="220" class="" text-anchor="start" style="fill:#97a2af">Schedules</text><text x="22" y="252" class="" text-anchor="start" style="fill:#97a2af">Report library</text><text x="20" y="280" class="sm" text-anchor="start" style="fill:#6b7684">Setup</text><text x="22" y="310" class="" text-anchor="start" style="fill:#97a2af">Platform accounts</text><rect x="8" y="324" width="130" height="28" rx="6" fill="#262c35"/><rect x="8" y="324" width="3" height="28" rx="2" fill="#3d5ce8"/><text x="22" y="342" class="b" text-anchor="start" style="fill:#ffffff">Mailboxes</text><text x="22" y="374" class="" text-anchor="start" style="fill:#97a2af">Users &amp; access</text><text x="22" y="406" class="" text-anchor="start" style="fill:#97a2af">Settings</text><text x="22" y="438" class="" text-anchor="start" style="fill:#97a2af">Audit log</text><text x="176" y="68" class="h1" text-anchor="start">Inboxes and code rules</text><line x1="152" y1="102" x2="960" y2="102" class="sep" /><text x="187" y="134" class="" text-anchor="start" style="fill:var(--muted)">Inboxes</text><text x="258" y="134" class="b" text-anchor="start">Code rules</text><rect x="247" y="142" width="92" height="2" rx="1" fill="var(--primary)"/><line x1="176" y1="143" x2="936" y2="143" class="sep" /><text x="176" y="184" class="h2" text-anchor="start">Which message counts as a sign-in code</text><text x="176" y="210" class="sm" text-anchor="start">Portal</text><rect x="176" y="216" width="220" height="30" rx="6" class="card" /><text x="188" y="235.5" class="sm" text-anchor="start">Zepto Ads</text><text x="420" y="210" class="sm" text-anchor="start">Applies to</text><circle cx="427" cy="227" r="7" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.5"/><circle cx="427" cy="227" r="3.5" fill="var(--primary)"/><text x="444" y="232" class="sm" text-anchor="start">Every login on this portal</text><circle cx="427" cy="251" r="7" fill="var(--bg)" stroke="var(--line2)" stroke-width="1.5"/><text x="444" y="256" class="sm" text-anchor="start">Just one login</text><rect x="176" y="278" width="760" height="92" rx="8" class="sub" /><text x="192" y="304" class="sm" text-anchor="start">From</text><text x="246" y="304" class="mono" text-anchor="start">mailer@zeptonow.com</text><text x="476" y="304" class="sm" text-anchor="start">Subject contains</text><text x="586" y="304" class="mono" text-anchor="start">OTP</text><text x="192" y="330" class="sm" text-anchor="start">Code</text><text x="246" y="330" class="mono" text-anchor="start">the 4 to 8 digits after “otp code is”</text><text x="192" y="356" class="sm" text-anchor="start">Test against</text><text x="286" y="356" class="sm" text-anchor="start">the latest messages in reports-inbox</text><rect x="824" y="342" width="96" height="28" rx="8" class="card" /><text x="872.0" y="360" class="sm b" text-anchor="middle">Test</text><rect x="176" y="382" width="760" height="34" rx="8" fill="var(--okbg)"/><path d="M194 400 l2.6 2.8 L202.5 396" fill="none" stroke="var(--ok)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="214" y="404" class="sm" text-anchor="start" style="fill:var(--ok)">Matched a message received 10:42 · a code was found and read correctly</text><text x="176" y="444" class="sm" text-anchor="start">The code itself is never shown here, stored, or written to any log.</text><rect x="856" y="436" width="80" height="28" rx="8" fill="var(--primary)"/><text x="896.0" y="454" class="sm b" text-anchor="middle" style="fill:#ffffff">Save</text>
+</svg>

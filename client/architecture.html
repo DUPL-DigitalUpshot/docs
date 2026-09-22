@@ -1,0 +1,622 @@
+<title>UniQCAI Architecture</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* The product's own tokens (docs/THEME.md). */
+  :root{
+    --ink:#171b21; --ink-soft:#4f5967; --ink-faint:#6b7684;
+    --paper:#fafbfc; --surface:#ffffff; --sunken:#f4f6f8;
+    --rule:#dde2e8; --rule-strong:#c4ccd5;
+    --accent:#2a45cc; --accent-soft:#eef3ff;
+    --good:#15803d; --warn:#b45309;
+    --shadow:0 1px 2px rgb(16 24 40 / .06);
+    --shadow-lift:0 12px 32px rgb(16 24 40 / .10);
+    --sans:"Inter",ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+      --paper:#0d1014; --surface:#171b21; --sunken:#262c35;
+      --rule:#262c35; --rule-strong:#3a424e;
+      --accent:#5f80f7; --accent-soft:#1d2c69;
+      --good:#4ade80; --warn:#fbbf24;
+      --shadow:0 1px 2px rgb(0 0 0 / .45);
+      --shadow-lift:0 12px 32px rgb(0 0 0 / .55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+    --paper:#0d1014; --surface:#171b21; --sunken:#262c35;
+    --rule:#262c35; --rule-strong:#3a424e;
+    --accent:#5f80f7; --accent-soft:#1d2c69;
+    --good:#4ade80; --warn:#fbbf24;
+    --shadow:0 1px 2px rgb(0 0 0 / .45);
+    --shadow-lift:0 12px 32px rgb(0 0 0 / .55);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px; margin-inline:auto; padding-inline:20px}
+
+  header.mast{padding-block:52px 24px}
+  .eyebrow{font-family:var(--mono); font-size:11.5px; font-weight:500;
+    letter-spacing:.11em; text-transform:uppercase; color:var(--accent)}
+  h1{font-size:clamp(32px,4.6vw,46px); line-height:1.08; font-weight:700;
+    letter-spacing:-.03em; margin:14px 0 12px}
+  .stand{font-size:18.5px; color:var(--ink-soft); max-width:60ch; margin:0}
+
+  /* ---------- controls ---------- */
+  .controls{
+    display:flex; flex-wrap:wrap; gap:12px 18px; align-items:center;
+    padding-block:22px 18px;
+  }
+  .seg{display:inline-flex; background:var(--sunken); border:1px solid var(--rule);
+    border-radius:9px; padding:3px; gap:2px}
+  .seg button{
+    font:inherit; font-size:13.5px; font-weight:500; color:var(--ink-soft);
+    background:none; border:0; border-radius:6px; padding:6px 14px; cursor:pointer;
+  }
+  .seg button[aria-pressed="true"]{background:var(--surface); color:var(--ink);
+    box-shadow:var(--shadow)}
+  .runner{display:inline-flex; align-items:center; gap:8px}
+  .btn{
+    font:inherit; font-size:13.5px; font-weight:500; cursor:pointer;
+    background:var(--surface); color:var(--ink); border:1px solid var(--rule);
+    border-radius:8px; padding:7px 14px;
+  }
+  .btn:hover{border-color:var(--rule-strong)}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+  .btn:disabled{opacity:.45; cursor:default}
+  .stepnum{font-family:var(--mono); font-size:12.5px; color:var(--ink-faint);
+    font-variant-numeric:tabular-nums; min-width:56px}
+  .hint{font-size:13.5px; color:var(--ink-faint); margin-left:auto}
+
+  /* ---------- diagram ---------- */
+  .board{
+    border:1px solid var(--rule); border-radius:14px; background:var(--surface);
+    box-shadow:var(--shadow-lift); overflow-x:auto;
+  }
+  svg.diagram{display:block; width:100%; min-width:1040px; height:auto}
+
+  .blk{cursor:pointer}
+  .blk .body{fill:var(--surface); stroke:var(--rule); stroke-width:1.25}
+  .blk.ext .body{fill:var(--sunken); stroke-dasharray:5 4}
+  .blk .t{font-size:17px; font-weight:600; fill:var(--ink)}
+  .blk .s{font-size:12px; fill:var(--ink-faint); font-family:var(--mono);
+    letter-spacing:.04em}
+  .blk .l{font-size:13px; fill:var(--ink-soft)}
+  .blk:hover .body,
+  .blk:focus-visible .body{stroke:var(--rule-strong)}
+  .blk.on .body{stroke:var(--accent); stroke-width:2.25; filter:url(#glow)}
+  .blk.on .t{fill:var(--accent)}
+  .edge path{fill:none; stroke:var(--rule-strong); stroke-width:1.5}
+  .edge .hit{stroke:transparent; stroke-width:16}
+  .elab{opacity:0}
+  .elab .plate{fill:var(--surface)}
+  .elab .el{font-size:11.5px; fill:var(--ink-faint); font-family:var(--mono)}
+  .edge.on path:not(.hit){stroke:var(--accent); stroke-width:2.25}
+  .elab.on .el{fill:var(--accent)}
+  .faded{opacity:.2}
+  .blk,.edge,.faded{transition:opacity .18s ease, stroke .18s ease}
+  /* .faded would otherwise beat .elab's opacity:0 and leak the labels into
+     Overview mode, so each state is spelled out. */
+  .elab.faded{opacity:0}
+  body.detail .elab{opacity:1}
+  body.detail .elab.faded{opacity:.22}
+  body.detail .s-txt{display:none}
+  body:not(.detail) .d-txt{display:none}
+  svg.diagram:focus{outline:none}
+  .blk:focus-visible .body{stroke:var(--accent); stroke-width:2.25}
+
+  /* ---------- panel ---------- */
+  .panel{
+    margin-top:22px; border:1px solid var(--rule); border-radius:12px;
+    background:var(--surface); padding:26px 28px; box-shadow:var(--shadow);
+    min-height:188px;
+  }
+  .panel .kicker{font-family:var(--mono); font-size:11.5px; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--accent)}
+  .panel h2{font-size:23px; font-weight:650; letter-spacing:-.02em; margin:10px 0 14px}
+  .panel ul{margin:0; padding:0; list-style:none; display:grid; gap:11px;
+    max-width:78ch}
+  .panel li{position:relative; padding-left:19px; color:var(--ink-soft);
+    font-size:15.5px; line-height:1.55}
+  .panel li::before{content:""; position:absolute; left:1px; top:10px; width:5px;
+    height:5px; border-radius:50%; background:var(--accent)}
+
+  .legend{display:flex; flex-wrap:wrap; gap:10px 26px; padding-block:26px 8px;
+    font-size:13.5px; color:var(--ink-soft)}
+  .legend span{display:inline-flex; align-items:center; gap:9px}
+  .key{width:26px; height:0; border-top:2px solid var(--rule-strong)}
+  .key.acc{border-color:var(--accent)}
+  .key.box{width:15px; height:15px; border:1.25px solid var(--rule);
+    border-radius:4px; background:var(--surface)}
+  .key.box.ext{background:var(--sunken); border-style:dashed}
+
+  footer{padding-block:34px 60px; margin-top:34px; border-top:1px solid var(--rule);
+    font-size:13.5px; color:var(--ink-faint)}
+
+  @media (max-width:640px){
+    header.mast{padding-block:36px 16px}
+    .panel{padding:20px}
+    .hint{margin-left:0; flex-basis:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media print{
+    .controls,.hint{display:none}
+    .board{box-shadow:none; overflow:visible}
+    svg.diagram{min-width:0}
+    body{background:#fff; color:#000}
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <span class="eyebrow">Digital Upshot · UniQCAI</span>
+    <h1>What the system is made of</h1>
+    <p class="stand">Nine moving parts, and what travels between them. Click any
+      block to read what it does, or play a collection and watch it go through.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Level of detail">
+      <button id="lvl-simple" type="button" aria-pressed="true">Overview</button>
+      <button id="lvl-detail" type="button" aria-pressed="false">Detail</button>
+    </div>
+    <div class="runner">
+      <button id="play" class="btn primary" type="button">Play a collection</button>
+      <button id="prev" class="btn" type="button" disabled aria-label="Previous step">Back</button>
+      <button id="next" class="btn" type="button" disabled aria-label="Next step">Next</button>
+      <span class="stepnum" id="stepnum"></span>
+    </div>
+    <span class="hint">Tap or hover a block to see what it is joined to.</span>
+  </div>
+
+  <div class="board">
+    <svg class="diagram" id="dg" viewBox="0 0 1180 660" role="img"
+         aria-label="Block diagram of the UniQCAI system">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--rule-strong)"/>
+        </marker>
+        <marker id="ar-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+        </marker>
+        <filter id="glow" x="-12%" y="-12%" width="124%" height="124%">
+          <feDropShadow dx="0" dy="0" stdDeviation="5"
+                        flood-color="var(--accent)" flood-opacity="0.22"/>
+        </filter>
+      </defs>
+
+      <g id="edges"></g>
+      <g id="blocks"></g>
+      <g id="elabels"></g>
+    </svg>
+  </div>
+
+  <div class="panel" id="panel" aria-live="polite">
+    <span class="kicker" id="p-kicker">Start here</span>
+    <h2 id="p-title">Nine parts, one job</h2>
+    <ul id="p-list">
+      <li>Everything a person touches is the console. Everything that touches a
+        portal is the worker. The rest is there so those two never have to wait
+        for each other.</li>
+      <li><strong>Click a block</strong> to read what it does, or
+        <strong>play a collection</strong> to follow one from the button press to
+        a stored file.</li>
+      <li>Switch to <strong>Detail</strong> for what each part is built from and
+        what travels along each arrow.</li>
+    </ul>
+  </div>
+
+  <div class="legend">
+    <span><i class="key box"></i> ours</span>
+    <span><i class="key box ext"></i> outside our control</span>
+    <span><i class="key"></i> data flows between them</span>
+    <span><i class="key acc"></i> active in this step</span>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    UniQCAI · Digital Upshot Pvt Ltd. Stage A — collecting reports. Parsing,
+    dashboards and campaign actions are later stages and are not shown here.
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- the blocks ------------------------------------------ */
+  // x,y is the top-left of a 290x130 box on a 1180x660 canvas.
+  var BLOCKS = [
+    { id:"console", x:40,  y:60,  t:"Console", s:"in your browser",
+      simple:["The web app your team signs in to.","Nothing is kept on the device."],
+      detail:["React 18 + TypeScript","Talks to the API over HTTPS","Receives live events as they happen","Nothing cached on the device"],
+      panel:["This is the only part anyone sees. It signs in, shows brands, starts collections and hands over files.",
+             "It holds no data of its own — close the tab and nothing is left behind.",
+             "Filters live in the address bar, so any view can be shared as a link."] },
+
+    { id:"api", x:445, y:60, t:"API", s:"the front door",
+      simple:["Answers the console. Checks who you","are and what you are allowed to see."],
+      detail:["FastAPI, Python 3.12","Session cookie plus CSRF token","Every query narrowed to your brands","Secrets encrypted before storage"],
+      panel:["Everything goes through here. Nothing reaches the database without passing an identity check and a permission check first.",
+             "Brand access is applied in one place rather than on each screen, so no page can forget to apply it.",
+             "Secrets are encrypted before they are written, and never sent back out — not to the console, not to a log, not in an error."] },
+
+    { id:"queue", x:850, y:60, t:"Job queue", s:"redis",
+      simple:["Holds work until a worker is free","to pick it up."],
+      detail:["Redis","Holds the per-login locks","Holds each collection's heartbeat","Carries live events to the API"],
+      panel:["Collections are not run by the API. They are queued, so the console stays quick and a slow portal never blocks anyone.",
+             "The same store holds the lock that stops one login being driven twice at once — which is what would get an account locked out.",
+             "And the heartbeat that lets the scheduler notice a collection whose machine has died."] },
+
+    { id:"files", x:40, y:265, t:"Report files", s:"on disk", ext:false,
+      simple:["The downloaded files, exactly as","the portal produced them."],
+      detail:["Written once, byte for byte","Checksummed on arrival","Never overwritten — versions kept","Served only through the API"],
+      panel:["The bytes are written once and never touched again. No stamping, no re-saving, no tidying up.",
+             "Only the filename is ours, so the brand, platform, report and period read straight off it.",
+             "There is no public address for a file. A download is served by the API after a permission check, and recorded."] },
+
+    { id:"db", x:445, y:265, t:"Database", s:"postgresql",
+      simple:["Brands, logins, timetables, and","every collection ever run."],
+      detail:["PostgreSQL 16","Passwords and sessions encrypted","One row per file, with its checksum","Full audit trail"],
+      panel:["All state lives here — brands, people and their access, platform logins, timetables, and the history of every collection.",
+             "It holds each file's details rather than the file: where it is, what period it covers, its checksum, and whether it is the newest version.",
+             "Every change to a login or a permission is written to an audit trail."] },
+
+    { id:"scheduler", x:850, y:265, t:"Scheduler", s:"the timetable",
+      simple:["Wakes every minute and starts","whatever is due."],
+      detail:["Sixty-second tick","Works out each run's dates in IST","Claims due rows without double-firing","Fails collections that have gone quiet"],
+      panel:["A small separate process. Every minute it asks the database what is due, works out the exact dates that run should pull, and queues it.",
+             "Two schedulers could run side by side without ever firing the same timetable twice.",
+             "It also does the clearing up: a collection whose worker has been silent for ten minutes is marked failed and its lock released."] },
+
+    { id:"inbox", x:40, y:470, t:"Verification inbox", s:"imap", ext:true,
+      simple:["The inbox the portals email","sign-in codes to."],
+      detail:["Read over IMAP","Only messages matching the rule","Only those sent after we asked","Each one used once, never stored"],
+      panel:["Most of these portals will not accept a password alone. They email a numeric code, or a one-time sign-in link.",
+             "The worker reads only messages matching the rule you can see and test on screen, and only those that arrived after it asked.",
+             "A code is used once and never written down."] },
+
+    { id:"worker", x:445, y:470, t:"Worker", s:"where the work happens",
+      simple:["Signs in to the portals and","downloads the reports."],
+      detail:["Playwright driving a real Chromium","One small adapter per portal","Two collections at a time","Retries only what is worth retrying"],
+      panel:["The part that actually visits the portals. It drives a real browser — the same one a person would use — because these sites turn away anything that looks automated.",
+             "Each portal has its own small adapter that knows that site's steps. Nothing else in the system knows a portal exists.",
+             "A timeout or a changed page is tried again. A rejected password is not, because retrying that risks locking the account."] },
+
+    { id:"portals", x:850, y:470, t:"The portals", s:"outside our control", ext:true,
+      simple:["Zepto, Blinkit, Swiggy Instamart,","Flipkart Minutes."],
+      detail:["Driven exactly as a person would","Business verified before any download","Sessions reused, so codes are rare","One login never driven twice at once"],
+      panel:["The advertiser and seller consoles themselves. They change without warning, which is why each is isolated behind its own adapter.",
+             "Before anything downloads, the worker reads back which business the portal actually opened and compares it with what the connection expects. If they differ it stops and takes nothing.",
+             "Where the previous session is still valid it is reused, and no code is needed at all."] }
+  ];
+
+  /* ---------------- the arrows ------------------------------------------ */
+  // d: path. lab: shown in Detail. lx/ly: label anchor. two: arrowheads both ends.
+  var EDGES = [
+    { id:"e-console-api", a:"console", b:"api", two:true,
+      d:"M330 125 L445 125", lab:"requests + live events", lx:387, ly:113 },
+    { id:"e-api-queue", a:"api", b:"queue",
+      d:"M735 125 L850 125", lab:"queues the job", lx:792, ly:113 },
+    { id:"e-api-db", a:"api", b:"db", two:true,
+      d:"M590 190 L590 265", lab:"reads + writes", lx:600, ly:231, anchor:"start" },
+    { id:"e-api-files", a:"api", b:"files",
+      d:"M445 160 L392 160 L392 318 L330 318", lab:"streams a download", lx:384, ly:245, anchor:"end" },
+    { id:"e-sched-db", a:"scheduler", b:"db",
+      d:"M850 318 L735 318", lab:"what is due?", lx:792, ly:306 },
+    { id:"e-sched-queue", a:"scheduler", b:"queue",
+      d:"M995 265 L995 190", lab:"queues it", lx:1005, ly:231, anchor:"start" },
+    { id:"e-queue-worker", a:"queue", b:"worker",
+      d:"M1140 160 L1166 160 L1166 628 L590 628 L590 600", lab:"a worker claims it", lx:880, ly:620 },
+    { id:"e-worker-db", a:"worker", b:"db", two:true,
+      d:"M545 470 L545 395", lab:"progress + results", lx:535, ly:436, anchor:"end" },
+    { id:"e-worker-inbox", a:"worker", b:"inbox", two:true,
+      d:"M445 535 L330 535", lab:"reads the code", lx:387, ly:523 },
+    { id:"e-worker-portals", a:"worker", b:"portals", two:true,
+      d:"M735 535 L850 535", lab:"drives a browser", lx:792, ly:523 },
+    { id:"e-worker-files", a:"worker", b:"files",
+      d:"M445 505 L410 505 L410 355 L330 355", lab:"writes the file", lx:402, ly:430, anchor:"end" }
+  ];
+
+  /* ---------------- the walkthrough -------------------------------------- */
+  var STEPS = [
+    { t:"Something starts it",
+      p:["Either a person presses Run now in the console, or the scheduler reaches a timetable that is due.",
+         "Both arrive at the same place. Nothing else in the system needs to know which of the two it was."],
+      b:["console","scheduler"], e:["e-console-api"] },
+    { t:"It is written down first",
+      p:["The collection and one job per report are recorded in the database before any work begins.",
+         "So a collection that never starts is still visible, with a reason — rather than silently not happening."],
+      b:["api","db"], e:["e-api-db"] },
+    { t:"It joins the queue",
+      p:["The API hands the work to the queue and answers the console immediately.",
+         "Nobody waits on a portal. The console stays quick however slow the other end is."],
+      b:["api","queue","scheduler"], e:["e-api-queue","e-sched-queue"] },
+    { t:"A worker claims it",
+      p:["A free worker takes the job and locks that platform login for the duration.",
+         "Any other collection needing the same login waits its turn rather than fighting it — two browsers on one account is how accounts get locked out."],
+      b:["queue","worker"], e:["e-queue-worker"] },
+    { t:"It signs in",
+      p:["A real browser opens. If the previous session is still valid it is reused and no code is needed.",
+         "If one is needed, the worker waits for it to arrive in the verification inbox — matching only a message sent after it asked."],
+      b:["worker","portals","inbox"], e:["e-worker-portals","e-worker-inbox"] },
+    { t:"It checks whose business it is",
+      p:["The worker reads back which business the portal actually opened and compares it with the one this connection expects.",
+         "If they differ it stops and downloads nothing. A wrong pick would produce a complete, believable file for someone else's business, and nothing downstream could tell."],
+      b:["worker","portals"], e:["e-worker-portals"] },
+    { t:"The reports download",
+      p:["Each report in turn, for the dates that were asked for.",
+         "Every file is written once, byte for byte, with its checksum. Nothing is edited on the way in and nothing is overwritten."],
+      b:["worker","portals","files"], e:["e-worker-portals","e-worker-files"] },
+    { t:"And you watch it happen",
+      p:["Each step is recorded as it happens and pushed straight out to anyone with the collection open.",
+         "When it finishes, the files are in the library. When it fails, the reason is on the screen in plain words."],
+      b:["worker","db","api","console"], e:["e-worker-db","e-api-db","e-console-api"] }
+  ];
+
+  /* ---------------- draw -------------------------------------------------- */
+  var NS = "http://www.w3.org/2000/svg";
+  var W = 290, H = 130;
+  var byId = {};
+  BLOCKS.forEach(function (b) { byId[b.id] = b; });
+
+  function el(name, attrs) {
+    var n = document.createElementNS(NS, name);
+    for (var k in attrs) { if (attrs[k] !== undefined) n.setAttribute(k, attrs[k]); }
+    return n;
+  }
+  function textLine(x, y, cls, str) {
+    var t = el("text", { x: x, y: y, class: cls });
+    t.textContent = str;
+    return t;
+  }
+
+  var gEdges = document.getElementById("edges");
+  var gBlocks = document.getElementById("blocks");
+  var gLabels = document.getElementById("elabels");
+
+  EDGES.forEach(function (e) {
+    var g = el("g", { class: "edge", id: e.id });
+    g.appendChild(el("path", { d: e.d, class: "hit" }));
+    var p = el("path", {
+      d: e.d, "marker-end": "url(#ar)",
+      "marker-start": e.two ? "url(#ar)" : undefined
+    });
+    g.appendChild(p);
+    gEdges.appendChild(g);
+
+    // The label sits in its own group above the blocks, on a plate, so a long
+    // one crossing a block stays readable instead of disappearing behind it.
+    var anchor = e.anchor || "middle";
+    var lw = e.lab.length * 6.5 + 14;
+    var lx = anchor === "middle" ? e.lx - lw / 2
+           : anchor === "end" ? e.lx - lw + 7 : e.lx - 7;
+    var lg = el("g", { class: "elab", "data-for": e.id });
+    lg.appendChild(el("rect", { x: lx, y: e.ly - 12, width: lw, height: 17,
+                                rx: 4, class: "plate" }));
+    var lab = textLine(e.lx, e.ly, "el", e.lab);
+    lab.setAttribute("text-anchor", anchor);
+    lg.appendChild(lab);
+    gLabels.appendChild(lg);
+  });
+
+  BLOCKS.forEach(function (b) {
+    var g = el("g", {
+      class: "blk" + (b.ext ? " ext" : ""), id: "b-" + b.id,
+      tabindex: "0", role: "button", "aria-label": b.t
+    });
+    g.appendChild(el("rect", { x: b.x, y: b.y, width: W, height: H, rx: 11, class: "body" }));
+    g.appendChild(textLine(b.x + 22, b.y + 36, "t", b.t));
+    g.appendChild(textLine(b.x + 22, b.y + 56, "s", b.s));
+    b.simple.forEach(function (line, i) {
+      var t = textLine(b.x + 22, b.y + 84 + i * 19, "l s-txt", line);
+      g.appendChild(t);
+    });
+    b.detail.forEach(function (line, i) {
+      var t = textLine(b.x + 22, b.y + 78 + i * 17, "l d-txt", "· " + line);
+      t.setAttribute("font-size", "12.5");
+      g.appendChild(t);
+    });
+    gBlocks.appendChild(g);
+  });
+
+  /* ---------------- highlighting ------------------------------------------ */
+  var all = { blocks: {}, edges: {} };
+  BLOCKS.forEach(function (b) { all.blocks[b.id] = document.getElementById("b-" + b.id); });
+  EDGES.forEach(function (e) { all.edges[e.id] = document.getElementById(e.id); });
+  var labelFor = {};
+  Array.prototype.forEach.call(document.querySelectorAll(".elab"), function (n) {
+    labelFor[n.getAttribute("data-for")] = n;
+  });
+
+  function clearMarks() {
+    Object.keys(all.blocks).forEach(function (k) {
+      all.blocks[k].classList.remove("on", "faded");
+    });
+    Object.keys(all.edges).forEach(function (k) {
+      all.edges[k].classList.remove("on", "faded");
+      labelFor[k].classList.remove("on", "faded");
+      var p = all.edges[k].querySelector("path:not(.hit)");
+      p.setAttribute("marker-end", "url(#ar)");
+      if (p.getAttribute("marker-start")) p.setAttribute("marker-start", "url(#ar)");
+    });
+  }
+
+  function mark(blockIds, edgeIds) {
+    clearMarks();
+    var bs = {}, es = {};
+    blockIds.forEach(function (i) { bs[i] = 1; });
+    edgeIds.forEach(function (i) { es[i] = 1; });
+    Object.keys(all.blocks).forEach(function (k) {
+      all.blocks[k].classList.add(bs[k] ? "on" : "faded");
+    });
+    Object.keys(all.edges).forEach(function (k) {
+      if (es[k]) {
+        all.edges[k].classList.add("on");
+        labelFor[k].classList.add("on");
+        var p = all.edges[k].querySelector("path:not(.hit)");
+        p.setAttribute("marker-end", "url(#ar-on)");
+        if (p.getAttribute("marker-start")) p.setAttribute("marker-start", "url(#ar-on)");
+      } else {
+        all.edges[k].classList.add("faded");
+        labelFor[k].classList.add("faded");
+      }
+    });
+  }
+
+  function neighboursOf(id) {
+    var edges = [], blocks = [id];
+    EDGES.forEach(function (e) {
+      if (e.a === id || e.b === id) {
+        edges.push(e.id);
+        blocks.push(e.a === id ? e.b : e.a);
+      }
+    });
+    return { blocks: blocks, edges: edges };
+  }
+
+  /* ---------------- panel -------------------------------------------------- */
+  var pk = document.getElementById("p-kicker"),
+      pt = document.getElementById("p-title"),
+      pl = document.getElementById("p-list");
+
+  function showPanel(kicker, title, points) {
+    pk.textContent = kicker;
+    pt.textContent = title;
+    pl.textContent = "";
+    points.forEach(function (s) {
+      var li = document.createElement("li");
+      li.textContent = s;
+      pl.appendChild(li);
+    });
+  }
+
+  /* ---------------- interaction -------------------------------------------- */
+  var selected = null, stepIx = -1, timer = null;
+
+  function selectBlock(id) {
+    stopPlaying();
+    selected = id;
+    stepIx = -1;
+    updateStepUI();
+    var n = neighboursOf(id);
+    mark(n.blocks, n.edges);
+    var b = byId[id];
+    showPanel(b.ext ? "Outside our control" : "One of the parts", b.t, b.panel);
+  }
+
+  BLOCKS.forEach(function (b) {
+    var g = all.blocks[b.id];
+    g.addEventListener("click", function () { selectBlock(b.id); });
+    g.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); selectBlock(b.id); }
+    });
+    g.addEventListener("mouseenter", function () {
+      if (stepIx >= 0) return;               // a walkthrough is on screen
+      var n = neighboursOf(b.id);
+      mark(n.blocks, n.edges);
+    });
+    g.addEventListener("mouseleave", function () {
+      if (stepIx >= 0) return;
+      if (selected) { var n = neighboursOf(selected); mark(n.blocks, n.edges); }
+      else clearMarks();
+    });
+  });
+
+  document.getElementById("dg").addEventListener("click", function (ev) {
+    if (ev.target.closest(".blk")) return;
+    selected = null; stopPlaying(); stepIx = -1; updateStepUI(); clearMarks();
+    showPanel("Start here", "Nine parts, one job", [
+      "Everything a person touches is the console. Everything that touches a portal is the worker. The rest is there so those two never have to wait for each other.",
+      "Click a block to read what it does, or play a collection to follow one from the button press to a stored file.",
+      "Switch to Detail for what each part is built from and what travels along each arrow."
+    ]);
+  });
+
+  /* ---------------- detail toggle ------------------------------------------ */
+  var simpleBtn = document.getElementById("lvl-simple"),
+      detailBtn = document.getElementById("lvl-detail");
+
+  function setLevel(detailed) {
+    document.body.classList.toggle("detail", detailed);
+    simpleBtn.setAttribute("aria-pressed", String(!detailed));
+    detailBtn.setAttribute("aria-pressed", String(detailed));
+  }
+  simpleBtn.addEventListener("click", function () { setLevel(false); });
+  detailBtn.addEventListener("click", function () { setLevel(true); });
+
+  /* ---------------- walkthrough -------------------------------------------- */
+  var playBtn = document.getElementById("play"),
+      prevBtn = document.getElementById("prev"),
+      nextBtn = document.getElementById("next"),
+      stepNum = document.getElementById("stepnum");
+
+  function updateStepUI() {
+    var on = stepIx >= 0;
+    prevBtn.disabled = !on || stepIx === 0;
+    nextBtn.disabled = !on || stepIx === STEPS.length - 1;
+    stepNum.textContent = on ? (stepIx + 1) + " / " + STEPS.length : "";
+    playBtn.textContent = timer ? "Pause" : (on ? "Play again" : "Play a collection");
+  }
+
+  function showStep(i) {
+    stepIx = Math.max(0, Math.min(STEPS.length - 1, i));
+    selected = null;
+    var s = STEPS[stepIx];
+    mark(s.b, s.e);
+    showPanel("Step " + (stepIx + 1) + " of " + STEPS.length, s.t, s.p);
+    updateStepUI();
+  }
+
+  function stopPlaying() {
+    if (timer) { clearInterval(timer); timer = null; }
+    updateStepUI();
+  }
+
+  function startPlaying() {
+    var slow = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    showStep(stepIx >= STEPS.length - 1 || stepIx < 0 ? 0 : stepIx);
+    if (slow) return;                        // step through it by hand instead
+    timer = setInterval(function () {
+      if (stepIx >= STEPS.length - 1) { stopPlaying(); return; }
+      showStep(stepIx + 1);
+      updateStepUI();
+    }, 3200);
+    updateStepUI();
+  }
+
+  playBtn.addEventListener("click", function () {
+    if (timer) stopPlaying(); else startPlaying();
+  });
+  prevBtn.addEventListener("click", function () { stopPlaying(); showStep(stepIx - 1); });
+  nextBtn.addEventListener("click", function () { stopPlaying(); showStep(stepIx + 1); });
+
+  /* ---------------- deep links ---------------------------------------------
+     ?detail=1, ?block=worker, ?step=6 — so a particular part or a particular
+     stage can be sent to someone as a link rather than described. */
+  (function openFromUrl() {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get("detail") === "1") setLevel(true);
+    var blockId = q.get("block");
+    if (blockId && byId[blockId]) { selectBlock(blockId); return; }
+    var step = parseInt(q.get("step"), 10);
+    if (step >= 1 && step <= STEPS.length) showStep(step - 1);
+  })();
+
+  updateStepUI();
+})();
+</script>

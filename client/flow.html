@@ -1,0 +1,781 @@
+<title>How UniQCAI Works</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Tokens are the UniQCAI product tokens (docs/THEME.md). The document is
+     meant to look like the thing it describes. */
+  :root{
+    --ink:#171b21; --ink-soft:#4f5967; --ink-faint:#6b7684;
+    --paper:#fafbfc; --surface:#ffffff; --sunken:#f4f6f8;
+    --rule:#dde2e8; --rule-strong:#c4ccd5;
+    --accent:#2a45cc; --accent-soft:#eef3ff; --accent-ink:#2237a3;
+    --good:#15803d; --good-soft:#dcfce7;
+    --warn:#b45309; --warn-soft:#fef3c7;
+    --bad:#b91c1c;  --bad-soft:#fee2e2;
+    --shadow:0 1px 2px rgb(16 24 40 / .06);
+    --sans:"Inter",ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+      --paper:#0d1014; --surface:#171b21; --sunken:#262c35;
+      --rule:#262c35; --rule-strong:#3a424e;
+      --accent:#3d5ce8; --accent-soft:#1d2c69; --accent-ink:#8eaaff;
+      --good:#4ade80; --good-soft:#052e16;
+      --warn:#fbbf24; --warn-soft:#451a03;
+      --bad:#f87171;  --bad-soft:#450a0a;
+      --shadow:0 1px 2px rgb(0 0 0 / .45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+    --paper:#0d1014; --surface:#171b21; --sunken:#262c35;
+    --rule:#262c35; --rule-strong:#3a424e;
+    --accent:#3d5ce8; --accent-soft:#1d2c69; --accent-ink:#8eaaff;
+    --good:#4ade80; --good-soft:#052e16;
+    --warn:#fbbf24; --warn-soft:#451a03;
+    --bad:#f87171;  --bad-soft:#450a0a;
+    --shadow:0 1px 2px rgb(0 0 0 / .45);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1084px; margin-inline:auto; padding-inline:20px}
+  .prose{max-width:68ch}
+
+  /* ---- sticky bar ---- */
+  .bar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--rule);
+  }
+  .bar .wrap{display:flex; align-items:center; gap:18px; min-height:46px;
+    padding-block:6px; flex-wrap:wrap}
+  .bar strong{font-size:13.5px; font-weight:600; letter-spacing:-.01em}
+  .bar nav{display:flex; gap:16px; flex-wrap:wrap; margin-left:auto}
+  .bar a{font-size:13px; color:var(--ink-soft); text-decoration:none}
+  .bar a:hover{color:var(--accent)}
+
+  /* ---- masthead ---- */
+  .mast{padding-block:52px 12px; border-bottom:1px solid var(--rule)}
+  .eyebrow{
+    font-size:11.5px; font-weight:600; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--accent); font-family:var(--mono);
+  }
+  h1{
+    font-size:clamp(30px,5vw,42px); line-height:1.12; font-weight:700;
+    letter-spacing:-.025em; margin:14px 0 10px; text-wrap:balance;
+  }
+  .standfirst{font-size:19px; line-height:1.55; color:var(--ink-soft);
+    max-width:56ch; margin:0 0 26px}
+  .meta{display:flex; flex-wrap:wrap; gap:8px 28px; padding-bottom:30px;
+    font-size:13.5px; color:var(--ink-soft)}
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* ---- notices ---- */
+  .notice{
+    display:flex; gap:14px; background:var(--sunken);
+    border:1px solid var(--rule); border-radius:8px; padding:16px 18px;
+    font-size:14px; line-height:1.6; color:var(--ink-soft); margin:26px 0;
+  }
+  .notice b{color:var(--ink); font-weight:600}
+  .notice .mk{font-family:var(--mono); font-size:12px; color:var(--accent);
+    padding-top:2px; letter-spacing:.06em}
+
+  /* ---- contents ---- */
+  .contents{padding-block:34px 44px}
+  .contents h2{font-size:12px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink-faint); font-family:var(--mono); font-weight:500; margin:0 0 16px}
+  .contents ol{list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:2px 26px}
+  .contents li{border-top:1px solid var(--rule)}
+  .contents a{display:flex; gap:12px; padding:9px 0; text-decoration:none;
+    color:var(--ink); font-size:14.5px}
+  .contents a:hover{color:var(--accent)}
+  .contents .n{font-family:var(--mono); font-size:12.5px; color:var(--ink-faint);
+    font-variant-numeric:tabular-nums; padding-top:2px}
+
+  /* ---- sections ---- */
+  section{padding-block:46px; border-top:1px solid var(--rule)}
+  section > .wrap > .eyebrow{display:block; margin-bottom:10px}
+  h2{font-size:clamp(24px,3.4vw,30px); line-height:1.2; font-weight:650;
+    letter-spacing:-.02em; margin:0 0 18px; text-wrap:balance}
+  h3{font-size:18px; font-weight:600; letter-spacing:-.01em; margin:38px 0 10px}
+  h4{font-size:15.5px; font-weight:600; margin:0 0 4px}
+  p{margin:0 0 16px}
+  .lede{font-size:17.5px; line-height:1.6; color:var(--ink-soft); max-width:60ch}
+  a{color:var(--accent)}
+  strong{font-weight:600}
+  ul.plain{list-style:none; margin:0 0 18px; padding:0; max-width:68ch}
+  ul.plain li{position:relative; padding-left:20px; margin-bottom:10px}
+  ul.plain li::before{content:""; position:absolute; left:2px; top:10px;
+    width:5px; height:5px; border-radius:50%; background:var(--rule-strong)}
+
+  /* ---- figures ---- */
+  figure{margin:30px 0 8px}
+  .fig{overflow-x:auto; border:1px solid var(--rule); border-radius:10px;
+    background:var(--surface); box-shadow:var(--shadow)}
+  .fig img{display:block; width:100%; min-width:700px; max-width:100%}
+  .fig.screen img{min-width:760px}
+  figcaption{font-size:13px; color:var(--ink-soft); margin-top:10px;
+    max-width:68ch; line-height:1.55}
+
+  /* ---- numbered promises ---- */
+  ol.promises{list-style:none; counter-reset:p; margin:24px 0 0; padding:0;
+    display:grid; gap:22px; max-width:74ch}
+  ol.promises li{counter-increment:p; display:grid;
+    grid-template-columns:34px 1fr; gap:16px; align-items:start}
+  ol.promises li::before{
+    content:counter(p); font-family:var(--mono); font-size:13px; font-weight:500;
+    color:var(--accent); background:var(--accent-soft); border-radius:6px;
+    height:26px; display:grid; place-items:center; margin-top:2px;
+  }
+  ol.promises p{margin:0; font-size:15px; color:var(--ink-soft)}
+  ol.promises p:first-of-type{color:var(--ink); font-weight:600; margin-bottom:5px}
+
+  /* ---- asks ---- */
+  ol.asks{list-style:none; counter-reset:a; margin:22px 0 0; padding:0;
+    border-top:1px solid var(--rule); max-width:78ch}
+  ol.asks li{counter-increment:a; border-bottom:1px solid var(--rule);
+    padding:16px 0; display:grid; grid-template-columns:30px 1fr; gap:14px}
+  ol.asks li::before{content:counter(a); font-family:var(--mono); font-size:12.5px;
+    color:var(--ink-faint); font-variant-numeric:tabular-nums; padding-top:3px}
+  ol.asks p{margin:0; font-size:14.5px; color:var(--ink-soft)}
+
+  /* ---- tables ---- */
+  .tw{overflow-x:auto; margin:22px 0}
+  table{border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px}
+  th,td{text-align:left; padding:11px 16px 11px 0; vertical-align:top;
+    border-bottom:1px solid var(--rule)}
+  th{font-size:12px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--ink-faint); font-weight:600; font-family:var(--mono);
+    border-bottom:1px solid var(--rule-strong); padding-bottom:9px}
+  td b{font-weight:600}
+  td.n{color:var(--ink-soft)}
+
+  /* ---- status pills ---- */
+  .pill{display:inline-block; font-size:12.5px; line-height:1; padding:5px 10px;
+    border-radius:999px; white-space:nowrap; font-weight:500}
+  .pill.ok{background:var(--good-soft); color:var(--good)}
+  .pill.wa{background:var(--warn-soft); color:var(--warn)}
+  .pill.no{background:var(--bad-soft); color:var(--bad)}
+  .pill.nu{background:var(--sunken); color:var(--ink-soft)}
+  .pill.ac{background:var(--accent-soft); color:var(--accent)}
+
+  /* ---- filename anatomy ---- */
+  .fname{display:flex; flex-wrap:wrap; align-items:flex-end; gap:0 2px;
+    background:var(--sunken); border:1px solid var(--rule); border-radius:8px;
+    padding:20px 18px 16px; margin:24px 0; font-family:var(--mono)}
+  .fname .seg{display:flex; flex-direction:column; gap:5px}
+  .fname .seg b{font-size:14px; font-weight:500; color:var(--ink)}
+  .fname .seg small{font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--accent); border-top:1px solid var(--rule-strong); padding-top:5px}
+  .fname .sep{font-size:14px; color:var(--ink-faint); padding-bottom:22px}
+  .fname .ext{font-size:14px; color:var(--ink-soft); padding-bottom:22px}
+
+  /* ---- sign-off ---- */
+  .signoff{border:1px solid var(--rule-strong); border-radius:10px;
+    background:var(--surface); padding:26px 28px; margin-top:28px; max-width:620px}
+  .signoff h3{margin:0 0 18px; font-size:16px}
+  .sigrow{display:grid; grid-template-columns:120px 1fr; gap:14px;
+    align-items:end; margin-bottom:20px}
+  .sigrow span{font-size:13px; color:var(--ink-soft)}
+  .sigline{border-bottom:1px solid var(--rule-strong); height:26px}
+
+  footer{padding-block:40px 60px; border-top:1px solid var(--rule);
+    font-size:13px; color:var(--ink-faint)}
+
+  @media (max-width:640px){
+    .bar nav{display:none}
+    body{font-size:15.5px}
+    .mast{padding-block:36px 10px}
+    .standfirst{font-size:17px}
+    section{padding-block:36px}
+  }
+  @media print{
+    .bar,.contents{display:none}
+    body{background:#fff; color:#000; font-size:11pt}
+    section{page-break-inside:auto; border-top:1px solid #ccc}
+    figure,.signoff,.notice{page-break-inside:avoid}
+    .fig img{min-width:0}
+    h2{page-break-after:avoid}
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<div class="bar">
+  <div class="wrap">
+    <strong>UniQCAI — walkthrough for approval</strong>
+    <nav>
+      <a href="#s1">What it does</a>
+      <a href="#s4">Setup</a>
+      <a href="#s6">Collection</a>
+      <a href="#s7">Files</a>
+      <a href="#s10">Coverage</a>
+      <a href="#s11">Decisions</a>
+    </nav>
+  </div>
+</div>
+
+<header class="mast">
+  <div class="wrap">
+    <span class="eyebrow">Digital Upshot · Version 1.0</span>
+    <h1>How UniQCAI works</h1>
+    <p class="standfirst">One console that signs in to every quick-commerce
+      portal for you, collects the reports on a timetable, and keeps every file
+      in one place.</p>
+    <div class="meta">
+      <span>Prepared by <b>Digital Upshot Pvt Ltd</b></span>
+      <span>22 September 2026</span>
+      <span>For review and sign-off</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="notice">
+    <span class="mk">NOTE</span>
+    <span>The screens here are <b>interface previews</b>, not photographs of
+      live data. Brand names, addresses and figures are invented placeholders.
+      Screens marked <span class="pill wa">Designed — not yet built</span> show
+      an agreed design that has not been implemented yet; every other screen
+      exists today.</span>
+  </div>
+</div>
+
+<div class="wrap contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1"><span class="n">01</span> What UniQCAI does</a></li>
+    <li><a href="#s2"><span class="n">02</span> Who uses it</a></li>
+    <li><a href="#s3"><span class="n">03</span> How reports are organised</a></li>
+    <li><a href="#s4"><span class="n">04</span> Connecting a brand</a></li>
+    <li><a href="#s5"><span class="n">05</span> Asking for reports</a></li>
+    <li><a href="#s6"><span class="n">06</span> What happens while it runs</a></li>
+    <li><a href="#s7"><span class="n">07</span> Where the files end up</a></li>
+    <li><a href="#s8"><span class="n">08</span> What your brand teams see</a></li>
+    <li><a href="#s9"><span class="n">09</span> The rest of the administration</a></li>
+    <li><a href="#s10"><span class="n">10</span> Where each platform stands</a></li>
+    <li><a href="#s11"><span class="n">11</span> What we need from you</a></li>
+    <li><a href="#s12"><span class="n">12</span> Sign-off</a></li>
+  </ol>
+</div>
+
+<section id="s1">
+  <div class="wrap">
+    <span class="eyebrow">Section 01</span>
+    <h2>What UniQCAI does</h2>
+    <div class="prose">
+      <p class="lede">Today, a week of quick-commerce reporting means signing in
+        to five portals by hand, waiting for a code to arrive by email, picking
+        the right business, setting the same date range five times, and
+        downloading the same twenty files.</p>
+      <p>It costs a person about an hour a day. It happens late, because that
+        person is busy. And afterwards nobody can say for certain whether a
+        given file was pulled for the right dates — several of these exports
+        carry no dates inside them at all.</p>
+      <p>UniQCAI does that collection round instead. You connect each brand to
+        each platform once. After that you either press a button or leave a
+        timetable running, and the files arrive in one place, named
+        consistently, ready to open.</p>
+    </div>
+    <figure>
+      <div class="fig"><img src="assets/journey.svg"
+        alt="Five stages: connect once, ask for reports, UniQCAI collects, files land in one place, your team downloads."></div>
+    </figure>
+    <div class="notice">
+      <span class="mk">SCOPE</span>
+      <span><b>This stage collects files. It does not read what is inside
+        them.</b> No dashboards, no cross-platform comparison, no campaign
+        actions. Those are later stages, and this one is built so they can be
+        added without moving anything you approve here.</span>
+    </div>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="wrap">
+    <span class="eyebrow">Section 02</span>
+    <h2>Who uses it</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:23%">Role</th><th style="width:32%">Who they are</th><th>What they can do</th></tr></thead>
+        <tbody>
+          <tr><td><b>Super admin</b></td><td class="n">One or two people at Digital Upshot</td>
+              <td class="n">Everything, including system settings and the full activity log</td></tr>
+          <tr><td><b>Admin</b></td><td class="n">The Digital Upshot team running the service</td>
+              <td class="n">Every brand. Creates brands, enters logins, grants access</td></tr>
+          <tr><td><b>Brand user</b></td><td class="n">Your team</td>
+              <td class="n">Only the brands they are given, at one of two levels</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose">
+      <p>A brand user is granted a brand at one of two levels:</p>
+      <ul class="plain">
+        <li><b>Manager</b> — enters logins, edits timetables, starts
+          collections, downloads everything for that brand.</li>
+        <li><b>Executive</b> — sees and downloads that brand's reports and
+          history. Starting a collection is a separate permission, granted per
+          person, and it is <b>off unless someone turns it on</b>.</li>
+      </ul>
+      <p>Someone with no grants sees nothing at all — not an empty list of other
+        people's brands.</p>
+    </div>
+    <div class="notice">
+      <span class="mk">SECURITY</span>
+      <span><b>Passwords are never visible to anyone.</b> Once a platform
+        password is saved it can be replaced, but it cannot be read back — not
+        by an administrator, not through the interface, and not in any log,
+        export or error message. The same holds for sign-in codes.</span>
+    </div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="wrap">
+    <span class="eyebrow">Section 03</span>
+    <h2>How reports are organised</h2>
+    <div class="prose">
+      <p class="lede">Everything you see is grouped the same way: platform
+        first, then Ads or Sales, then the individual report.</p>
+      <p>You never have to know the internal name of the website a report comes
+        from. Those names appear only in setup details and error messages,
+        where they help support work out what broke.</p>
+    </div>
+    <figure>
+      <div class="fig"><img src="assets/structure.svg"
+        alt="Left: platform, then category, then report types. Right: a brand joined to a platform login by a connection, serving both Ads and Sales reports."></div>
+    </figure>
+    <div class="prose">
+      <p>Two consequences shape the setup, and both are deliberate:</p>
+      <ul class="plain">
+        <li><b>A login is connected to a brand, not owned by one.</b> Agency
+          logins that carry several brands are normal, and UniQCAI is built for
+          them.</li>
+        <li><b>One login often covers both Ads and Sales.</b> Where it does, you
+          enter it once.</li>
+      </ul>
+      <p>Because one login can open more than one business, every connection
+        records which business it is <em>supposed</em> to open — and that record
+        is checked before every single download. See section 06.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="wrap">
+    <span class="eyebrow">Section 04</span>
+    <h2>Connecting a brand</h2>
+    <p class="lede">Once per brand per platform, and it takes a few minutes.</p>
+
+    <h3>Step one — pick the platform and what you want from it</h3>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/wizard-1.svg"
+        alt="Connect a platform, step one: platform tiles with Blinkit selected, and tick boxes for Ads and Sales."></div>
+    </figure>
+
+    <h3>Step two — the login</h3>
+    <p class="prose">One login block per category, with a toggle for <em>Ads and
+      Sales use the same login</em>. An existing login can be reused rather than
+      retyped — which is how one agency login comes to serve three brands.</p>
+
+    <h3>Step three — where the sign-in code arrives</h3>
+    <p class="prose">Most of these portals will not accept a password alone.
+      They email a numeric code, or a one-time sign-in link. So each login is
+      pointed at an inbox that receives those messages.</p>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/wizard-3.svg"
+        alt="Connect a platform, step three: choosing the verification inbox and confirming the rule that identifies a code, with a successful test."></div>
+      <figcaption>The inbox can be one the portal emails directly, or one that
+        messages are forwarded to. The rule underneath comes supplied for each
+        portal — and you can test it against a real message before saving, which
+        is what the green line is showing.</figcaption>
+    </figure>
+
+    <h3>Step four — pick the reports, then prove it works</h3>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/wizard-4.svg"
+        alt="Connect a platform, step four: report checkboxes beside a live test sign-in showing each step with elapsed times."></div>
+      <figcaption>Setup ends with a real sign-in, streamed step by step while it
+        happens. Nothing is guessed and nothing is saved on trust.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="wrap">
+    <span class="eyebrow">Section 05</span>
+    <h2>Asking for reports</h2>
+
+    <h3>Now</h3>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/run-now.svg"
+        alt="The Run now panel: a report tree by platform, date range presets, and a warning offering to split Zepto reports by day."></div>
+    </figure>
+    <div class="prose">
+      <p>Pick the brand, tick the reports, choose a date range. Presets cover
+        yesterday, the last seven days, this month and the previous month.
+        Dates are always India Standard Time.</p>
+      <p>Where a portal limits how much can be exported at once, the panel says
+        so and offers to split the request. Zepto's files carry no dates inside
+        them at all, so it offers to split those by day — otherwise a week of
+        Zepto is one file you cannot tell apart from any other week.</p>
+    </div>
+
+    <h3>Or on a timetable</h3>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/schedules.svg"
+        alt="The schedules list and editor, with a preview line showing the real dates the next two runs will pull."></div>
+      <figcaption>The preview line is the important part: it spells out, in real
+        dates, what the next runs will actually ask for. Almost every scheduling
+        mistake shows up there before it costs a day of data.</figcaption>
+    </figure>
+    <p class="prose">Daily, weekly or monthly, at a time you choose. Each
+      timetable says which dates it should pull — usually a rolling window such
+      as <em>the last three days</em>, so that late-arriving corrections get
+      picked up.</p>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="wrap">
+    <span class="eyebrow">Section 06</span>
+    <h2>What happens while it runs</h2>
+    <figure>
+      <div class="fig"><img src="assets/pipeline.svg"
+        alt="A run: queued, signed in, right-business check, downloaded, stored — with the stop branch and the retry rules."></div>
+    </figure>
+
+    <h3>Getting past the sign-in code</h3>
+    <figure>
+      <div class="fig"><img src="assets/verification.svg"
+        alt="A code travels from the portal to your verification inbox and back to UniQCAI, with four rules preventing the wrong message being read."></div>
+      <figcaption>Where a session from last time is still valid, UniQCAI reuses
+        it and no code is needed at all. On a daily timetable that is the common
+        case.</figcaption>
+    </figure>
+
+    <h3>Four promises about the collection</h3>
+    <ol class="promises">
+      <li><div>
+        <p>It checks it is on your business before it downloads anything.</p>
+        <p>It reads back which business the portal actually opened and compares
+          it with what the connection expects. If they differ it stops and
+          downloads nothing. This matters more than it sounds: a wrong pick
+          produces a complete, believable file for somebody else's business, and
+          no later check would catch it.</p>
+      </div></li>
+      <li><div>
+        <p>One login is never driven twice at once.</p>
+        <p>A second request for the same login waits its turn rather than
+          fighting it and getting both locked out.</p>
+      </div></li>
+      <li><div>
+        <p>It retries the right failures and refuses the wrong ones.</p>
+        <p>A timeout, a slow portal or a changed page is tried again. A rejected
+          password is not — retrying that risks locking the account — and
+          neither is a wrong business.</p>
+      </div></li>
+      <li><div>
+        <p>A collection that dies is reported as failed.</p>
+        <p>If the machine doing the work stops, the run is marked failed within
+          minutes rather than sitting on screen as "running" forever.</p>
+      </div></li>
+    </ol>
+
+    <h3>Watching it happen</h3>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/live-run.svg"
+        alt="The live run view: work grouped by login, every step shown as it happens with elapsed times and file sizes."></div>
+      <figcaption>The live view updates itself; nothing here needs refreshing.
+        When something fails, the row expands to explain it in plain words, with
+        a screenshot of what the portal was showing when it broke.</figcaption>
+    </figure>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/runs.svg"
+        alt="Collection history: a filterable table of past runs with status, file counts and durations."></div>
+      <figcaption>Finished collections keep the whole log, so a question three
+        weeks later — <em>did that Tuesday actually pull?</em> — has an
+        answer.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="s7">
+  <div class="wrap">
+    <span class="eyebrow">Section 07</span>
+    <h2>Where the files end up</h2>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/library.svg"
+        alt="The report library: Ads and Sales tabs, filters, a latest-only toggle, and a table of files with periods and sizes."></div>
+    </figure>
+    <div class="prose">
+      <p class="lede">The file you download is exactly what the portal produced.
+        The bytes are never edited, never re-saved, never stamped.</p>
+      <p>Only the <em>name</em> is ours:</p>
+    </div>
+    <div class="fname">
+      <span class="seg"><b>northwind</b><small>brand</small></span><span class="sep">_</span>
+      <span class="seg"><b>blinkit</b><small>platform</small></span><span class="sep">_</span>
+      <span class="seg"><b>ads</b><small>category</small></span><span class="sep">_</span>
+      <span class="seg"><b>mtd-search</b><small>report</small></span><span class="sep">_</span>
+      <span class="seg"><b>2026-09-14</b><small>from</small></span><span class="sep">_</span>
+      <span class="seg"><b>2026-09-20</b><small>to</small></span><span class="ext">.xlsx</span>
+    </div>
+    <div class="prose">
+      <p>That is not cosmetic. Several portals hand back names like
+        <code>export(3).xlsx</code>, and Zepto's exports contain no date column
+        anywhere — so without a generated name there is no way to tell one
+        period from another. The portal's own filename is kept alongside, in
+        case you ever need it.</p>
+      <p><b>Every version is kept.</b> Blinkit in particular restates figures
+        after the fact: the same campaign-day can change days later. So each
+        pull is stored separately, the newest is flagged
+        <span class="pill ok">Latest</span>, and older ones stay available.
+        Nothing is overwritten.</p>
+      <p>Files can be taken one at a time or as a zip, and a set of filters can
+        be shared as a link.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s8">
+  <div class="wrap">
+    <span class="eyebrow">Section 08</span>
+    <h2>What your brand teams see</h2>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/spoc.svg"
+        alt="The brand contact's home: freshness per platform, the latest files, and a download-all button."></div>
+    </figure>
+    <p class="prose">A brand contact gets a much smaller app: their brand, how
+      fresh each platform is, the latest files, and a button to take the lot. No
+      setup, no other brands, no other clients. It works on a phone, because
+      grabbing a file is often something done between meetings.</p>
+  </div>
+</section>
+
+<section id="s9">
+  <div class="wrap">
+    <span class="eyebrow">Section 09</span>
+    <h2>The rest of the administration</h2>
+    <p class="lede">These exist for the Digital Upshot team rather than for you
+      — but they are part of the approval, because they decide what we can
+      answer when you ask.</p>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/brand-detail.svg"
+        alt="A brand page: one card per platform with an Ads row and a Sales row, each showing health, login, report count and last run."></div>
+      <figcaption>Every brand has one page showing each platform, an Ads row and
+        a Sales row, what state each is in, and when each last succeeded.</figcaption>
+    </figure>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/accounts.svg"
+        alt="Platform logins: each login with its platform, what it is used for, how many brands use it and its health per category."></div>
+    </figure>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/mailboxes.svg"
+        alt="Inboxes and code rules: the rule editor with a live test against recent messages."></div>
+    </figure>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/users.svg"
+        alt="People and access: users with their role and the brands they can see, at Manager or Executive level."></div>
+    </figure>
+    <p class="prose">There is also a full activity log: who changed which login,
+      who downloaded which file, and when.</p>
+    <figure>
+      <div class="fig screen"><img src="assets/screens/overview.svg"
+        alt="The administrator's home: counts for today, a brand-by-platform health matrix, what is running now, and what needs a person."></div>
+      <figcaption>The administrator's home screen, showing at a glance what ran,
+        what is running, and what needs a person.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="s10">
+  <div class="wrap">
+    <span class="eyebrow">Section 10</span>
+    <h2>Where each platform stands today</h2>
+    <figure>
+      <div class="fig"><img src="assets/coverage.svg"
+        alt="Coverage matrix: Zepto Ads working today, Zepto Sales in build, Blinkit, Instamart and Flipkart Minutes scheduled, BigBasket on hold."></div>
+    </figure>
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:30%">Platform</th><th style="width:35%">Ads</th><th>Sales</th></tr></thead>
+        <tbody>
+          <tr><td><b>Zepto</b></td>
+              <td><span class="pill ok">Working today</span></td>
+              <td><span class="pill ac">In build</span></td></tr>
+          <tr><td><b>Blinkit</b></td>
+              <td><span class="pill nu">Scheduled</span></td>
+              <td><span class="pill nu">Scheduled</span></td></tr>
+          <tr><td><b>Swiggy Instamart</b></td>
+              <td><span class="pill nu">Scheduled</span></td>
+              <td><span class="pill nu">Scheduled</span></td></tr>
+          <tr><td><b>Flipkart Minutes</b></td>
+              <td><span class="pill nu">Scheduled</span></td>
+              <td><span class="pill nu">Scheduled</span></td></tr>
+          <tr><td><b>BigBasket</b></td>
+              <td><span class="pill wa">On hold</span></td>
+              <td><span class="pill wa">On hold</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose">
+      <p>Zepto Ads is complete and has collected real reports end to end. The
+        rest have had their reports catalogued and their sign-in behaviour
+        worked out; the collection steps are the remaining work, and they go
+        faster now that everything shared between platforms is built once and
+        proven.</p>
+      <p>BigBasket is the one genuine unknown: it requires a Google sign-in with
+        two-factor authentication, which behaves differently from the others. It
+        is parked rather than attempted, pending your decision below.</p>
+      <p><b>The shape of the product does not change as those fill in.</b> That
+        is what this document asks you to approve.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s11">
+  <div class="wrap">
+    <span class="eyebrow">Section 11</span>
+    <h2>What we need from you</h2>
+
+    <h3>Decisions</h3>
+    <ol class="asks">
+      <li><div><h4>How long should we keep the raw files?</h4>
+        <p>Storage and cost. Our suggestion: keep everything for the first year,
+          then revisit with real figures.</p></div></li>
+      <li><div><h4>Which Blinkit seller (Sales) reports do you actually use?</h4>
+        <p>The list is not yet fixed. We would rather build the four you open
+          than the twelve you do not.</p></div></li>
+      <li><div><h4>Which Flipkart Seller Hub reports count as Flipkart Minutes Sales?</h4>
+        <p>Seller Hub carries more than Minutes. We need your list to scope
+          it.</p></div></li>
+      <li><div><h4>May a brand Manager enter their own platform logins, or should that stay with Digital Upshot?</h4>
+        <p>This changes who can set a brand up, and how fast onboarding
+          goes.</p></div></li>
+      <li><div><h4>Who signs off that Zepto's numbers are right?</h4>
+        <p>Before we roll out the remaining platforms we want one named person
+          to confirm the Zepto files match what they see in the portal.</p></div></li>
+      <li><div><h4>Do you want us to pursue BigBasket?</h4>
+        <p>It needs a Google sign-in with two-factor authentication. Worth doing
+          only if BigBasket matters to you commercially.</p></div></li>
+      <li><div><h4>Daily at what time?</h4>
+        <p>Portals finish yesterday's figures at different hours. We suggest
+          06:00 IST as the default.</p></div></li>
+    </ol>
+
+    <h3>Access and material</h3>
+    <ol class="asks" start="8" style="counter-reset:a 7">
+      <li><div><h4>Platform logins for each brand and platform</h4>
+        <p>Entered once into the setup screen. Nothing can be collected without
+          them. They are encrypted immediately and never shown again.</p></div></li>
+      <li><div><h4>An inbox for sign-in codes, or a forwarding rule into one we set up</h4>
+        <p>This is how the codes reach us. One inbox can serve every
+          platform.</p></div></li>
+      <li><div><h4>Two or three example forwarded code emails</h4>
+        <p>If codes reach us by forwarding rather than directly, we need real
+          examples to prove the matching works before go-live. This is the last
+          open item on setup.</p></div></li>
+      <li><div><h4>Names and emails of the brand contacts who should get access</h4>
+        <p>And at which level — Manager or Executive — so we can invite
+          them.</p></div></li>
+    </ol>
+
+    <h3>Questions about the numbers themselves</h3>
+    <p class="prose">These block nothing, but they change what a future
+      dashboard could honestly claim, so they are cheaper to answer now:</p>
+    <ul class="plain">
+      <li><b>Blinkit</b> restates figures after the day closes. How many days
+        back do you consider settled? And when two Blinkit exports disagree,
+        which do you treat as the truth?</li>
+      <li><b>Instamart's</b> most granular export accounts for noticeably less
+        spend than its own summary. Do you know what it filters out?</li>
+      <li><b>Zepto</b> reports a metric we cannot derive from anything else in
+        the file. We would like to ask Zepto jointly what it measures.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s12">
+  <div class="wrap">
+    <span class="eyebrow">Section 12</span>
+    <h2>Sign-off</h2>
+    <div class="prose">
+      <p>Approving this document means you agree that:</p>
+      <ul class="plain">
+        <li>the journey in section 01 is how you want this to work;</li>
+        <li>the roles and permissions in section 02 match how your teams are organised;</li>
+        <li>the setup, collection and download screens are right in principle;</li>
+        <li>the file-handling promises in section 07 — unedited bytes, generated
+          names, every version kept — are what you expect;</li>
+        <li>the platform order in section 10 is the right order.</li>
+      </ul>
+      <p><b>Cheap to change after approval:</b> wording and labels, which
+        reports are ticked by default, timetable times, who gets access, and the
+        order platforms are built in.</p>
+      <p><b>Expensive to change:</b> the grouping of platform → Ads/Sales →
+        report, the two-level brand permission model, and the decision to store
+        files untouched rather than reshaped on the way in.</p>
+    </div>
+    <div class="signoff">
+      <h3>Approved</h3>
+      <div class="sigrow"><span>Name</span><div class="sigline"></div></div>
+      <div class="sigrow"><span>Role</span><div class="sigline"></div></div>
+      <div class="sigrow"><span>Date</span><div class="sigline"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="appendix">
+  <div class="wrap">
+    <span class="eyebrow">Appendix</span>
+    <h2>Words used on screen</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:26%">Word</th><th>Means</th></tr></thead>
+        <tbody>
+          <tr><td><b>Brand</b></td><td class="n">One of your brands. Everything is grouped under one.</td></tr>
+          <tr><td><b>Platform</b></td><td class="n">Zepto, Blinkit, Swiggy Instamart, Flipkart Minutes, BigBasket.</td></tr>
+          <tr><td><b>Category</b></td><td class="n">Ads or Sales.</td></tr>
+          <tr><td><b>Report</b></td><td class="n">One export, such as <em>Campaign performance</em>.</td></tr>
+          <tr><td><b>Connection</b></td><td class="n">A brand joined to a platform login, including which business that login should open.</td></tr>
+          <tr><td><b>Run</b></td><td class="n">One collection. Contains one job per report.</td></tr>
+          <tr><td><b>Schedule</b></td><td class="n">A timetable that starts runs by itself.</td></tr>
+          <tr><td><b>Version</b></td><td class="n">An earlier pull of the same report for the same dates, kept after the portal restated its figures.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:26%">Status</th><th>Means</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill nu">Queued</span></td><td class="n">Waiting its turn, usually behind another job on the same login.</td></tr>
+          <tr><td><span class="pill ac">Running</span></td><td class="n">In progress.</td></tr>
+          <tr><td><span class="pill nu">Waiting for OTP</span></td><td class="n">Signed in, waiting for the emailed code to arrive.</td></tr>
+          <tr><td><span class="pill ok">Succeeded</span></td><td class="n">Everything asked for was collected.</td></tr>
+          <tr><td><span class="pill wa">Partially succeeded</span></td><td class="n">Some reports arrived, some did not. The log says which.</td></tr>
+          <tr><td><span class="pill no">Failed</span></td><td class="n">Nothing was collected. The log says why.</td></tr>
+          <tr><td><span class="pill ok">Healthy</span></td><td class="n">A saved login that is working.</td></tr>
+          <tr><td><span class="pill wa">Needs attention</span></td><td class="n">A saved login that has stopped working.</td></tr>
+          <tr><td><span class="pill nu">Untested</span></td><td class="n">A saved login that has never been tested.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    UniQCAI · Digital Upshot Pvt Ltd · Version 1.0, 22 September 2026 ·
+    Prepared for review. Screens are interface previews; all names and figures
+    are placeholders.
+  </div>
+</footer>
