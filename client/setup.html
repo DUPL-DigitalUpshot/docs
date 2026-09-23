@@ -1,0 +1,804 @@
+<title>Setting UniQCAI Up</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* The product's own tokens (docs/THEME.md). */
+  :root{
+    --ink:#171b21; --ink-soft:#4f5967; --ink-faint:#6b7684;
+    --paper:#fafbfc; --surface:#ffffff; --sunken:#f4f6f8;
+    --rule:#dde2e8; --rule-strong:#c4ccd5;
+    --accent:#2a45cc; --accent-soft:#eef3ff;
+    --good:#15803d; --warn:#b45309;
+    --shadow:0 1px 2px rgb(16 24 40 / .06);
+    --shadow-lift:0 12px 32px rgb(16 24 40 / .10);
+    --sans:"Inter",ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+      --paper:#0d1014; --surface:#171b21; --sunken:#262c35;
+      --rule:#262c35; --rule-strong:#3a424e;
+      --accent:#5f80f7; --accent-soft:#1d2c69;
+      --good:#4ade80; --warn:#fbbf24;
+      --shadow:0 1px 2px rgb(0 0 0 / .45);
+      --shadow-lift:0 12px 32px rgb(0 0 0 / .55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+    --paper:#0d1014; --surface:#171b21; --sunken:#262c35;
+    --rule:#262c35; --rule-strong:#3a424e;
+    --accent:#5f80f7; --accent-soft:#1d2c69;
+    --good:#4ade80; --warn:#fbbf24;
+    --shadow:0 1px 2px rgb(0 0 0 / .45);
+    --shadow-lift:0 12px 32px rgb(0 0 0 / .55);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px; margin-inline:auto; padding-inline:20px}
+
+  header.mast{padding-block:52px 24px}
+  .eyebrow{font-family:var(--mono); font-size:11.5px; font-weight:500;
+    letter-spacing:.11em; text-transform:uppercase; color:var(--accent)}
+  h1{font-size:clamp(32px,4.6vw,46px); line-height:1.08; font-weight:700;
+    letter-spacing:-.03em; margin:14px 0 12px}
+  .stand{font-size:18.5px; color:var(--ink-soft); max-width:60ch; margin:0}
+
+  /* ---------- controls ---------- */
+  .controls{
+    display:flex; flex-wrap:wrap; gap:12px 18px; align-items:center;
+    padding-block:22px 18px;
+  }
+  .seg{display:inline-flex; background:var(--sunken); border:1px solid var(--rule);
+    border-radius:9px; padding:3px; gap:2px}
+  .seg button{
+    font:inherit; font-size:13.5px; font-weight:500; color:var(--ink-soft);
+    background:none; border:0; border-radius:6px; padding:6px 14px; cursor:pointer;
+  }
+  .seg button[aria-pressed="true"]{background:var(--surface); color:var(--ink);
+    box-shadow:var(--shadow)}
+  .runner{display:inline-flex; align-items:center; gap:8px}
+  .btn{
+    font:inherit; font-size:13.5px; font-weight:500; cursor:pointer;
+    background:var(--surface); color:var(--ink); border:1px solid var(--rule);
+    border-radius:8px; padding:7px 14px;
+  }
+  .btn:hover{border-color:var(--rule-strong)}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+  .btn:disabled{opacity:.45; cursor:default}
+  .stepnum{font-family:var(--mono); font-size:12.5px; color:var(--ink-faint);
+    font-variant-numeric:tabular-nums; min-width:56px}
+  .hint{font-size:13.5px; color:var(--ink-faint); margin-left:auto}
+
+  /* ---------- diagram ---------- */
+  .board{
+    border:1px solid var(--rule); border-radius:14px; background:var(--surface);
+    box-shadow:var(--shadow-lift); overflow-x:auto;
+  }
+  svg.diagram{display:block; width:100%; min-width:1320px; height:auto}
+
+  .blk{cursor:pointer}
+  .blk .body{fill:var(--surface); stroke:var(--rule); stroke-width:1.25}
+  .blk.ext .body{fill:var(--sunken); stroke-dasharray:5 4}
+  .blk .t{font-size:17px; font-weight:600; fill:var(--ink)}
+  .blk .s{font-size:12px; fill:var(--ink-faint); font-family:var(--mono);
+    letter-spacing:.04em}
+  .blk .l{font-size:13px; fill:var(--ink-soft)}
+  .blk:hover .body,
+  .blk:focus-visible .body{stroke:var(--rule-strong)}
+  .blk.on .body{stroke:var(--accent); stroke-width:2.25; filter:url(#glow)}
+  .blk.on .t{fill:var(--accent)}
+  .edge path{fill:none; stroke:var(--rule-strong); stroke-width:1.5}
+  .edge .hit{stroke:transparent; stroke-width:16}
+  .elab{opacity:0}
+  .elab .plate{fill:var(--surface)}
+  .elab .el{font-size:11.5px; fill:var(--ink-faint); font-family:var(--mono)}
+  .edge.on path:not(.hit){stroke:var(--accent); stroke-width:2.25}
+  .elab.on .el{fill:var(--accent)}
+  .faded{opacity:.2}
+  .blk,.edge,.faded{transition:opacity .18s ease, stroke .18s ease}
+  /* .faded would otherwise beat .elab's opacity:0 and leak the labels into
+     Overview mode, so each state is spelled out. */
+  .elab.faded{opacity:0}
+  body.detail .elab{opacity:1}
+  body.detail .elab.faded{opacity:.22}
+  body.detail .s-txt{display:none}
+  body:not(.detail) .d-txt{display:none}
+  svg.diagram:focus{outline:none}
+  .blk:focus-visible .body{stroke:var(--accent); stroke-width:2.25}
+
+  /* ---------- panel ---------- */
+  .panel{
+    margin-top:22px; border:1px solid var(--rule); border-radius:12px;
+    background:var(--surface); padding:26px 28px; box-shadow:var(--shadow);
+    min-height:188px;
+  }
+  .panel .kicker{font-family:var(--mono); font-size:11.5px; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--accent)}
+  .panel h2{font-size:23px; font-weight:650; letter-spacing:-.02em; margin:10px 0 14px}
+  .panel ul{margin:0; padding:0; list-style:none; display:grid; gap:11px;
+    max-width:78ch}
+  .panel li{position:relative; padding-left:19px; color:var(--ink-soft);
+    font-size:15.5px; line-height:1.55}
+  .panel li::before{content:""; position:absolute; left:1px; top:10px; width:5px;
+    height:5px; border-radius:50%; background:var(--accent)}
+
+  .legend{display:flex; flex-wrap:wrap; gap:10px 26px; padding-block:26px 8px;
+    font-size:13.5px; color:var(--ink-soft)}
+  .legend span{display:inline-flex; align-items:center; gap:9px}
+  .key{width:26px; height:0; border-top:2px solid var(--rule-strong)}
+  .key.acc{border-color:var(--accent)}
+  .key.box{width:15px; height:15px; border:1.25px solid var(--rule);
+    border-radius:4px; background:var(--surface)}
+  .key.box.ext{background:var(--sunken); border-style:dashed}
+
+  footer{padding-block:34px 60px; margin-top:34px; border-top:1px solid var(--rule);
+    font-size:13.5px; color:var(--ink-faint)}
+
+  @media (max-width:640px){
+    header.mast{padding-block:36px 16px}
+    .panel{padding:20px}
+    .hint{margin-left:0; flex-basis:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media print{
+    .controls,.hint{display:none}
+    .board{box-shadow:none; overflow:visible}
+    svg.diagram{min-width:0}
+    body{background:#fff; color:#000}
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  /* --- added for this page --- */
+  /* Four columns, not three: the shared 1240px wrap would keep the last one
+     permanently off the right edge. Prose inside still caps itself. */
+  .wrap{max-width:1460px}
+  /* --- added for this page: the lens, and the walkthrough picker --- */
+  /* .runner is one inline-flex on the shared sheet, so at phone width its last
+     button fell off the edge. Four controls instead of three here. */
+  /* .faded at .2 works on a light ground and disappears on a dark one: light
+     text dimmed toward a dark background loses far more than dark text dimmed
+     toward a light one. Blocks and edges only — the edge labels have their own
+     states and must stay at 0 outside Detail. */
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .blk.faded,
+    :root:not([data-theme="light"]) .edge.faded{opacity:.42}
+  }
+  :root[data-theme="dark"] .blk.faded,
+  :root[data-theme="dark"] .edge.faded{opacity:.42}
+  /* Hover is off while a walkthrough is on screen, so stop advertising it. */
+  body.walking .hint{visibility:hidden}
+  .runner{flex-wrap:wrap}
+  .pick{
+    font:inherit; font-size:13.5px; font-weight:500; color:var(--ink);
+    background:var(--surface); border:1px solid var(--rule); border-radius:8px;
+    padding:7px 10px; cursor:pointer;
+  }
+  .pick:hover{border-color:var(--rule-strong)}
+  .lensnote{
+    display:none; margin-top:14px; padding:13px 16px; font-size:14.5px;
+    line-height:1.55; color:var(--ink-soft); background:var(--accent-soft);
+    border-radius:10px;
+  }
+  body.lens-brand .lensnote{display:block}
+  .blk.muted .body{stroke-dasharray:4 4}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <span class="eyebrow">Digital Upshot · UniQCAI</span>
+    <h1>What you set up, and who can then see it</h1>
+    <p class="stand">Twelve things get created, in a particular order, and the
+      order is the part people get wrong. Click any block to read what it is, or
+      play one of the walkthroughs.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Whose point of view">
+      <button id="lens-admin" type="button" aria-pressed="true">Admin</button>
+      <button id="lens-brand" type="button" aria-pressed="false">Brand team</button>
+    </div>
+    <div class="seg" role="group" aria-label="Level of detail">
+      <button id="lvl-simple" type="button" aria-pressed="true">Overview</button>
+      <button id="lvl-detail" type="button" aria-pressed="false">Detail</button>
+    </div>
+    <div class="runner">
+      <select class="pick" id="walk" aria-label="Which walkthrough">
+        <option value="connect">Connect a brand</option>
+        <option value="access">Give someone access</option>
+        <option value="broke">Something broke</option>
+      </select>
+      <button id="play" class="btn primary" type="button">Play</button>
+      <button id="prev" class="btn" type="button" disabled aria-label="Previous step">Back</button>
+      <button id="next" class="btn" type="button" disabled aria-label="Next step">Next</button>
+      <span class="stepnum" id="stepnum"></span>
+    </div>
+    <span class="hint">Tap or hover a block to see what it is joined to.</span>
+  </div>
+
+  <div class="board">
+    <svg class="diagram" id="dg" viewBox="0 0 1560 660" role="img"
+         aria-label="Block diagram of what gets set up in UniQCAI and who can see it">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--rule-strong)"/>
+        </marker>
+        <marker id="ar-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+        </marker>
+        <filter id="glow" x="-12%" y="-12%" width="124%" height="124%">
+          <feDropShadow dx="0" dy="0" stdDeviation="5"
+                        flood-color="var(--accent)" flood-opacity="0.22"/>
+        </filter>
+      </defs>
+      <g id="edges"></g>
+      <g id="blocks"></g>
+      <g id="elabels"></g>
+    </svg>
+  </div>
+
+  <p class="lensnote">The dimmed blocks were set up once, by us, before anyone
+    on your team signed in. Your side of the picture is the brand, who has
+    access to it, and what comes out of it.</p>
+
+  <div class="panel" id="panel" aria-live="polite">
+    <span class="kicker" id="p-kicker">Start here</span>
+    <h2 id="p-title">Set up once, then it runs</h2>
+    <ul id="p-list">
+      <li>The top row is a platform login and the inbox that receives its
+        sign-in codes. The middle row attaches that login to a brand and decides
+        what to collect. The bottom row is what comes out, and who may see it.</li>
+      <li><strong>Click a block</strong> to read what it is and where it is
+        created, or pick a <strong>walkthrough</strong> and press Play.</li>
+      <li>Switch to <strong>Detail</strong> for the screen each one lives on and
+        the fields that decide whether it works.</li>
+    </ul>
+  </div>
+
+  <div class="legend">
+    <span><i class="key box"></i> you create it</span>
+    <span><i class="key box ext"></i> it comes with the platform</span>
+    <span><i class="key"></i> how they are joined</span>
+    <span><i class="key acc"></i> active in this step</span>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    UniQCAI · Digital Upshot Pvt Ltd. Brand names shown are placeholders.
+    Stage A collects reports; parsing and dashboards are later stages.
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- the blocks -------------------------------------------
+     Three rows: the login side, the brand side, what comes out.
+     x,y is the top-left of a 280x130 box on a 1560x660 canvas. */
+  var BLOCKS = [
+    { id:"coderule", x:70, y:60, t:"Code rule", s:"which message counts",
+      simple:["Which emailed message counts as","this portal's sign-in code."],
+      detail:["Mailboxes → Code rules","Sender, subject, and the code itself","One per portal, or one for a single login","Test it on a real message first"],
+      panel:["Every portal ships with a rule already filled in. You only touch it if that portal changes how its emails look.",
+             "A rule can cover a whole portal, or just one login on it. The narrower one wins.",
+             "Marking a rule verified requires matching a real message first — pasted text will not do it."] },
+
+    { id:"mailbox", x:450, y:60, t:"Mailbox", s:"where codes arrive",
+      simple:["The inbox the portals email","sign-in codes to."],
+      detail:["Mailboxes → Add mailbox","IMAP host, address, app password","Its own, or forwarded from elsewhere","One inbox can serve every login"],
+      panel:["One inbox is enough for every platform and every brand. Most setups have exactly one.",
+             "A login can also have none. That is fine right up until a portal asks for a code — and only that step fails, not the whole collection.",
+             "It cannot be deleted while any login still points at it."] },
+
+    { id:"login", x:830, y:60, t:"Platform login", s:"the credentials",
+      simple:["One set of credentials for one","platform."],
+      detail:["Connect wizard → step 2","Login id, password, and its inbox","Some portals have no password at all","Reused across brands, not retyped"],
+      panel:["One login per platform, not per brand. The same credentials can serve several brands — an agency login is normal and the system is built for it.",
+             "Several portals sign in with a code or a link and have no password to store at all.",
+             "It is created through the wizard so it always arrives attached to a brand. Remove its last connection and the login goes with it."] },
+
+    { id:"portals", x:1210, y:60, t:"Portals it serves", s:"ads, sales, or both",
+      simple:["Which of that platform's sites","this login can open."],
+      detail:["Connect wizard → step 1","Ads and Sales are usually one login","Health per site, not per login","Holds the saved session, encrypted"],
+      panel:["Ads and Sales on one platform are two different sites. A single login usually opens both, which is why you tick categories rather than typing credentials twice.",
+             "Health is recorded per site, so a Sales failure never marks Ads broken.",
+             "The signed-in session is kept here. That is why most collections need no code at all."] },
+
+    { id:"brand", x:70, y:265, t:"Brand", s:"the spine",
+      simple:["One of your client brands.","Everything else hangs off it."],
+      detail:["Brands → Add brand","A name and a short slug","Archived, never deleted","Access and timetables all name one"],
+      panel:["The brand is the unit everything is grouped and permissioned by. Files, collections, timetables and access all name exactly one.",
+             "Brands are archived rather than deleted, so their history stays readable."] },
+
+    { id:"connection", x:450, y:265, t:"Connection", s:"brand × login",
+      simple:["Joins one brand to one login, and","records which business to open."],
+      detail:["Connect wizard → step 3","The portal's own spelling of it","Which reports to tick by default","Can be switched off without deleting"],
+      panel:["This is the join. One per brand-and-login pair — the same login connected to three brands is three connections.",
+             "It carries the portal's own name for the business, copied exactly as the portal spells it. That is what gets checked before every download.",
+             "Leave it blank only when the login opens a single business. Where the login opens several and this is blank, the collection stops and asks rather than guessing."] },
+
+    { id:"reports", x:830, y:265, t:"Reports", s:"comes with the platform", ext:true,
+      simple:["The exports each site offers. You","pick from them; you do not add."],
+      detail:["Connect wizard → step 4","Grouped by platform, then Ads or Sales","A few cap the date range you may ask","Ticks are a starting point, not a rule"],
+      panel:["The catalogue comes from the platform itself. Nothing you do adds a report type.",
+             "The ticks on a connection are a convenience: they pre-fill Run now. What a timetable actually pulls is decided on the timetable.",
+             "A few reports cap the date range. A longer request is refused up front rather than left to fail at the portal."] },
+
+    { id:"timetable", x:1210, y:265, t:"Timetable", s:"when, and which dates",
+      simple:["Collects on its own — daily,","weekly or monthly."],
+      detail:["Schedules → New schedule","A brand, its reports, a time in IST","A rolling window, or fixed dates","The preview shows the real dates"],
+      panel:["A timetable names a brand and a list of reports. It never names a login — the right one is worked out each time it fires.",
+             "A rolling window is the usual choice: last three days, so late corrections get picked up. Ranges end yesterday, because today's figures are always incomplete.",
+             "The preview spells out the dates the next runs will ask for. That is where scheduling mistakes show up, before they cost a day of data."] },
+
+    { id:"people", x:70, y:470, t:"People", s:"who gets in",
+      simple:["Invited by email. A role on its own","grants nothing at all."],
+      detail:["Users & access → Invite","Super admin, Admin, or Member","One link, single use, seven days","A Member with no grant sees nothing"],
+      panel:["An invite is a single-use link that expires. The link cannot be reused and nothing is stored that could recreate it.",
+             "Role and brand access are separate things. A Member is somebody with no access at all until you grant them a brand.",
+             "Admins see every brand. That is what makes them admins."] },
+
+    { id:"access", x:450, y:470, t:"Access grant", s:"per person, per brand",
+      simple:["What one person may do on","one brand."],
+      detail:["Users & access → grants","Manager, or Executive","Starting a collection: a separate tick","Can be narrowed to Ads or Sales only"],
+      panel:["One grant per person per brand. A Manager sets things up and runs them; an Executive sees and downloads.",
+             "Starting a collection is a separate tick. A Manager always has it; an Executive has it only if you turn it on.",
+             "A grant can be narrowed to one category, and then that person cannot even start a collection outside it."] },
+
+    { id:"collection", x:830, y:470, t:"Collection", s:"one run",
+      simple:["One pass: sign in, check, download,","store."],
+      detail:["Run now, or fired by a timetable","One run per login, one job per report","Steps stream live while it works","Failures say why, in plain words"],
+      panel:["Work is grouped by login, because one login is never driven twice at once.",
+             "Inside it, each report is its own job that succeeds or fails on its own — so a run can come back partly successful, and the log says which parts.",
+             "Every step is kept, so a question three weeks later has an answer."] },
+
+    { id:"files", x:1210, y:470, t:"Files", s:"what you came for",
+      simple:["The downloaded reports, exactly as","the portal produced them."],
+      detail:["Report library","Renamed on the way out, never edited","Every version kept, the newest flagged","Downloads checked, and logged"],
+      panel:["The bytes are written once and never touched again. Only the filename is ours.",
+             "Every pull is kept. Platforms restate figures after the fact, so the newest is flagged rather than the older one being replaced.",
+             "There is no public link to a file. A download passes the same brand check as everything else, and is recorded."] }
+  ];
+
+  /* ---------------- how they are joined ---------------------------------- */
+  var EDGES = [
+    { id:"e-coderule-mailbox", a:"coderule", b:"mailbox",
+      d:"M350 125 L450 125", lab:"which message", lx:400, ly:113 },
+    { id:"e-mailbox-login", a:"mailbox", b:"login",
+      d:"M730 125 L830 125", lab:"reads codes", lx:780, ly:113 },
+    { id:"e-login-portals", a:"login", b:"portals",
+      d:"M1110 125 L1210 125", lab:"opens these", lx:1160, ly:113 },
+    { id:"e-login-connection", a:"login", b:"connection",
+      d:"M930 190 L930 228 L590 228 L590 265", lab:"one login, many brands", lx:760, ly:220 },
+    { id:"e-brand-connection", a:"brand", b:"connection",
+      d:"M350 330 L450 330", lab:"one per login", lx:400, ly:318 },
+    { id:"e-portals-reports", a:"portals", b:"reports",
+      d:"M1330 190 L1330 228 L1010 228 L1010 265", lab:"the catalogue", lx:1170, ly:220 },
+    { id:"e-connection-reports", a:"connection", b:"reports",
+      d:"M730 330 L830 330", lab:"default ticks", lx:780, ly:318 },
+    { id:"e-reports-timetable", a:"reports", b:"timetable",
+      d:"M1110 330 L1210 330", lab:"which reports", lx:1160, ly:318 },
+    { id:"e-timetable-collection", a:"timetable", b:"collection",
+      d:"M1250 395 L1250 447 L1050 447 L1050 470", lab:"fires it", lx:1150, ly:439 },
+    { id:"e-connection-collection", a:"connection", b:"collection",
+      d:"M590 395 L590 447 L910 447 L910 470", lab:"which login to use", lx:750, ly:439 },
+    { id:"e-collection-files", a:"collection", b:"files",
+      d:"M1110 535 L1210 535", lab:"one per report", lx:1160, ly:523 },
+    { id:"e-brand-access", a:"brand", b:"access",
+      d:"M350 360 L400 360 L400 512 L450 512", lab:"on this brand", lx:400, ly:440 },
+    { id:"e-people-access", a:"people", b:"access",
+      d:"M350 545 L450 545", lab:"invited by email", lx:400, ly:533 },
+    { id:"e-access-files", a:"access", b:"files",
+      d:"M590 600 L590 632 L1350 632 L1350 600", lab:"what they may download", lx:970, ly:624 }
+  ];
+
+  /* ---------------- the two lenses ---------------------------------------
+     Admin sees the whole chain. A brand user touches only the bottom of it;
+     the rest stays visible, because "it was set up for you" is the point. */
+  var LENSES = {
+    admin: null,
+    brand: {
+      blocks: ["brand", "timetable", "collection", "files", "access", "people"],
+      edges: ["e-timetable-collection", "e-collection-files", "e-brand-access",
+              "e-people-access", "e-access-files"]
+    }
+  };
+
+  /* ---------------- the walkthroughs -------------------------------------- */
+  var WALKS = {
+    connect: { label:"Connect a brand", steps: [
+      { t:"Add the brand first",
+        p:["Everything names a brand, so nothing else can be created until one exists.",
+           "A name and a short slug. Brands are archived rather than deleted, so this is a decision you can undo."],
+        b:["brand"], e:[] },
+      { t:"Add the inbox that receives codes",
+        p:["Most of these portals will not take a password alone — they email a code or a one-time link.",
+           "One inbox is enough for every platform and every brand, so this is usually done once and never again."],
+        b:["mailbox"], e:[] },
+      { t:"Check the code rule",
+        p:["Each portal already has a rule saying which message counts: who it comes from, what the subject looks like, and where the code sits in it.",
+           "You can test it against a real message before saving. Do that — a rule that looks right and does not match is the single most common reason a sign-in hangs."],
+        b:["coderule", "mailbox"], e:["e-coderule-mailbox"] },
+      { t:"Run the connect wizard",
+        p:["One pass creates three things at once: the login, the list of sites it can open, and the connection joining it to this brand.",
+           "Tick Ads, Sales or both. Where one login opens both, you enter it once."],
+        b:["login", "portals", "connection"], e:["e-mailbox-login", "e-login-portals", "e-login-connection"] },
+      { t:"Test the sign-in, and watch it",
+        p:["The wizard ends by actually signing in, streaming each step as it happens.",
+           "This is the only moment the portal's own name for the business is readable. Copy it."],
+        b:["login", "portals"], e:["e-login-portals"] },
+      { t:"Record which business it should open",
+        p:["Paste that name onto the connection, exactly as the portal spells it. It is checked before every download from then on.",
+           "A login that opens only one business can leave it blank. A login that opens several and has this blank will stop and ask rather than guess — which is the behaviour you want, but it means no files until you set it."],
+        b:["connection"], e:["e-brand-connection", "e-login-connection"] },
+      { t:"Tick the reports",
+        p:["The catalogue comes from the platform; you are choosing from it, not adding to it.",
+           "These ticks pre-fill Run now. They are a convenience, not a rule — what a timetable pulls is decided on the timetable."],
+        b:["reports", "connection"], e:["e-portals-reports", "e-connection-reports"] },
+      { t:"Set the timetable",
+        p:["A brand, a list of reports, a time in India Standard Time, and which dates each run should ask for.",
+           "Check the preview line: it spells out the real dates the next runs will pull. Then it collects on its own."],
+        b:["timetable", "collection", "files"],
+        e:["e-reports-timetable", "e-timetable-collection", "e-collection-files"] }
+    ]},
+
+    access: { label:"Give someone access", steps: [
+      { t:"Invite them",
+        p:["An email address and a role. They get a single-use link that expires after a week.",
+           "If email is not set up yet, the link is shown once for you to pass on by hand."],
+        b:["people"], e:[] },
+      { t:"A role is not access",
+        p:["Super admin and Admin see every brand. Member sees nothing at all until you grant them one.",
+           "That is deliberate: somebody joining the team should start with no access rather than all of it."],
+        b:["people"], e:[] },
+      { t:"Grant them a brand",
+        p:["One grant per person per brand, at one of two levels. A Manager sets things up and runs them. An Executive sees and downloads.",
+           "Somebody can be a Manager on one brand and an Executive on another."],
+        b:["people", "access", "brand"], e:["e-people-access", "e-brand-access"] },
+      { t:"Decide if they may start a collection",
+        p:["A Manager always may. For an Executive it is a separate tick, and it is off unless you turn it on.",
+           "An Executive without it can still see and download everything on that brand — they just cannot make it run now."],
+        b:["access", "collection"], e:[] },
+      { t:"Narrow it to a category, if you need to",
+        p:["A grant can be limited to Ads only or Sales only. Left alone it covers both.",
+           "The limit is real, not cosmetic: they cannot see those files, and cannot even start a collection outside it."],
+        b:["access", "files"], e:["e-access-files"] }
+    ]},
+
+    broke: { label:"Something broke", steps: [
+      { t:"The password was refused",
+        p:["That is the login, not the connection. Update the password there and run it again.",
+           "It is never retried automatically, on purpose — repeating a rejected password is how an account gets locked out."],
+        b:["login"], e:[] },
+      { t:"It signed in, then downloaded nothing",
+        p:["The portal opened a different business from the one this connection expects, so it stopped.",
+           "Check the business name on the connection against what the portal actually calls it. It stopped on purpose: a wrong pick produces a complete, believable file for somebody else's business."],
+        b:["connection", "portals"], e:["e-login-portals", "e-login-connection"] },
+      { t:"It did not know which business to open",
+        p:["The connection has no business recorded and this login opens more than one, so it asked instead of guessing.",
+           "Run a test sign-in, copy the name the portal reports, and paste it onto the connection."],
+        b:["connection"], e:["e-login-connection"] },
+      { t:"The code never arrived",
+        p:["Either the inbox, or the rule that reads it. Test the rule against a recent real message — that tells you which of the two it is in one click.",
+           "A login with no inbox attached fails only at this step. Everything before it worked."],
+        b:["mailbox", "coderule"], e:["e-coderule-mailbox", "e-mailbox-login"] },
+      { t:"It stopped dead, mid-collection",
+        p:["The machine doing the work went quiet, and the collection was marked failed rather than left sitting there for ever.",
+           "Nothing is damaged and the lock is released. Start it again."],
+        b:["collection"], e:["e-connection-collection"] }
+    ]}
+  };
+
+  /* ---------------- draw --------------------------------------------------- */
+  var NS = "http://www.w3.org/2000/svg";
+  var W = 280, H = 130;
+  var byId = {};
+  BLOCKS.forEach(function (b) { byId[b.id] = b; });
+
+  function el(name, attrs) {
+    var n = document.createElementNS(NS, name);
+    for (var k in attrs) { if (attrs[k] !== undefined) n.setAttribute(k, attrs[k]); }
+    return n;
+  }
+  function textLine(x, y, cls, str) {
+    var t = el("text", { x: x, y: y, class: cls });
+    t.textContent = str;
+    return t;
+  }
+
+  var gEdges = document.getElementById("edges");
+  var gBlocks = document.getElementById("blocks");
+  var gLabels = document.getElementById("elabels");
+
+  EDGES.forEach(function (e) {
+    var g = el("g", { class: "edge", id: e.id });
+    g.appendChild(el("path", { d: e.d, class: "hit" }));
+    g.appendChild(el("path", { d: e.d, "marker-end": "url(#ar)" }));
+    gEdges.appendChild(g);
+
+    var anchor = e.anchor || "middle";
+    var lw = e.lab.length * 6.5 + 14;
+    var lx = anchor === "middle" ? e.lx - lw / 2
+           : anchor === "end" ? e.lx - lw + 7 : e.lx - 7;
+    var lg = el("g", { class: "elab", "data-for": e.id });
+    lg.appendChild(el("rect", { x: lx, y: e.ly - 12, width: lw, height: 17,
+                                rx: 4, class: "plate" }));
+    var lab = textLine(e.lx, e.ly, "el", e.lab);
+    lab.setAttribute("text-anchor", anchor);
+    lg.appendChild(lab);
+    gLabels.appendChild(lg);
+  });
+
+  BLOCKS.forEach(function (b) {
+    var g = el("g", {
+      class: "blk" + (b.ext ? " ext" : ""), id: "b-" + b.id,
+      tabindex: "0", role: "button", "aria-label": b.t
+    });
+    g.appendChild(el("rect", { x: b.x, y: b.y, width: W, height: H, rx: 11, class: "body" }));
+    g.appendChild(textLine(b.x + 22, b.y + 36, "t", b.t));
+    g.appendChild(textLine(b.x + 22, b.y + 56, "s", b.s));
+    b.simple.forEach(function (line, i) {
+      g.appendChild(textLine(b.x + 22, b.y + 84 + i * 19, "l s-txt", line));
+    });
+    b.detail.forEach(function (line, i) {
+      var t = textLine(b.x + 22, b.y + 78 + i * 17, "l d-txt", "· " + line);
+      t.setAttribute("font-size", "12.5");
+      g.appendChild(t);
+    });
+    gBlocks.appendChild(g);
+  });
+
+  /* ---------------- highlighting ------------------------------------------- */
+  var all = { blocks: {}, edges: {} }, labelFor = {};
+  BLOCKS.forEach(function (b) { all.blocks[b.id] = document.getElementById("b-" + b.id); });
+  EDGES.forEach(function (e) { all.edges[e.id] = document.getElementById(e.id); });
+  Array.prototype.forEach.call(document.querySelectorAll(".elab"), function (n) {
+    labelFor[n.getAttribute("data-for")] = n;
+  });
+
+  function clearMarks() {
+    Object.keys(all.blocks).forEach(function (k) {
+      all.blocks[k].classList.remove("on", "faded");
+    });
+    Object.keys(all.edges).forEach(function (k) {
+      all.edges[k].classList.remove("on", "faded");
+      labelFor[k].classList.remove("on", "faded");
+      all.edges[k].querySelector("path:not(.hit)").setAttribute("marker-end", "url(#ar)");
+    });
+  }
+
+  function mark(blockIds, edgeIds) {
+    clearMarks();
+    var bs = {}, es = {};
+    blockIds.forEach(function (i) { bs[i] = 1; });
+    edgeIds.forEach(function (i) { es[i] = 1; });
+    // A lit edge whose block is dimmed reads as an arrow from nowhere, so both
+    // ends of anything lit come along. Doing it here rather than in the step
+    // data means a later edit cannot reintroduce the orphan.
+    EDGES.forEach(function (e) {
+      if (es[e.id]) { bs[e.a] = 1; bs[e.b] = 1; }
+    });
+    Object.keys(all.blocks).forEach(function (k) {
+      all.blocks[k].classList.add(bs[k] ? "on" : "faded");
+    });
+    Object.keys(all.edges).forEach(function (k) {
+      if (es[k]) {
+        all.edges[k].classList.add("on");
+        labelFor[k].classList.add("on");
+        all.edges[k].querySelector("path:not(.hit)").setAttribute("marker-end", "url(#ar-on)");
+      } else {
+        all.edges[k].classList.add("faded");
+        labelFor[k].classList.add("faded");
+      }
+    });
+  }
+
+  function neighboursOf(id) {
+    var edges = [], blocks = [id];
+    EDGES.forEach(function (e) {
+      if (e.a === id || e.b === id) {
+        edges.push(e.id);
+        blocks.push(e.a === id ? e.b : e.a);
+      }
+    });
+    return { blocks: blocks, edges: edges };
+  }
+
+  /* ---------------- panel ---------------------------------------------------- */
+  var pk = document.getElementById("p-kicker"),
+      pt = document.getElementById("p-title"),
+      pl = document.getElementById("p-list");
+
+  function showPanel(kicker, title, points) {
+    pk.textContent = kicker;
+    pt.textContent = title;
+    pl.textContent = "";
+    points.forEach(function (s) {
+      var li = document.createElement("li");
+      li.textContent = s;
+      pl.appendChild(li);
+    });
+  }
+
+  var INTRO = {
+    admin: ["The top row is a platform login and the inbox that receives its sign-in codes. The middle row attaches that login to a brand and decides what to collect. The bottom row is what comes out, and who may see it.",
+            "Click a block to read what it is and where it is created, or pick a walkthrough and press Play.",
+            "Switch to Detail for the screen each one lives on and the fields that decide whether it works."],
+    brand: ["Your side of this picture is the bottom row: the brand, who has access to it, and what comes out. The rest was set up once, before anyone on your team signed in.",
+            "The dimmed blocks are still worth reading — they are where the answer lives when something does not arrive.",
+            "Click any block, or play \"Give someone access\"."]
+  };
+
+  /* ---------------- state ----------------------------------------------------- */
+  var lens = "admin", selected = null, walkId = "connect", stepIx = -1, timer = null;
+
+  function restBase() {
+    var L = LENSES[lens];
+    if (!L) { clearMarks(); return; }
+    mark(L.blocks, L.edges);
+  }
+
+  function showIntro() {
+    showPanel(lens === "brand" ? "Your side of it" : "Start here",
+              lens === "brand" ? "Set up for you, once" : "Set up once, then it runs",
+              INTRO[lens]);
+  }
+
+  function rest() {
+    selected = null; stepIx = -1;
+    document.body.classList.remove("walking");
+    updateStepUI(); restBase(); showIntro();
+  }
+
+  /* ---------------- interaction ------------------------------------------------ */
+  function selectBlock(id) {
+    stopPlaying();
+    selected = id; stepIx = -1;
+    document.body.classList.remove("walking");
+    updateStepUI();
+    var n = neighboursOf(id);
+    mark(n.blocks, n.edges);
+    var b = byId[id];
+    showPanel(b.ext ? "Comes with the platform" : "One of the twelve", b.t, b.panel);
+  }
+
+  BLOCKS.forEach(function (b) {
+    var g = all.blocks[b.id];
+    g.addEventListener("click", function () { selectBlock(b.id); });
+    g.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); selectBlock(b.id); }
+    });
+    g.addEventListener("mouseenter", function () {
+      if (stepIx >= 0) return;
+      var n = neighboursOf(b.id);
+      mark(n.blocks, n.edges);
+    });
+    g.addEventListener("mouseleave", function () {
+      if (stepIx >= 0) return;
+      if (selected) { var n = neighboursOf(selected); mark(n.blocks, n.edges); }
+      else restBase();
+    });
+  });
+
+  document.getElementById("dg").addEventListener("click", function (ev) {
+    if (ev.target.closest(".blk")) return;
+    stopPlaying(); rest();
+  });
+
+  /* ---------------- lens -------------------------------------------------------- */
+  var lensAdmin = document.getElementById("lens-admin"),
+      lensBrand = document.getElementById("lens-brand");
+
+  function setLens(next) {
+    lens = next === "brand" ? "brand" : "admin";
+    document.body.classList.toggle("lens-brand", lens === "brand");
+    lensAdmin.setAttribute("aria-pressed", String(lens === "admin"));
+    lensBrand.setAttribute("aria-pressed", String(lens === "brand"));
+    BLOCKS.forEach(function (b) {
+      var live = !LENSES[lens] || LENSES[lens].blocks.indexOf(b.id) !== -1;
+      all.blocks[b.id].classList.toggle("muted", !live);
+    });
+    if (stepIx >= 0) showStep(stepIx);
+    else if (selected) selectBlock(selected);
+    else rest();
+  }
+  lensAdmin.addEventListener("click", function () { setLens("admin"); });
+  lensBrand.addEventListener("click", function () { setLens("brand"); });
+
+  /* ---------------- detail toggle ------------------------------------------------ */
+  var simpleBtn = document.getElementById("lvl-simple"),
+      detailBtn = document.getElementById("lvl-detail");
+
+  function setLevel(detailed) {
+    document.body.classList.toggle("detail", detailed);
+    simpleBtn.setAttribute("aria-pressed", String(!detailed));
+    detailBtn.setAttribute("aria-pressed", String(detailed));
+  }
+  simpleBtn.addEventListener("click", function () { setLevel(false); });
+  detailBtn.addEventListener("click", function () { setLevel(true); });
+
+  /* ---------------- walkthroughs --------------------------------------------------- */
+  var walkSel = document.getElementById("walk"),
+      playBtn = document.getElementById("play"),
+      prevBtn = document.getElementById("prev"),
+      nextBtn = document.getElementById("next"),
+      stepNum = document.getElementById("stepnum");
+
+  function steps() { return WALKS[walkId].steps; }
+
+  function updateStepUI() {
+    var on = stepIx >= 0, n = steps().length;
+    prevBtn.disabled = !on || stepIx === 0;
+    nextBtn.disabled = !on || stepIx === n - 1;
+    stepNum.textContent = on ? (stepIx + 1) + " / " + n : "";
+    playBtn.textContent = timer ? "Pause" : (on ? "Again" : "Play");
+  }
+
+  function showStep(i) {
+    var n = steps().length;
+    stepIx = Math.max(0, Math.min(n - 1, i));
+    selected = null;
+    var s = steps()[stepIx];
+    document.body.classList.add("walking");
+    mark(s.b, s.e);
+    showPanel(WALKS[walkId].label + " · step " + (stepIx + 1) + " of " + n, s.t, s.p);
+    updateStepUI();
+  }
+
+  function stopPlaying() {
+    if (timer) { clearInterval(timer); timer = null; }
+    updateStepUI();
+  }
+
+  function startPlaying() {
+    var slow = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    showStep(stepIx >= steps().length - 1 || stepIx < 0 ? 0 : stepIx);
+    if (slow) return;
+    timer = setInterval(function () {
+      if (stepIx >= steps().length - 1) { stopPlaying(); return; }
+      showStep(stepIx + 1);
+    }, 3600);
+    updateStepUI();
+  }
+
+  playBtn.addEventListener("click", function () {
+    if (timer) stopPlaying(); else startPlaying();
+  });
+  prevBtn.addEventListener("click", function () { stopPlaying(); showStep(stepIx - 1); });
+  nextBtn.addEventListener("click", function () { stopPlaying(); showStep(stepIx + 1); });
+  walkSel.addEventListener("change", function () {
+    stopPlaying();
+    walkId = WALKS[walkSel.value] ? walkSel.value : "connect";
+    showStep(0);
+  });
+
+  /* ---------------- deep links -------------------------------------------------------
+     ?lens=brand, ?detail=1, ?block=connection, ?walk=broke&step=2 — so one part or
+     one stage can be sent as a link rather than described. */
+  (function openFromUrl() {
+    var q = new URLSearchParams(window.location.search);
+    setLens(q.get("lens") === "brand" ? "brand" : "admin");
+    if (q.get("detail") === "1") setLevel(true);
+    var w = q.get("walk");
+    if (w && WALKS[w]) { walkId = w; walkSel.value = w; }
+    var blockId = q.get("block");
+    if (blockId && byId[blockId]) { selectBlock(blockId); return; }
+    var step = parseInt(q.get("step"), 10);
+    if (step >= 1 && step <= steps().length) showStep(step - 1);
+  })();
+
+  updateStepUI();
+})();
+</script>

@@ -39,7 +39,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CLIENT = os.path.dirname(HERE)
 OUT = os.path.join(CLIENT, "offline")
 
-PAGES = ["architecture.html", "overview.html", "flow.html"]
+PAGES = ["architecture.html", "setup.html", "overview.html", "flow.html"]
 
 # Inter ships as static OTFs on this machine; 650 in the CSS resolves to the
 # nearest of these. JetBrains Mono is not installed, so the monospace role

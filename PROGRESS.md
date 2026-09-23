@@ -236,3 +236,51 @@ Backend: 204 tests. Frontend: 39.
   `backend/tests/adapters/fixtures/mail/README.md`. The matcher is built and
   its tests skip by name until they land. OTP rule defaults come from the
   legacy `config.example.py` senders and regexes meanwhile.
+
+## 2026-09-23 — Brand discovery and mapping, and Instamart Ads downloads
+
+**Instamart Ads is downloading.** Run 115 stored
+`UQ_AUTO_SUMMARY_20260915_20260921_063448.csv` for Del Monte, 19 KB, with
+`Brand selected and verified` — so rule 9's read-back passes against a mapped
+selector on the path that actually uses it. The file states its own window:
+`From Date,15/09/2026` / `To Date,21/09/2026`, exactly as requested.
+
+Four real faults were behind the long date-picker hunt, and only the last one
+was the widget:
+
+1. **The session had silently expired.** Instamart does not navigate on expiry
+   — a modal covers the page while the URL stays `/reports` and the brand stays
+   in the sidebar — so a URL-only `is_logged_in` read it as signed in and the
+   modal's overlay ate every click. This alone presented as a dropdown that
+   timed out, a date that "did not take", and a calendar that offered days and
+   ignored them.
+2. **The trigger's format is `15/09/2026`,** not `15 Sep 2026`, so the
+   read-back rejected a date that had in fact been set.
+3. **The read-back compared only the day number,** which would have accepted
+   `22/09` for a requested `22/08` — a complete, believable report about the
+   wrong month.
+4. **An ordinary click closes the popup without committing.** Calling `click()`
+   on the element commits; clicking at its position does not.
+
+**Brand discovery** replaces typing `portal_brand_selector` from memory:
+
+- `PlatformAdapter.list_brands` → `BrandList`, concrete so non-enumerating
+  portals are unaffected, opted into via `capabilities`.
+- `account_portal_brands` (migration `0007`), written on test logins only.
+- `GET /accounts/{id}/brands`, `POST /accounts/{id}/connections`, both with
+  RBAC tests.
+- `BrandMappingDialog` with `suggestBrand`: an identical name arrives ticked,
+  a fuzzy match unticked and badged, a tie not at all.
+- `0007` also adds the `(brand_id, account_id)` unique constraint `connections`
+  never had.
+
+Instamart's switcher (`side-panel-v2-account-switcher-trigger`) reports one
+brand for the Del Monte login, which is the true answer for it. A portal that
+cannot show its list says so rather than reporting none.
+
+### Known gap
+
+`report_files.header_row` for Instamart records `['Selected Filters', '', …]` —
+the CSV's filters preamble, not the column header on row 6. `header_changed`
+therefore watches a constant and can never fire for this platform. The stored
+bytes are correct and untouched (rule 6); only the recorded header is wrong.
