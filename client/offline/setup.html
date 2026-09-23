@@ -162,9 +162,26 @@
   :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
 
   /* --- added for this page --- */
+  /* The explanation reads better beside the diagram than under it, but only
+     where there is room: below 1500px the sidebar would squeeze the board
+     under its own min-width and force a horizontal scroll at every size. */
+  .stage{display:grid; gap:22px; align-items:start}
+  .stage-main{min-width:0}
+  @media (min-width:1500px){
+    .stage{grid-template-columns:minmax(0,1fr) 320px}
+    .panel{
+      margin-top:0; position:sticky;
+      top:calc(16px + env(safe-area-inset-top,0px));
+      max-height:calc(100vh - 40px); overflow:auto;
+    }
+    .panel h2{font-size:20px; margin-bottom:12px}
+    .panel ul{max-width:none; gap:10px}
+    .panel li{font-size:14.5px}
+  }
+
   /* Four columns, not three: the shared 1240px wrap would keep the last one
      permanently off the right edge. Prose inside still caps itself. */
-  .wrap{max-width:1460px}
+  .wrap{max-width:1700px}
   /* --- added for this page: the lens, and the walkthrough picker --- */
   /* .runner is one inline-flex on the shared sheet, so at phone width its last
      button fell off the edge. Four controls instead of three here. */
@@ -232,52 +249,54 @@
     <span class="hint">Tap or hover a block to see what it is joined to.</span>
   </div>
 
-  <div class="board">
-    <svg class="diagram" id="dg" viewBox="0 0 1560 660" role="img"
-         aria-label="Block diagram of what gets set up in UniQCAI and who can see it">
-      <defs>
-        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
-                markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="var(--rule-strong)"/>
-        </marker>
-        <marker id="ar-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
-                markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
-        </marker>
-        <filter id="glow" x="-12%" y="-12%" width="124%" height="124%">
-          <feDropShadow dx="0" dy="0" stdDeviation="5"
-                        flood-color="var(--accent)" flood-opacity="0.22"/>
-        </filter>
-      </defs>
-      <g id="edges"></g>
-      <g id="blocks"></g>
-      <g id="elabels"></g>
-    </svg>
-  </div>
+  <div class="stage">
+    <div class="stage-main">
+    <div class="board">
+      <svg class="diagram" id="dg" viewBox="0 0 1560 660" role="img"
+           aria-label="Block diagram of what gets set up in UniQCAI and who can see it">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                  markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--rule-strong)"/>
+          </marker>
+          <marker id="ar-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                  markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+          </marker>
+          <filter id="glow" x="-12%" y="-12%" width="124%" height="124%">
+            <feDropShadow dx="0" dy="0" stdDeviation="5"
+                          flood-color="var(--accent)" flood-opacity="0.22"/>
+          </filter>
+        </defs>
+        <g id="edges"></g>
+        <g id="blocks"></g>
+        <g id="elabels"></g>
+      </svg>
+    </div>
+    <p class="lensnote">The dimmed blocks were set up once, by us, before anyone
+      on your team signed in. Your side of the picture is the brand, who has
+      access to it, and what comes out of it.</p>
+    <div class="legend">
+      <span><i class="key box"></i> you create it</span>
+      <span><i class="key box ext"></i> it comes with the platform</span>
+      <span><i class="key"></i> how they are joined</span>
+      <span><i class="key acc"></i> active in this step</span>
+    </div>
+    </div>
 
-  <p class="lensnote">The dimmed blocks were set up once, by us, before anyone
-    on your team signed in. Your side of the picture is the brand, who has
-    access to it, and what comes out of it.</p>
-
-  <div class="panel" id="panel" aria-live="polite">
-    <span class="kicker" id="p-kicker">Start here</span>
-    <h2 id="p-title">Set up once, then it runs</h2>
-    <ul id="p-list">
-      <li>The top row is a platform login and the inbox that receives its
-        sign-in codes. The middle row attaches that login to a brand and decides
-        what to collect. The bottom row is what comes out, and who may see it.</li>
-      <li><strong>Click a block</strong> to read what it is and where it is
-        created, or pick a <strong>walkthrough</strong> and press Play.</li>
-      <li>Switch to <strong>Detail</strong> for the screen each one lives on and
-        the fields that decide whether it works.</li>
-    </ul>
-  </div>
-
-  <div class="legend">
-    <span><i class="key box"></i> you create it</span>
-    <span><i class="key box ext"></i> it comes with the platform</span>
-    <span><i class="key"></i> how they are joined</span>
-    <span><i class="key acc"></i> active in this step</span>
+    <div class="panel" id="panel" aria-live="polite">
+      <span class="kicker" id="p-kicker">Start here</span>
+      <h2 id="p-title">Set up once, then it runs</h2>
+      <ul id="p-list">
+        <li>The top row is a platform login and the inbox that receives its
+          sign-in codes. The middle row attaches that login to a brand and decides
+          what to collect. The bottom row is what comes out, and who may see it.</li>
+        <li><strong>Click a block</strong> to read what it is and where it is
+          created, or pick a <strong>walkthrough</strong> and press Play.</li>
+        <li>Switch to <strong>Detail</strong> for the screen each one lives on and
+          the fields that decide whether it works.</li>
+      </ul>
+    </div>
   </div>
 </div>
 
