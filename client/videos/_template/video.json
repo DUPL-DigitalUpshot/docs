@@ -1,7 +1,8 @@
 {
  "title": "__TITLE__",
  "type": "__TYPE__",
- "eyebrow": "Digital Upshot · UniQCAI",
+ "number": 0,
+ "role": "Admin",
  "headline": "__TITLE__",
  "summary": "One or two sentences on what this video shows.",
  "card": "One line for the card on the videos index.",

@@ -1,9 +1,10 @@
 {
  "title": "Admin walkthrough",
  "type": "demo",
- "eyebrow": "Digital Upshot · Product walkthrough",
- "headline": "UniQCAI in two minutes",
- "summary": "A narrated tour of the admin console, recorded on the live system: from signing in to starting a report download.",
+ "number": 1,
+ "role": "Admin",
+ "headline": "Admin walkthrough",
+ "summary": "The first video in the series: how an admin sets up UniQCAI and starts a report download, recorded on the live console.",
  "card": "Sign in, brands, connections, logins, OTP mailboxes and on-demand downloads.",
  "recorded": "2026-09-28",
  "duration": "1 min 55 s",

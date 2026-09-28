@@ -11,7 +11,10 @@
   }
 
   document.title = `${meta.title} · UniQCAI`;
-  $("eyebrow").textContent = meta.eyebrow || "Digital Upshot";
+  // "Video 1 · Admin role": number and role come from video.json.
+  $("eyebrow").textContent = meta.eyebrow ||
+    [meta.number && `Video ${meta.number}`, meta.role && `${meta.role} role`].filter(Boolean).join(" · ") ||
+    "Digital Upshot";
   $("headline").textContent = meta.headline || meta.title;
   $("summary").textContent = meta.summary || "";
   const steps = meta.steps || [];

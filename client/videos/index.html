@@ -47,6 +47,9 @@
   .card:hover{box-shadow:var(--shadow-lift); border-color:var(--accent)}
   .card img{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:#000}
   .card div{padding:14px 18px 18px}
+  .card .kicker{display:block; font-family:var(--mono); font-size:11.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .card .kicker:empty{display:none}
   .card h3{font-size:18px; font-weight:600; letter-spacing:-.01em; margin:0 0 4px}
   .card p{margin:0; font-size:15px; color:var(--ink-soft); line-height:1.5}
   .card small{display:block; margin-top:8px; font-size:13px; color:var(--ink-faint)}
@@ -84,7 +87,9 @@
           const a = document.createElement("a");
           a.className = "card";
           a.href = `${m.path}/`;
-          a.innerHTML = '<img alt="" loading="lazy"><div><h3></h3><p></p><small></small></div>';
+          a.innerHTML = '<img alt="" loading="lazy"><div><span class="kicker"></span><h3></h3><p></p><small></small></div>';
+          a.querySelector(".kicker").textContent =
+            [m.number && `Video ${m.number}`, m.role && `${m.role} role`].filter(Boolean).join(" · ");
           a.querySelector("img").src = `${m.path}/poster.jpg`;
           a.querySelector("h3").textContent = m.title;
           a.querySelector("p").textContent = m.card || m.summary || "";

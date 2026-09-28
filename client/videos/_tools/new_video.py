@@ -21,6 +21,7 @@ ap.add_argument("type", help="kebab-case video type, e.g. demo, training, releas
 ap.add_argument("name", help="kebab-case folder name, e.g. brand-team-view")
 ap.add_argument("title", help="human title, e.g. 'Brand team view'")
 ap.add_argument("--type-label", help="heading for a new type on the index page")
+ap.add_argument("--role", default="Admin", help="whose view the video shows: Admin, Manager, Executive, …")
 a = ap.parse_args()
 
 for label, value in (("type", a.type), ("name", a.name)):
@@ -32,12 +33,15 @@ if dest.exists():
     sys.exit(f"{dest.relative_to(VIDEOS)} already exists")
 
 shutil.copytree(VIDEOS / "_template", dest)
-for f in (dest / "video.json", dest / "source" / "record.py"):
-    f.write_text(f.read_text().replace("__TITLE__", a.title).replace("__TYPE__", a.type)
-                 .replace("__NAME__", a.name))
-
 catalog_path = VIDEOS / "catalog.json"
 catalog = json.loads(catalog_path.read_text())
+number = len(catalog["videos"]) + 1  # "Video <n>" on the page and the index card
+for f in (dest / "video.json", dest / "source" / "record.py"):
+    f.write_text(f.read_text().replace("__TITLE__", a.title).replace("__TYPE__", a.type)
+                 .replace("__NAME__", a.name)
+                 .replace('"number": 0', f'"number": {number}')
+                 .replace('"role": "Admin"', f'"role": {json.dumps(a.role)}'))
+
 catalog.setdefault("types", {}).setdefault(a.type, a.type_label or a.type.replace("-", " ").title())
 catalog["videos"].append(f"{a.type}/{a.name}")
 catalog_path.write_text(json.dumps(catalog, indent=1, ensure_ascii=False) + "\n")
