@@ -7,7 +7,7 @@ new video is a copy of `_template/` with its own media and a `video.json`.
 videos/
   index.html              the /videos/ page, built from catalog.json
   catalog.json            which types exist and which videos to list, in order
-  _shared/                watch.css + watch.js, used by every watch page
+  shared/                 watch.css + watch.js, used by every watch page
   _template/              copied by new_video.py for each new video
   _tools/                 recording kit, voice, build, scaffolding
   <type>/                 demo · training · release-notes · …  (kebab-case)
@@ -22,6 +22,11 @@ videos/
         record.py         the storyboard (what is clicked and captioned)
         .work/            recording scratch, git-ignored
 ```
+
+**Anything the site needs must not start with `_`.** GitHub Pages builds with
+Jekyll, which leaves out every `_folder`. That's why `shared/` has no underscore,
+and why `_tools/` and `_template/` (which the site doesn't need) stay off the
+public site.
 
 The watch page and the index read JSON with `fetch()`, so they work when served
 (GitHub Pages, any web server) but not when opened as a `file://` path.
