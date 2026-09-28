@@ -284,3 +284,42 @@ cannot show its list says so rather than reporting none.
 the CSV's filters preamble, not the column header on row 6. `header_changed`
 therefore watches a constant and can never fire for this platform. The stored
 bytes are correct and untouched (rule 6); only the recorded header is wrong.
+
+## 2026-09-23 — UI visibility switchboard (`toggle_admin`)
+
+A runtime switchboard for what each audience is shown, owned by a fourth role that no admin can see. Built outside the stage plan, at the client's request.
+
+**What it does.** Any nav section, platform, category or report type can be marked `visible`, `locked` ("coming soon": greyed, lock icon, tooltip, inert) or `hidden`, per sidebar audience (`admin`, `manager`, `executive`). Locked and hidden routes bounce a typed URL back to the Overview. Rules live in `ui_visibility`, keyed `(audience, kind, key)`; an absent row means visible, so an empty table behaves exactly as before the feature existed.
+
+**What it is not.** Presentation only. A hidden section is still a 200 for anyone whose role allowed it, and a rule can never grant an audience something it never had. RBAC is untouched — see `DECISIONS.md` 2026-09-23 and PRD §4a.
+
+**The role.** `toggle_admin` ranks above `super_admin` in `ROLE_ORDER`, so every existing gate passes unchanged, and it is never subject to the rules it writes. Unlike the sections, the *role* is hidden server-side: filtered from `GET /users`, refused as the source or target of any promotion or invite, and its endpoints answer 404 rather than 403. Seeded from `UNIQCAI_TOGGLE_ADMIN_EMAIL` / `_PASSWORD`; no screen can create one.
+
+| Piece | Where |
+|---|---|
+| Migration | `0008_ui_visibility.py` — new table, `ck_users_role` widened |
+| Backend | `app/modules/visibility/`, `RequireToggleAdmin` in `core/rbac.py`, guards in `modules/users/service.py`, `seed_toggle_admin()` |
+| Rules delivery | `GET /auth/me` → `CurrentUserResponse.visibility` (no extra request; already cached under `['me']`) |
+| Frontend | `app/sections.ts` (one registry), `lib/visibility.ts`, `navFor(audience, rules)`, `RequireSection`, `features/visibility/` |
+
+**Verified so far:** frontend `tsc`, `eslint` and `vitest` green — 101 tests, 12 new (8 in `app/nav.test.ts`, 4 sidebar rendering cases in `AppShell.test.tsx`). Backend `ruff check` and `ruff format` clean.
+
+**Not yet run — the environment had no Docker access:** `make migrate` (0008 has never been applied), `make test` (backend pytest, including the new `tests/rbac/test_visibility_rbac.py` and `tests/unit/test_visibility_rules.py`), `make types`, and the browser walkthrough. Until `make types` runs, `lib/api.ts` carries a `PENDING REGENERATION` block declaring the two fields the generator will supply; delete it once `api-types.ts` is regenerated.
+
+## 2026-09-26 — Navigation and "Applies to" (from the VNM layout pattern)
+
+Built outside the stage plan, after reviewing the VNM multi-entity layout document. Frontend only: no migrations, no endpoints, so no new RBAC tests.
+
+| Piece | Where |
+|---|---|
+| "Applies to" + typed confirm | `components/common/WorkTarget.tsx`; used in `RunNowDrawer`, `ScheduleDialog`, `BrandMappingDialog`, `AccountsPage` delete/disconnect, archive brand |
+| Brand avatar | `components/common/BrandAvatar.tsx`, `avatar.ts`; tokens `--avatar-1…8` (THEME.md §6a) |
+| Brand sections as URLs | `features/brands/BrandLayout.tsx` (replaces `BrandDetailPage.tsx`), `useBrand.ts`, `BRAND_SECTIONS` + `switchTarget` in `app/sections.ts` |
+| Switcher + trail | `app/BrandSwitcher.tsx`, `app/ContextTrail.tsx`, `app/crumbs.ts`, `components/ui/dropdown-menu.tsx` |
+| Shell | `AppShell.tsx`: persisted collapse, Ctrl/⌘+B, phone drawer, skip link; `LiveRunPage` sticky header; Run now drawer closes on Esc from anywhere |
+
+**Verified:** `tsc`, `eslint` and `vitest` green, with 174 tests (35 new). Checked in a browser at 1440×900 and 390×844 against a mocked API: every route renders with the right trail and no horizontal scroll; switching goes `/brands/1/runs → /brands/2/runs` and `/runs/1286 → /brands/3/runs`; brand search works; `?tab=runs` redirects; Run now shows "Applies to" and "Start run for …"; the archive button stays disabled until the name is typed; Ctrl+B survives a reload; the phone drawer closes on navigation.
+
+**Amended the same day:** the brand switcher moved to the top of the sidebar and the toggle to the start of the header, as in the VNM document (`DECISIONS.md`). 175 tests; the browser pass was repeated at both widths.
+
+**Not run:** `make test` (backend untouched) and a pass against the live API, because this environment has no Docker access.

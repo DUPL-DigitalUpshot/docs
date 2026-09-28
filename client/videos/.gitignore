@@ -1,0 +1,4 @@
+# Build scratch, local model files and Python caches: never published
+**/source/.work/
+_tools/kokoro/
+__pycache__/

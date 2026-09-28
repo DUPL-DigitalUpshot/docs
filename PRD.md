@@ -50,7 +50,7 @@ The RPA for four platforms already works as standalone Python + Playwright scrip
 
 Follows working-flow §1.3 (access privileges).
 
-There are **three roles** and, on top of them, a **per-brand grant level**. The two are different things, and this document uses one vocabulary for each:
+There are **three roles** and, on top of them, a **per-brand grant level**. The two are different things, and this document uses one vocabulary for each. (A fourth, operational role, `toggle_admin`, was added later and sits outside this model — see the end of this section.)
 
 | Role (`users.role`) | UI copy | Who | Can do |
 |---|---|---|---|
@@ -68,6 +68,20 @@ Access is granted **per user × brand**, and the grant carries the level. One pe
 **"Brand Manager" and "Brand Executive" are shorthand**, used throughout this PRD, for *a member holding that grant level on that brand*. They are not roles in the schema and not words the UI shows on their own.
 
 "View credentials" (§1.3.2) means seeing that a login exists, its login id, mailbox and health. **Passwords and app passwords are never displayed to anyone**, including Admins; they can only be replaced. Access is always enforced server-side, never only hidden in the UI.
+
+### 4a. `toggle_admin` — the visibility switchboard (added 2026-09-23)
+
+A fourth role outside the three above, and outside §1.3 entirely. It owns one screen: which nav sections, platforms, categories and report types each audience is **shown**. It exists as its own role because the control tailors what Admins and Super admins see, so it cannot belong to them — the people it is used on would be able to turn it off.
+
+| Role (`users.role`) | UI copy | Who | Can do |
+|---|---|---|---|
+| `toggle_admin` | Toggle admin | Product owner at Digital Upshot | Everything an Admin can, plus the visibility switchboard. Invisible to every other role |
+
+Three things keep it honest, and all three are recorded in `DECISIONS.md`:
+
+- **Visibility is presentation, not access.** Hiding a section changes the console's chrome only; the API answers exactly as before, and a rule can never grant an audience something its role was not already entitled to. It is not a security boundary.
+- **The role itself is hidden server-side**, not merely left out of the UI: it is filtered from user listings and refused as the source or target of any promotion or invite, and its endpoints answer 404 rather than 403 — for every caller and method, decided before routing. The API docs, which list every route and role, are not served outside dev.
+- **It is seeded from the environment**, like the first super admin. No screen can create one.
 
 ## 5. Platform scope and organisation
 
@@ -113,7 +127,8 @@ Priority: **P0** = must ship in Stage A, **P1** = should ship, **P2** = nice to 
 
 ### 7.1 Authentication and access
 - FR-1 (P0) Email + password login. Session via secure HTTP-only cookie.
-- FR-2 (P0) Roles `super_admin | admin | member`, plus a per-brand grant level `manager | executive`, as defined in section 4.
+- FR-2 (P0) Roles `super_admin | admin | member`, plus a per-brand grant level `manager | executive`, as defined in section 4. The operational `toggle_admin` role is defined in §4a and is not part of this model.
+- FR-2a (P2) Per-audience UI visibility: any nav section, platform, category or report type can be marked visible, locked ("coming soon") or hidden for `admin`, `manager` or `executive`, from a switchboard only `toggle_admin` can see. Presentation only — see §4a.
 - FR-3 (P0) Members see only granted brands in every list, file download and API response, whatever their grant level. Platform accounts are visible only if they serve at least one granted brand.
 - FR-4 (P0) Admin can invite a user by email (invite link via SMTP), assign brand grants at Manager or Executive level, and deactivate users.
 - FR-5 (P1) Per-grant permission `can_trigger_runs` for executive-level grants.

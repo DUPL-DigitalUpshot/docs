@@ -147,6 +147,17 @@ Used only in `PlatformChip` (a small colour dot + text label), so a portal is re
 
 The category is shown as a text suffix: `Blinkit · Ads`, `Blinkit · Sales`. Portal names (Seller, Brand Central) are not used in the UI chrome.
 
+## 6a. Brand avatars
+
+Initials on a colour picked from the brand **id** (so renaming keeps the colour), used by `BrandAvatar` in the brand switcher, the header trail, the brand page header and every "Applies to" block. They exist so Del Monte and Dinshaw's look different at a glance before anything is changed. Colour only helps: the avatar is `aria-hidden` and the name is always shown beside it.
+
+| Token | Value |
+|---|---|
+| `--avatar-1` … `--avatar-8` | `#1d4ed8` `#047857` `#6d28d9` `#b45309` `#be123c` `#0f766e` `#4338ca` `#a21caf` |
+| `--avatar-text` | `--gray-0` |
+
+One palette serves both themes. White on each reaches AA, pinned by `contrast.test.ts`.
+
 ## 7. Typography
 
 ```css
@@ -219,4 +230,4 @@ darkMode: ['class', '[data-theme="dark"]'],
 - Sidebar: logo on dark background, so a light/white variant is needed. Confirm whether Digital Upshot has one.
 - Login page: full logo centred above the form. Product name "UniQCAI", with "by Digital Upshot" beneath.
 - Favicon: logo mark only.
-- Brand (client) logos, e.g. Del Monte, appear only as small avatars on brand cards and the SPOC home, never in the app chrome.
+- Brand (client) logos, e.g. Del Monte, appear only as small avatars on brand cards and the SPOC home, never in the app chrome. The chrome uses initials avatars instead (§6a) — never the client's logo.

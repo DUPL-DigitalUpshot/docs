@@ -18,10 +18,11 @@ Every screen groups the same way: **Platform first, then category (Ads or Sales)
 
 ## 2. Navigation
 
-**Admin** — left sidebar:
+**Admin** — left sidebar (no "Brands" item since 2026-09-28: brands are picked with the switcher on top, and the brand in context adds a **This brand** group — Connections · Schedules · Reports · Runs · Access — above the rest, which is then headed *All brands*; the brand list itself is reached from the switcher's *Manage brands*):
 ```
+[ brand switcher ]
+── This brand ── (only while a brand is open)
 ◉ Overview
-◉ Brands
 ◉ Runs
 ◉ Schedules
 ◉ Report library
@@ -32,13 +33,33 @@ Every screen groups the same way: **Platform first, then category (Ads or Sales)
 ◉ Settings (SMTP, system)
 ◉ Audit log
 ```
-Global header: brand switcher (search), **Run now** button, live-runs indicator ("2 running"), user menu.
+Top of the sidebar, under the logo: **brand switcher** (search; avatar only when collapsed). Global header: navigation toggle, the trail of where you are, **Run now** button, live-runs indicator ("2 running"), user menu.
 
-**Member with a Manager grant** ("Brand Manager") — the admin sidebar minus Users & access, Settings and Audit log, and every list scoped to their granted brands.
+**Where am I (added 2026-09-26).** The header trail names the page: `Del Monte › Runs` on a brand, `Runs › Run #1286` elsewhere. Picking a brand keeps the section and drops the detail — Del Monte's runs become Dinshaw's runs, all runs become one brand's runs — but never carries a run id or a filter across, because the same id on another brand is a different thing. Pages below the trail do not repeat it with "back" links.
+
+One toggle, first in the header on every width: on a desktop it collapses the sidebar to icons (remembered across reloads); below 768px it opens the sidebar as a drawer, closed by any navigation. Ctrl/⌘+B does the same.
+
+**Member with a Manager grant** ("Brand Manager") — the admin sidebar minus Users & access, Settings and Audit log, and every list scoped to their granted brands. With **exactly one** brand, there is nothing to choose: the switcher is replaced by that brand's name (linking to its page), its **This brand** group is always shown, and `/brands` redirects to the brand. A member with no grants has no sidebar items; Home shows an empty state saying they have no brand yet. The switchboard's **Brands** row still exists and covers the brand list, every brand page and the switcher: *hidden* removes the switcher and the *This brand* group, *locked* leaves a greyed, inert placeholder in the switcher's place.
 
 **Member with an Executive grant** ("Brand Executive", the SPOC) — minimal: `Home · Reports · Run history`. If they have one brand, no brand switcher is shown.
 
 The sidebar follows the *highest grant the member holds*, so someone who is a Manager on one brand and an Executive on another gets the Manager sidebar, with per-brand actions gated individually.
+
+**Toggle admin** (`toggle_admin`, PRD §4a) — the full admin sidebar plus a `Visibility` entry under a `Product` group. Nobody else sees that entry, and this sidebar is never filtered by the rules below: a switchboard that can hide its own switch is a lock-out waiting to happen.
+
+### 2a. Per-audience visibility (added 2026-09-23)
+
+On top of the shapes above, a Toggle admin can mark any section **visible**, **locked** or **hidden** for the `admin`, `manager` and `executive` audiences:
+
+- **locked** — the item stays in the sidebar, greyed, with a lock icon and a tooltip (the rule's own note, or "Coming soon"). It is inert: not a link, not focusable as one. A half-built screen shown as coming keeps the shape of the product legible in a way that silently removing it does not.
+- **hidden** — the item is absent, and an emptied group leaves no stray divider.
+- Both **bounce a typed URL back to the Overview**, so the hiding never looks broken.
+
+Two limits are deliberate. The rules **only subtract**: marking `Users & access` visible for an Executive does not add it, because that audience never had it. And they are **presentation only** — the API answers exactly as before, so this is never how access is enforced (PRD §4a, `DECISIONS.md`). The same three states apply to platforms, categories and report types wherever the catalogue is rendered: the connect wizard's tiles, the Run now report tree and the Report library filters.
+
+### 2b. Visibility switchboard (`/visibility`, Toggle admin only)
+
+Audience tabs (Admin · Manager · Executive). Below them, a flat list of sections and a collapsible Platform → Category → Report tree, each row carrying a three-way state control and a note field enabled only for `locked` — a note that shows nowhere else would promise something that never appears. Saving is explicit, disabled until something changes, and re-pulls `/auth/me` so the editor's own shell updates immediately.
 
 ## 3. Screens
 
@@ -72,7 +93,7 @@ Clicking a dot opens that brand × platform × category connection. Hovering sho
 
 List: cards or table with name, logo, connected platform chips, last successful download, SPOC count.
 
-Brand detail, header "Del Monte" + **Run now** (pre-filled with this brand). Tabs:
+Brand detail, header "Del Monte" + **Run now** (pre-filled with this brand). The header sticks from 768px up. Sections are real URLs — `/brands/:id/connections` (the default), `/schedules`, `/reports`, `/runs`, `/access` — listed in the sidebar's **This brand** group rather than as tabs, and old `?tab=` links redirect. A section hidden from the audience by the visibility switchboard is hidden there too:
 - **Connections**: one card per platform, with an Ads row and a Sales row inside it. Each row shows health, login, default reports, last run, `[Test login] [Edit]`. `+ Connect platform` at the top; `+ Add Sales` inside a card that only has Ads.
 
 ```
@@ -242,6 +263,12 @@ It also shows a read-only run history, and a Run now button only if `can_trigger
 | `SecretInput` (masked, write-only, "Change" affordance) | accounts, mailboxes, SMTP |
 | `CronBuilder` with next-runs preview | schedules |
 | `EmptyState` with one clear next action | every list |
+
+## 4a. "Applies to" (added 2026-09-26)
+
+Every dialog or drawer that changes something opens with an **Applies to** block naming the brand (with its avatar), and the login where the change belongs to one: Run now, the schedule dialog, *Brands on this login*, disconnect/delete login, archive brand. The confirm button names the target too: *Start run for Del Monte*, *Create schedule for Del Monte*, *Delete DM Blinkit*. Removing something permanent (a login, or a brand's last use of one) or archiving a brand asks for its name to be typed first.
+
+This is the human side of CLAUDE.md rule 9: the adapter refuses to download for the wrong business, and this makes sure the person pressing the button can see which business they are acting on.
 
 ## 5. States to design for every screen
 

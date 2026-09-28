@@ -1,0 +1,83 @@
+{
+ "title": "Admin walkthrough",
+ "type": "demo",
+ "eyebrow": "Digital Upshot · Product walkthrough",
+ "headline": "UniQCAI in two minutes",
+ "summary": "A narrated tour of the admin console, recorded on the live system: from signing in to starting a report download.",
+ "card": "Sign in, brands, connections, logins, OTP mailboxes and on-demand downloads.",
+ "recorded": "2026-09-28",
+ "duration": "1 min 55 s",
+ "size_mb": 5.9,
+ "download_name": "uniqcai-admin-walkthrough.mp4",
+ "footer": "Recorded on the working console on 28 September 2026. The “Coming next” sections are built and are being switched on for your account.",
+ "steps": [
+  {
+   "key": "title",
+   "t": 0,
+   "intro": true,
+   "title": "Introduction",
+   "text": "One console that collects every quick-commerce report for your brands."
+  },
+  {
+   "key": "s1",
+   "t": 7.0,
+   "title": "Sign in",
+   "text": "An admin signs in with their work email and password."
+  },
+  {
+   "key": "s2",
+   "t": 14.5,
+   "title": "Your brands",
+   "text": "All client brands sit in one list. Open a brand to see its setup."
+  },
+  {
+   "key": "s3",
+   "t": 19.7,
+   "title": "A brand's platform connections",
+   "text": "Each brand shows its platform connections, split into Ads and Sales, with a live health status for every login."
+  },
+  {
+   "key": "s4",
+   "t": 27.0,
+   "title": "Safety check: right business only",
+   "text": "One portal login can hold several businesses. If the portal shows a different business than expected, UniQCAI stops rather than downloading the wrong company's data."
+  },
+  {
+   "key": "s5",
+   "t": 42.9,
+   "title": "Who can see this brand",
+   "text": "Access controls who can see a brand. Each brand team sees only its own brand and its own reports."
+  },
+  {
+   "key": "s6",
+   "t": 52.5,
+   "title": "Platform accounts",
+   "text": "Every portal login in one place. One login can serve several brands. Passwords are stored encrypted and are never shown again."
+  },
+  {
+   "key": "s7",
+   "t": 65.1,
+   "title": "Connect a new platform",
+   "text": "A guided set-up: choose the platform, add the login, choose where the verification code arrives, and pick the reports."
+  },
+  {
+   "key": "s8",
+   "t": 77.1,
+   "title": "OTP mailboxes",
+   "text": "Verification codes arrive in these mailboxes and UniQCAI reads them automatically. Nobody has to forward an OTP."
+  },
+  {
+   "key": "s9",
+   "t": 88.6,
+   "title": "Download reports on demand",
+   "text": "Choose the brand, tick the reports you need (Platform → Ads or Sales → Report), pick a date range, and start the run with one click."
+  },
+  {
+   "key": "s10",
+   "t": 100.9,
+   "title": "Coming next",
+   "text": "Run history with live progress, daily schedules, and the report library where every downloaded file is ready for your team.",
+   "muted": true
+  }
+ ]
+}

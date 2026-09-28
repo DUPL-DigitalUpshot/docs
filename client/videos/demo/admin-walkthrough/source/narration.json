@@ -1,0 +1,14 @@
+{
+ "title": "Welcome to UniQCAI: one console that collects every quick-commerce report for your brands.",
+ "s1": "An admin signs in with their work email and password.",
+ "s2": "All your client brands sit in one list. Let's open Del Monte.",
+ "s3": "Each brand shows its platform connections, split into Ads and Sales, with a live health status for every login.",
+ "s4": "Here is an important safety check. One portal login can hold several businesses. If the portal shows a different business than expected, UniQCAI stops, rather than downloading the wrong company's data.",
+ "s5": "Access controls who can see this brand. Each brand team sees only its own brand, and its own reports.",
+ "s6": "Platform accounts lists every portal login. One login can serve several brands. Passwords are stored encrypted, and are never shown again.",
+ "s7": "Connecting a new platform is a guided set-up. Choose the platform, add the login, choose where the verification code arrives, and pick the reports.",
+ "s8": "Verification codes arrive in these mailboxes, and UniQCAI reads them automatically. Nobody has to forward an O.T.P.",
+ "s9": "To download on demand, choose the brand, tick the reports you need, pick a date range, and start the run with a single click.",
+ "s10": "Coming next: run history with live progress, daily schedules, and the report library, where every downloaded file is ready for your team.",
+ "end": "Set it up once, and your reports are collected every day."
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UniQCAI Videos</title>
+<meta name="description" content="Narrated walkthroughs of the UniQCAI console.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ink:#171b21; --ink-soft:#4f5967; --ink-faint:#6b7684;
+    --paper:#fafbfc; --surface:#ffffff; --rule:#dde2e8;
+    --accent:#2a45cc; --accent-soft:#eef3ff;
+    --shadow:0 1px 2px rgb(16 24 40 / .06); --shadow-lift:0 12px 32px rgb(16 24 40 / .10);
+    --sans:"Inter",ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+      --paper:#0d1014; --surface:#171b21; --rule:#262c35;
+      --accent:#3d5ce8; --accent-soft:#1d2c69;
+      --shadow:0 1px 2px rgb(0 0 0 / .45); --shadow-lift:0 12px 32px rgb(0 0 0 / .55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#f4f6f8; --ink-soft:#97a2af; --ink-faint:#6b7684;
+    --paper:#0d1014; --surface:#171b21; --rule:#262c35;
+    --accent:#3d5ce8; --accent-soft:#1d2c69;
+    --shadow:0 1px 2px rgb(0 0 0 / .45); --shadow-lift:0 12px 32px rgb(0 0 0 / .55);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1084px; margin-inline:auto; padding-inline:20px}
+  .mast{padding-block:64px 36px}
+  .eyebrow{font-family:var(--mono); font-size:11.5px; font-weight:500; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--accent)}
+  h1{font-size:clamp(40px,6vw,64px); line-height:1.04; font-weight:700; letter-spacing:-.035em; margin:18px 0 0}
+  h2{font-family:var(--mono); font-size:12px; font-weight:500; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink-faint); margin:0 0 14px}
+  section{padding-block:36px 64px; border-top:1px solid var(--rule)}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px}
+  .card{display:block; color:inherit; text-decoration:none; background:var(--surface);
+    border:1px solid var(--rule); border-radius:12px; overflow:hidden; box-shadow:var(--shadow);
+    transition:box-shadow .15s, border-color .15s}
+  .card:hover{box-shadow:var(--shadow-lift); border-color:var(--accent)}
+  .card img{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:#000}
+  .card div{padding:14px 18px 18px}
+  .card h3{font-size:18px; font-weight:600; letter-spacing:-.01em; margin:0 0 4px}
+  .card p{margin:0; font-size:15px; color:var(--ink-soft); line-height:1.5}
+  .card small{display:block; margin-top:8px; font-size:13px; color:var(--ink-faint)}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <span class="eyebrow">Digital Upshot · UniQCAI</span>
+    <h1>Videos</h1>
+  </div>
+</header>
+
+<main id="list"></main>
+
+<script>
+  // Built from catalog.json: one section per type, one card per video folder.
+  (async () => {
+    const list = document.getElementById("list");
+    try {
+      const cat = await (await fetch("catalog.json", {cache: "no-cache"})).json();
+      const metas = await Promise.all(cat.videos.map(async path => {
+        const m = await (await fetch(`${path}/video.json`, {cache: "no-cache"})).json();
+        return {...m, path, type: m.type || path.split("/")[0]};
+      }));
+      const order = [...Object.keys(cat.types || {}), ...metas.map(m => m.type)];
+      for (const type of [...new Set(order)]) {
+        const items = metas.filter(m => m.type === type);
+        if (!items.length) continue;
+        const sec = document.createElement("section");
+        sec.innerHTML = '<div class="wrap"><h2></h2><div class="grid"></div></div>';
+        sec.querySelector("h2").textContent = (cat.types || {})[type] || type;
+        for (const m of items) {
+          const a = document.createElement("a");
+          a.className = "card";
+          a.href = `${m.path}/`;
+          a.innerHTML = '<img alt="" loading="lazy"><div><h3></h3><p></p><small></small></div>';
+          a.querySelector("img").src = `${m.path}/poster.jpg`;
+          a.querySelector("h3").textContent = m.title;
+          a.querySelector("p").textContent = m.card || m.summary || "";
+          a.querySelector("small").textContent = [m.duration, "narrated", "subtitles"].filter(Boolean).join(" · ");
+          sec.querySelector(".grid").append(a);
+        }
+        list.append(sec);
+      }
+    } catch {
+      list.innerHTML = '<section><div class="wrap"><p>The video list could not be loaded.</p></div></section>';
+    }
+  })();
+</script>
+</html>

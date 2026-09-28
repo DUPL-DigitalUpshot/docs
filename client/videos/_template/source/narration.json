@@ -1,0 +1,5 @@
+{
+ "title": "Opening line, read over the title card.",
+ "s1": "One line per step. Keys match d.cap() order (s1, s2, …) and video.json steps.",
+ "end": "Closing line, read over the end card."
+}

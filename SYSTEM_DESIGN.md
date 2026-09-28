@@ -52,11 +52,16 @@ Six containers: `nginx`, `api`, `worker` (scalable), `scheduler`, `postgres`, `r
 ## 3. Data model
 
 ```sql
-users            (id, email, name, password_hash, role[super_admin|admin|member],
+users            (id, email, name, password_hash,
+                  role[toggle_admin|super_admin|admin|member],   -- toggle_admin: PRD §4a, hidden
                   is_active, last_login_at, created_at)
 brand_grants     (user_id, brand_id, level[manager|executive],
                   can_trigger_runs bool, categories text[] NULL,      -- NULL = all categories
                   granted_by, granted_at)                              -- per-brand access
+
+ui_visibility    (audience[admin|manager|executive], kind[section|platform|category|report],
+                  key, state[visible|locked|hidden], note NULL,  -- PK (audience, kind, key)
+                  updated_by, updated_at)                        -- absent row = visible
 
 brands           (id, name, slug, logo_path, notes, archived_at, created_at)
 
@@ -137,6 +142,7 @@ Key points:
 - **Platform → Category → Report type** is what the UI groups by. **Portal** is the technical source: it owns the login, adapter, OTP rule and health. Each report type records all four, so the library can filter by category without knowing which portal produced a file.
 - **One account, several portals:** a `platform_accounts` row can be linked to more than one portal of the same platform (e.g. Blinkit Ads and Seller sharing credentials) via `account_portals (account_id, portal_key, health, last_login_at)`. Health is stored per portal, so a Seller failure shows as "Blinkit · Sales needs attention" while Ads stays green.
 - **Access:** Admins see all brands. `member` users see only brands in `brand_grants`; the grant level decides whether they can manage credentials (manager) or only view/download (executive).
+- **`ui_visibility` is chrome, not access.** It decides what an audience is *shown* and nothing else: the API answers identically whether a section is visible, locked or hidden, and a rule can only subtract from what a role already had. Never read it to decide permission — `scope_to_user_brands` and the role gates remain the only things that do. It is also not the catalogue: `platforms.enabled` says what the system can do, `ui_visibility` says what a person sees, and a platform hidden here still downloads on a schedule.
 - **OTP rules:** adapters ship defaults in code; `otp_rules` rows override them per portal or per account (working-flow §2.1.3–2.1.4). Resolution order: account → portal override → adapter default.
 - **Run → Tasks → Files.** A run is what the user clicked. A task is one report pull for one connection and one period. `partial` = some tasks failed.
 - **Versioning:** on insert, set `is_latest=false` on older files with the same (brand_id, portal_key, report_key, period_start, period_end).

@@ -219,7 +219,13 @@ def frame(w, h, y0=0):
     return "".join(out), sb
 
 
-NAV = ["Overview", "Brands", "Runs", "Schedules", "Report library",
+# NAV = ["Overview", "Brands", "Runs", "Schedules", "Report library",
+#    "— Setup —", "Platform accounts", "Mailboxes", "Users & access",
+#    "Settings", "Audit log"]
+
+NAV = ["Overview", 
+    #    "Brands",
+       "Runs", "Schedules", "Report library",
        "— Setup —", "Platform accounts", "Mailboxes", "Users & access",
        "Settings", "Audit log"]
 

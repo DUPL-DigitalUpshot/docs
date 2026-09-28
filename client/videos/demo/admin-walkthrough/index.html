@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<!-- Same file in every video folder: do not edit here. Title, text and chapters
+     come from video.json; styles and behaviour from ../../_shared/. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UniQCAI Video</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../_shared/watch.css">
+<script src="../../_shared/watch.js" defer></script>
+
+<div id="page">
+<header class="mast">
+  <div class="wrap">
+    <span class="eyebrow" id="eyebrow"></span>
+    <h1 id="headline"></h1>
+    <p class="promise" id="summary"></p>
+    <ul class="meta" id="facts"></ul>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stage">
+    <div>
+      <div class="player">
+        <video id="video" controls preload="metadata" playsinline poster="poster.jpg">
+          <source src="video.mp4" type="video/mp4">
+          <track kind="subtitles" srclang="en" label="English" src="captions.en.vtt">
+          Your browser can't play this video. <a href="video.mp4">Download it instead</a>.
+        </video>
+      </div>
+      <div class="actions"><a id="download" href="video.mp4" download>Download video (MP4)</a></div>
+    </div>
+    <nav class="chapters" id="chapters-box" aria-label="Chapters">
+      <h2>Chapters</h2>
+      <ol id="chapters"></ol>
+    </nav>
+  </div>
+</div>
+
+<section id="steps-section">
+  <div class="wrap">
+    <h2>What the video shows</h2>
+    <p class="lede narrow">Each step below matches a label in the video. Select a
+      time to jump straight to it.</p>
+    <ol class="steps" id="steps"></ol>
+  </div>
+</section>
+
+<footer><div class="wrap" id="footer"></div></footer>
+</div>
+</html>

@@ -1,0 +1,8 @@
+{
+ "types": {
+  "demo": "Demo"
+ },
+ "videos": [
+  "demo/admin-walkthrough"
+ ]
+}

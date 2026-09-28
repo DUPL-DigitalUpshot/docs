@@ -1,0 +1,17 @@
+{
+ "title": "__TITLE__",
+ "type": "__TYPE__",
+ "eyebrow": "Digital Upshot · UniQCAI",
+ "headline": "__TITLE__",
+ "summary": "One or two sentences on what this video shows.",
+ "card": "One line for the card on the videos index.",
+ "recorded": "",
+ "duration": "",
+ "size_mb": 0,
+ "download_name": "uniqcai-__NAME__.mp4",
+ "footer": "",
+ "steps": [
+  {"key": "title", "t": 0, "intro": true, "title": "Introduction", "text": ""},
+  {"key": "s1", "t": 0, "title": "First step", "text": "What the viewer sees in this step."}
+ ]
+}
