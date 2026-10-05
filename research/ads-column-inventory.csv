@@ -1,0 +1,732 @@
+portal_key,report_key,sheet,column,files_seen,first_seen_period,last_seen_period,mapping_role,mapping_target,mapping_status
+blinkit.brandcentral,mtd_search_report,Category Targeting,Manufacturer,9,2026-09-01,2026-09-25,brand,manufacturer,assumed
+blinkit.brandcentral,mtd_search_report,Category Targeting,date_ist,9,2026-09-01,2026-09-25,date,date,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Campaign ID,9,2026-09-01,2026-09-25,dimension,campaign_id,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Campaign Name,9,2026-09-01,2026-09-25,dimension,campaign_name,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Category Name,9,2026-09-01,2026-09-25,dimension,category,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Pacing Type,9,2026-09-01,2026-09-25,dimension,pacing_type,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Most Viewed Position,9,2026-09-01,2026-09-25,reported,most_viewed_position,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,CPM,9,2026-09-01,2026-09-25,reported,bid_cpm,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Total Budget,9,2026-09-01,2026-09-25,reported,budget_total,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Impressions,9,2026-09-01,2026-09-25,metric,impressions,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Direct ATC,9,2026-09-01,2026-09-25,metric,atc+atc_direct,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Indirect ATC,9,2026-09-01,2026-09-25,metric,atc,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,New Users,9,2026-09-01,2026-09-25,metric,ntb_users,assumed
+blinkit.brandcentral,mtd_search_report,Category Targeting,Direct Sales,9,2026-09-01,2026-09-25,metric,revenue+revenue_direct,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Indirect Sales,9,2026-09-01,2026-09-25,metric,revenue,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Direct Quantities Sold,9,2026-09-01,2026-09-25,metric,units+units_direct,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Indirect Quantities Sold,9,2026-09-01,2026-09-25,metric,units,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Estimated Budget Consumed,9,2026-09-01,2026-09-25,metric,spend,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Direct RoAS,9,2026-09-01,2026-09-25,validator,roas_direct,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,Total RoAS,9,2026-09-01,2026-09-25,validator,roas,verified
+blinkit.brandcentral,mtd_search_report,Category Targeting,latest on hold timestamp,9,2026-09-01,2026-09-25,reported,on_hold_at,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Manufacturer,9,2026-09-01,2026-09-25,brand,manufacturer,assumed
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,date_ist,9,2026-09-01,2026-09-25,date,date,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Campaign ID,9,2026-09-01,2026-09-25,dimension,campaign_id,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Campaign Name,9,2026-09-01,2026-09-25,dimension,campaign_name,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Keyword,9,2026-09-01,2026-09-25,dimension,keyword,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Most Viewed Position,9,2026-09-01,2026-09-25,reported,most_viewed_position,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Match Type,9,2026-09-01,2026-09-25,dimension,match_type,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Pacing Type,9,2026-09-01,2026-09-25,dimension,pacing_type,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,CPM,9,2026-09-01,2026-09-25,reported,bid_cpm,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Total Budget,9,2026-09-01,2026-09-25,reported,budget_total,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Impressions,9,2026-09-01,2026-09-25,metric,impressions,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Direct ATC,9,2026-09-01,2026-09-25,metric,atc+atc_direct,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Indirect ATC,9,2026-09-01,2026-09-25,metric,atc,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,New Users,9,2026-09-01,2026-09-25,metric,ntb_users,assumed
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Direct Sales,9,2026-09-01,2026-09-25,metric,revenue+revenue_direct,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Indirect Sales,9,2026-09-01,2026-09-25,metric,revenue,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Direct Quantities Sold,9,2026-09-01,2026-09-25,metric,units+units_direct,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Indirect Quantities Sold,9,2026-09-01,2026-09-25,metric,units,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Estimated Budget Consumed,9,2026-09-01,2026-09-25,metric,spend,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Direct RoAS,9,2026-09-01,2026-09-25,validator,roas_direct,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,Total RoAS,9,2026-09-01,2026-09-25,validator,roas,verified
+blinkit.brandcentral,mtd_search_report,Keyword Targeting,latest on hold timestamp,9,2026-09-01,2026-09-25,reported,on_hold_at,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Manufacturer,9,2026-09-01,2026-09-25,brand,manufacturer,assumed
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,date_ist,9,2026-09-01,2026-09-25,date,date,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Campaign ID,9,2026-09-01,2026-09-25,dimension,campaign_id,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Campaign Name,9,2026-09-01,2026-09-25,dimension,campaign_name,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Keyword,9,2026-09-01,2026-09-25,dimension,keyword,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Match Type,9,2026-09-01,2026-09-25,dimension,match_type,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Pacing Type,9,2026-09-01,2026-09-25,dimension,pacing_type,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,CPM,9,2026-09-01,2026-09-25,reported,bid_cpm,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,total_budget,9,2026-09-01,2026-09-25,reported,budget_total,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Impressions,9,2026-09-01,2026-09-25,metric,impressions,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Reach,9,2026-09-01,2026-09-25,reported,reach,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Unique Clicks,9,2026-09-01,2026-09-25,reported,unique_clicks,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,CTR %,9,2026-09-01,2026-09-25,validator,blinkit_ctr,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,Estimated Budget Consumed,9,2026-09-01,2026-09-25,metric,spend,verified
+blinkit.brandcentral,mtd_search_report,Listing Spotlight,latest on hold timestamp,9,2026-09-01,2026-09-25,reported,on_hold_at,verified
+blinkit.brandcentral,mtd_search_report,MTD Claimables,Manufacturer,9,2026-09-01,2026-09-25,brand,manufacturer,assumed
+blinkit.brandcentral,mtd_search_report,MTD Claimables,Campaign Name,9,2026-09-01,2026-09-25,dimension,campaign_name,verified
+blinkit.brandcentral,mtd_search_report,MTD Claimables,Campaign ID,9,2026-09-01,2026-09-25,dimension,campaign_id,verified
+blinkit.brandcentral,mtd_search_report,MTD Claimables,Campaign Type,9,2026-09-01,2026-09-25,dimension,campaign_type,verified
+blinkit.brandcentral,mtd_search_report,MTD Claimables,Impressions,9,2026-09-01,2026-09-25,metric,impressions,verified
+blinkit.brandcentral,mtd_search_report,MTD Claimables,Total Budget,9,2026-09-01,2026-09-25,reported,budget_total,verified
+blinkit.brandcentral,mtd_search_report,MTD Claimables,Claimables,9,2026-09-01,2026-09-25,ext,claimables,verified
+blinkit.brandcentral,mtd_search_report,MTD Claimables,served_budget_consumed,9,2026-09-01,2026-09-25,ext,served_budget,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Manufacturer,9,2026-09-01,2026-09-25,brand,manufacturer,assumed
+blinkit.brandcentral,mtd_search_report,Product Recommendation,date_ist,9,2026-09-01,2026-09-25,date,date,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Campaign ID,9,2026-09-01,2026-09-25,dimension,campaign_id,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Subcampaign ID,9,2026-09-01,2026-09-25,dimension,subcampaign_id,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Campaign Name,9,2026-09-01,2026-09-25,dimension,campaign_name,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Asset,9,2026-09-01,2026-09-25,dimension,asset,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Title,9,2026-09-01,2026-09-25,dimension,title,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Pacing Type,9,2026-09-01,2026-09-25,dimension,pacing_type,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,CPM,9,2026-09-01,2026-09-25,reported,bid_cpm,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Total Budget,9,2026-09-01,2026-09-25,reported,budget_total,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Impressions,9,2026-09-01,2026-09-25,metric,impressions,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Direct ATC,9,2026-09-01,2026-09-25,metric,atc+atc_direct,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Indirect ATC,9,2026-09-01,2026-09-25,metric,atc,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,New Users,9,2026-09-01,2026-09-25,metric,ntb_users,assumed
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Direct Sales,9,2026-09-01,2026-09-25,metric,revenue+revenue_direct,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Indirect Sales,9,2026-09-01,2026-09-25,metric,revenue,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Estimated Budget Consumed,9,2026-09-01,2026-09-25,metric,spend,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Direct Quantities Sold,9,2026-09-01,2026-09-25,metric,units+units_direct,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Indirect Quantities Sold,9,2026-09-01,2026-09-25,metric,units,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Direct RoAS,9,2026-09-01,2026-09-25,validator,roas_direct,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,Total RoAS,9,2026-09-01,2026-09-25,validator,roas,verified
+blinkit.brandcentral,mtd_search_report,Product Recommendation,latest on hold timestamp,9,2026-09-01,2026-09-25,reported,on_hold_at,verified
+fkminutes.ads,attribution,,FSN,0,,,dimension,product_id,verified
+fkminutes.ads,attribution,,Product Name,0,,,dimension,product_name,verified
+fkminutes.ads,attribution,,date,0,,,date,date,verified
+fkminutes.ads,attribution,,Campaign ID,0,,,dimension,campaign_id,verified
+fkminutes.ads,attribution,,Campaign Name,0,,,dimension,campaign_name,verified
+fkminutes.ads,attribution,,Units,0,,,metric,units,verified
+fkminutes.ads,attribution,,Units Sold (Direct),0,,,metric,units_direct,verified
+fkminutes.ads,attribution,,Units Sold (Indirect),0,,,validator,units_indirect,verified
+fkminutes.ads,daily,,Campaign ID,0,,,dimension,campaign_id,verified
+fkminutes.ads,daily,,Campaign Name,0,,,dimension,campaign_name,verified
+fkminutes.ads,daily,,Ad Group ID,0,,,dimension,ad_group_id,verified
+fkminutes.ads,daily,,AdGroup Name,0,,,dimension,ad_group_name,verified
+fkminutes.ads,daily,,Date,0,,,date,date,verified
+fkminutes.ads,daily,,Views,0,,,metric,impressions,assumed
+fkminutes.ads,daily,,Ad Spend,0,,,metric,spend,verified
+fkminutes.ads,daily,,Actions,0,,,metric,atc,assumed
+fkminutes.ads,daily,,Action Rate,0,,,validator,action_rate,verified
+fkminutes.ads,daily,,CVR,0,,,validator,cvr_units_per_action,verified
+fkminutes.ads,daily,,Units Sold (Direct),0,,,metric,units+units_direct,verified
+fkminutes.ads,daily,,Units Sold (Indirect),0,,,metric,units,verified
+fkminutes.ads,daily,,Direct Revenue,0,,,metric,revenue+revenue_direct,verified
+fkminutes.ads,daily,,Indirect Revenue,0,,,metric,revenue,verified
+fkminutes.ads,daily,,ROI (Direct),0,,,validator,roas_direct,verified
+fkminutes.ads,daily,,ROI (Indirect),0,,,validator,roas_indirect,verified
+fkminutes.ads,fsn,,Campaign ID,0,,,dimension,campaign_id,verified
+fkminutes.ads,fsn,,Campaign Name,0,,,dimension,campaign_name,verified
+fkminutes.ads,fsn,,Ad Group ID,0,,,dimension,ad_group_id,verified
+fkminutes.ads,fsn,,AdGroup Name,0,,,dimension,ad_group_name,verified
+fkminutes.ads,fsn,,FSN ID,0,,,dimension,product_id,verified
+fkminutes.ads,fsn,,Product Name,0,,,dimension,product_name,verified
+fkminutes.ads,fsn,,Ad Spend,0,,,metric,spend,verified
+fkminutes.ads,fsn,,Views,0,,,metric,impressions,assumed
+fkminutes.ads,fsn,,Actions,0,,,metric,atc,assumed
+fkminutes.ads,fsn,,Action Rate,0,,,validator,action_rate,verified
+fkminutes.ads,fsn,,CVR,0,,,validator,cvr_units_per_action,verified
+fkminutes.ads,fsn,,Units Sold (Direct),0,,,metric,units+units_direct,verified
+fkminutes.ads,fsn,,Units Sold (Indirect),0,,,metric,units,verified
+fkminutes.ads,fsn,,Direct Revenue,0,,,metric,revenue+revenue_direct,verified
+fkminutes.ads,fsn,,Indirect Revenue,0,,,metric,revenue,verified
+fkminutes.ads,fsn,,ROI (Direct),0,,,validator,roas_direct,verified
+fkminutes.ads,fsn,,ROI (Indirect),0,,,validator,roas_indirect,verified
+fkminutes.ads,keyword,,Campaign ID,0,,,dimension,campaign_id,verified
+fkminutes.ads,keyword,,Campaign Name,0,,,dimension,campaign_name,verified
+fkminutes.ads,keyword,,AdGroup ID,0,,,dimension,ad_group_id,verified
+fkminutes.ads,keyword,,attributed_keyword,0,,,dimension,keyword,verified
+fkminutes.ads,keyword,,keyword_match_type,0,,,dimension,match_type,verified
+fkminutes.ads,keyword,,Views,0,,,metric,impressions,assumed
+fkminutes.ads,keyword,,Clicks,0,,,metric,clicks,verified
+fkminutes.ads,keyword,,ROI,0,,,validator,roas,verified
+fkminutes.ads,keyword,,Direct ROI,0,,,validator,roas_direct,verified
+fkminutes.ads,keyword,,Average CPC,0,,,validator,cpc,verified
+fkminutes.ads,keyword,,Ad spend,0,,,metric,spend,verified
+fkminutes.ads,keyword,,Direct Units Sold,0,,,metric,units+units_direct,verified
+fkminutes.ads,keyword,,Indirect Units Sold,0,,,metric,units,verified
+fkminutes.ads,keyword,,Direct Conversion Rate in %,0,,,validator,cvr_direct,verified
+fkminutes.ads,keyword,,Direct Revenue,0,,,metric,revenue+revenue_direct,verified
+fkminutes.ads,keyword,,Indirect Revenue,0,,,metric,revenue,verified
+fkminutes.ads,keyword,,Click Through Rate in %,0,,,validator,ctr,verified
+fkminutes.ads,placement,,Campaign ID,0,,,dimension,campaign_id,verified
+fkminutes.ads,placement,,Campaign Name,0,,,dimension,campaign_name,verified
+fkminutes.ads,placement,,Ad Group ID,0,,,dimension,ad_group_id,verified
+fkminutes.ads,placement,,AdGroup Name,0,,,dimension,ad_group_name,verified
+fkminutes.ads,placement,,placement_type,0,,,dimension,placement,verified
+fkminutes.ads,placement,,Views,0,,,metric,impressions,assumed
+fkminutes.ads,placement,,Actions,0,,,metric,atc,assumed
+fkminutes.ads,placement,,Action Rate,0,,,validator,action_rate,verified
+fkminutes.ads,placement,,Ad Spend,0,,,metric,spend,verified
+fkminutes.ads,placement,,Average CPB (Cost Per Basket Addition),0,,,reported,cpb,unknown
+fkminutes.ads,placement,,Units Sold (Direct),0,,,metric,units+units_direct,verified
+fkminutes.ads,placement,,Units Sold (Indirect),0,,,metric,units,verified
+fkminutes.ads,placement,,CVR,0,,,validator,cvr_units_per_action,verified
+fkminutes.ads,placement,,Direct Revenue,0,,,metric,revenue+revenue_direct,verified
+fkminutes.ads,placement,,Indirect Revenue,0,,,metric,revenue,verified
+fkminutes.ads,placement,,ROI (Direct),0,,,validator,roas_direct,verified
+fkminutes.ads,placement,,ROI (Indirect),0,,,validator,roas_indirect,verified
+fkminutes.ads,search_term,,Campaign ID,0,,,dimension,campaign_id,verified
+fkminutes.ads,search_term,,Campaign Name,0,,,dimension,campaign_name,verified
+fkminutes.ads,search_term,,AdGroup Name,0,,,dimension,ad_group_name,verified
+fkminutes.ads,search_term,,Query,0,,,dimension,search_query,verified
+fkminutes.ads,search_term,,Views,0,,,metric,impressions,assumed
+fkminutes.ads,search_term,,Actions,0,,,metric,atc,assumed
+fkminutes.ads,search_term,,Ad spend,0,,,metric,spend,verified
+fkminutes.ads,search_term,,Average Cost per Basket,0,,,reported,cpb,unknown
+fkminutes.ads,search_term,,Action Rate,0,,,validator,action_rate,verified
+fkminutes.ads,search_term,,Direct Units Sold,0,,,metric,units+units_direct,verified
+fkminutes.ads,search_term,,Indirect Units Sold,0,,,metric,units,verified
+fkminutes.ads,search_term,,Direct Conversion Rate in %,0,,,validator,cvr_direct,verified
+fkminutes.ads,search_term,,Indirect Conversion Rate in %,0,,,validator,cvr_indirect,assumed
+fkminutes.ads,search_term,,Direct Revenue,0,,,metric,revenue+revenue_direct,verified
+fkminutes.ads,search_term,,Indirect Revenue,0,,,metric,revenue,verified
+fkminutes.ads,search_term,,ROI,0,,,validator,roas,verified
+fkminutes.ads,zone,,Business Zone,0,,,dimension,zone,assumed
+fkminutes.ads,zone,,Product Name,0,,,dimension,product_name,assumed
+fkminutes.ads,zone,,FSN ID,0,,,dimension,product_id,assumed
+fkminutes.ads,zone,,Views,0,,,metric,impressions,assumed
+fkminutes.ads,zone,,Units Sold (Direct),0,,,metric,units+units_direct,assumed
+fkminutes.ads,zone,,Units Sold (Indirect),0,,,metric,units,assumed
+fkminutes.ads,zone,,Ad Spend,0,,,metric,spend,assumed
+fkminutes.ads,zone,,Direct Revenue,0,,,metric,revenue+revenue_direct,assumed
+fkminutes.ads,zone,,Indirect Revenue,0,,,metric,revenue,assumed
+fkminutes.ads,zone,,ROI (Direct),0,,,validator,roas_direct,assumed
+fkminutes.ads,zone,,ROI (Indirect),0,,,validator,roas_indirect,assumed
+fkminutes.ads,zone,,Actions,0,,,metric,atc,assumed
+fkminutes.ads,zone,,Action Rate,0,,,validator,action_rate,assumed
+instamart.brandportal,auto_city,,CAMPAIGN_ID,1,2026-09-24,2026-09-25,dimension,campaign_id,verified
+instamart.brandportal,auto_city,,CAMPAIGN_NAME,1,2026-09-24,2026-09-25,dimension,campaign_name,verified
+instamart.brandportal,auto_city,,CAMPAIGN_START_DATE,1,2026-09-24,2026-09-25,dimension,campaign_start_date,verified
+instamart.brandportal,auto_city,,CAMPAIGN_END_DATE,1,2026-09-24,2026-09-25,dimension,campaign_end_date,verified
+instamart.brandportal,auto_city,,CAMPAIGN_STATUS,1,2026-09-24,2026-09-25,dimension,campaign_status,verified
+instamart.brandportal,auto_city,,BIDDING_TYPE,1,2026-09-24,2026-09-25,dimension,bidding_type,verified
+instamart.brandportal,auto_city,,BUDGET_TYPE,1,2026-09-24,2026-09-25,dimension,budget_type,verified
+instamart.brandportal,auto_city,,AD_PROPERTY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_city,,CITY,1,2026-09-24,2026-09-25,dimension,city,verified
+instamart.brandportal,auto_city,,KEYWORD_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_city,,PRODUCT_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_city,,BRAND_NAME,1,2026-09-24,2026-09-25,brand,brand_name,verified
+instamart.brandportal,auto_city,,eCPM,1,2026-09-24,2026-09-25,validator,ecpm,verified
+instamart.brandportal,auto_city,,eCPC,1,2026-09-24,2026-09-25,validator,ecpc,verified
+instamart.brandportal,auto_city,,TOTAL_IMPRESSIONS,1,2026-09-24,2026-09-25,metric,impressions,verified
+instamart.brandportal,auto_city,,TOTAL_BUDGET,1,2026-09-24,2026-09-25,reported,budget_total,verified
+instamart.brandportal,auto_city,,TOTAL_BUDGET_BURNT,1,2026-09-24,2026-09-25,metric,spend,verified
+instamart.brandportal,auto_city,,TOTAL_CLICKS,1,2026-09-24,2026-09-25,metric,clicks,verified
+instamart.brandportal,auto_city,,BRANDED_SEARCHES_CLICKS,1,2026-09-24,2026-09-25,ext,branded_clicks,unknown
+instamart.brandportal,auto_city,,TOTAL_CTR,1,2026-09-24,2026-09-25,validator,ctr,verified
+instamart.brandportal,auto_city,,TOTAL_A2C,1,2026-09-24,2026-09-25,metric,atc,verified
+instamart.brandportal,auto_city,,A2C_RATE,1,2026-09-24,2026-09-25,validator,atc_rate,verified
+instamart.brandportal,auto_city,,TOTAL_GMV,1,2026-09-24,2026-09-25,metric,revenue,verified
+instamart.brandportal,auto_city,,TOTAL_CONVERSIONS,1,2026-09-24,2026-09-25,metric,orders,assumed
+instamart.brandportal,auto_city,,TOTAL_ROI,1,2026-09-24,2026-09-25,validator,roas,verified
+instamart.brandportal,auto_city,,TOTAL_DIRECT_GMV_7_DAYS,1,2026-09-24,2026-09-25,ext,revenue_direct_7d,verified
+instamart.brandportal,auto_city,,TOTAL_DIRECT_ROI_7_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct_7d,verified
+instamart.brandportal,auto_city,,TOTAL_DIRECT_GMV_14_DAYS,1,2026-09-24,2026-09-25,metric,revenue_direct,assumed
+instamart.brandportal,auto_city,,TOTAL_DIRECT_ROI_14_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct,verified
+instamart.brandportal,auto_city,,AD_RANK,1,2026-09-24,2026-09-25,reported,ad_rank,verified
+instamart.brandportal,auto_date,,METRICS_DATE,2,2026-09-21,2026-09-25,date,date,verified
+instamart.brandportal,auto_date,,CAMPAIGN_ID,2,2026-09-21,2026-09-25,dimension,campaign_id,verified
+instamart.brandportal,auto_date,,CAMPAIGN_NAME,2,2026-09-21,2026-09-25,dimension,campaign_name,verified
+instamart.brandportal,auto_date,,CAMPAIGN_START_DATE,2,2026-09-21,2026-09-25,dimension,campaign_start_date,verified
+instamart.brandportal,auto_date,,CAMPAIGN_END_DATE,2,2026-09-21,2026-09-25,dimension,campaign_end_date,verified
+instamart.brandportal,auto_date,,CAMPAIGN_STATUS,2,2026-09-21,2026-09-25,dimension,campaign_status,verified
+instamart.brandportal,auto_date,,BIDDING_TYPE,2,2026-09-21,2026-09-25,dimension,bidding_type,verified
+instamart.brandportal,auto_date,,BUDGET_TYPE,2,2026-09-21,2026-09-25,dimension,budget_type,verified
+instamart.brandportal,auto_date,,AD_PROPERTY_COUNT,2,2026-09-21,2026-09-25,ignore,,verified
+instamart.brandportal,auto_date,,CITY_COUNT,2,2026-09-21,2026-09-25,ignore,,verified
+instamart.brandportal,auto_date,,KEYWORD_COUNT,2,2026-09-21,2026-09-25,ignore,,verified
+instamart.brandportal,auto_date,,PRODUCT_COUNT,2,2026-09-21,2026-09-25,ignore,,verified
+instamart.brandportal,auto_date,,BRAND_NAME,2,2026-09-21,2026-09-25,brand,brand_name,verified
+instamart.brandportal,auto_date,,CAMPAIGN_UPTIME_PERCENTAGE,2,2026-09-21,2026-09-25,reported,uptime_pct,verified
+instamart.brandportal,auto_date,,BUDGET_EXHAUSTION_TIME,2,2026-09-21,2026-09-25,reported,budget_exhausted_at,verified
+instamart.brandportal,auto_date,,eCPM,2,2026-09-21,2026-09-25,validator,ecpm,verified
+instamart.brandportal,auto_date,,eCPC,2,2026-09-21,2026-09-25,validator,ecpc,verified
+instamart.brandportal,auto_date,,TOTAL_IMPRESSIONS,2,2026-09-21,2026-09-25,metric,impressions,verified
+instamart.brandportal,auto_date,,TOTAL_BUDGET,2,2026-09-21,2026-09-25,reported,budget_total,verified
+instamart.brandportal,auto_date,,TOTAL_BUDGET_BURNT,2,2026-09-21,2026-09-25,metric,spend,verified
+instamart.brandportal,auto_date,,TOTAL_CLICKS,2,2026-09-21,2026-09-25,metric,clicks,verified
+instamart.brandportal,auto_date,,BRANDED_SEARCHES_CLICKS,2,2026-09-21,2026-09-25,ext,branded_clicks,unknown
+instamart.brandportal,auto_date,,TOTAL_CTR,2,2026-09-21,2026-09-25,validator,ctr,verified
+instamart.brandportal,auto_date,,TOTAL_A2C,2,2026-09-21,2026-09-25,metric,atc,verified
+instamart.brandportal,auto_date,,A2C_RATE,2,2026-09-21,2026-09-25,validator,atc_rate,verified
+instamart.brandportal,auto_date,,TOTAL_GMV,2,2026-09-21,2026-09-25,metric,revenue,verified
+instamart.brandportal,auto_date,,TOTAL_CONVERSIONS,2,2026-09-21,2026-09-25,metric,orders,assumed
+instamart.brandportal,auto_date,,TOTAL_ROI,2,2026-09-21,2026-09-25,validator,roas,verified
+instamart.brandportal,auto_date,,TOTAL_DIRECT_GMV_7_DAYS,2,2026-09-21,2026-09-25,ext,revenue_direct_7d,verified
+instamart.brandportal,auto_date,,TOTAL_DIRECT_ROI_7_DAYS,2,2026-09-21,2026-09-25,validator,roas_direct_7d,verified
+instamart.brandportal,auto_date,,TOTAL_DIRECT_GMV_14_DAYS,2,2026-09-21,2026-09-25,metric,revenue_direct,assumed
+instamart.brandportal,auto_date,,TOTAL_DIRECT_ROI_14_DAYS,2,2026-09-21,2026-09-25,validator,roas_direct,verified
+instamart.brandportal,auto_date,,AD_RANK,2,2026-09-21,2026-09-25,reported,ad_rank,verified
+instamart.brandportal,auto_granular,,METRICS_DATE,1,2026-09-24,2026-09-25,date,date,verified
+instamart.brandportal,auto_granular,,CAMPAIGN_ID,1,2026-09-24,2026-09-25,dimension,campaign_id,verified
+instamart.brandportal,auto_granular,,CAMPAIGN_NAME,1,2026-09-24,2026-09-25,dimension,campaign_name,verified
+instamart.brandportal,auto_granular,,CAMPAIGN_START_DATE,1,2026-09-24,2026-09-25,dimension,campaign_start_date,verified
+instamart.brandportal,auto_granular,,CAMPAIGN_END_DATE,1,2026-09-24,2026-09-25,dimension,campaign_end_date,verified
+instamart.brandportal,auto_granular,,CAMPAIGN_STATUS,1,2026-09-24,2026-09-25,dimension,campaign_status,verified
+instamart.brandportal,auto_granular,,BIDDING_TYPE,1,2026-09-24,2026-09-25,dimension,bidding_type,verified
+instamart.brandportal,auto_granular,,BUDGET_TYPE,1,2026-09-24,2026-09-25,dimension,budget_type,verified
+instamart.brandportal,auto_granular,,AD_PROPERTY,1,2026-09-24,2026-09-25,dimension,ad_property,verified
+instamart.brandportal,auto_granular,,KEYWORD,1,2026-09-24,2026-09-25,dimension,keyword,verified
+instamart.brandportal,auto_granular,,MATCH_TYPE,1,2026-09-24,2026-09-25,dimension,match_type,verified
+instamart.brandportal,auto_granular,,L1_CATEGORY,1,2026-09-24,2026-09-25,dimension,category_l1,verified
+instamart.brandportal,auto_granular,,L2_CATEGORY,1,2026-09-24,2026-09-25,dimension,category_l2,verified
+instamart.brandportal,auto_granular,,PRODUCT_NAME,1,2026-09-24,2026-09-25,dimension,product_name,verified
+instamart.brandportal,auto_granular,,CITY,1,2026-09-24,2026-09-25,dimension,city,verified
+instamart.brandportal,auto_granular,,TARGETING,1,2026-09-24,2026-09-25,reported,targeting,assumed
+instamart.brandportal,auto_granular,,BRAND_NAME,1,2026-09-24,2026-09-25,brand,brand_name,verified
+instamart.brandportal,auto_granular,,eCPM,1,2026-09-24,2026-09-25,validator,ecpm,verified
+instamart.brandportal,auto_granular,,eCPC,1,2026-09-24,2026-09-25,validator,ecpc,verified
+instamart.brandportal,auto_granular,,TOTAL_IMPRESSIONS,1,2026-09-24,2026-09-25,metric,impressions,verified
+instamart.brandportal,auto_granular,,TOTAL_BUDGET,1,2026-09-24,2026-09-25,reported,budget_total,verified
+instamart.brandportal,auto_granular,,TOTAL_BUDGET_BURNT,1,2026-09-24,2026-09-25,metric,spend,verified
+instamart.brandportal,auto_granular,,TOTAL_CLICKS,1,2026-09-24,2026-09-25,metric,clicks,verified
+instamart.brandportal,auto_granular,,BRANDED_SEARCHES_CLICKS,1,2026-09-24,2026-09-25,ext,branded_clicks,unknown
+instamart.brandportal,auto_granular,,TOTAL_CTR,1,2026-09-24,2026-09-25,validator,ctr,verified
+instamart.brandportal,auto_granular,,TOTAL_A2C,1,2026-09-24,2026-09-25,metric,atc,verified
+instamart.brandportal,auto_granular,,A2C_RATE,1,2026-09-24,2026-09-25,validator,atc_rate,verified
+instamart.brandportal,auto_granular,,TOTAL_GMV,1,2026-09-24,2026-09-25,metric,revenue,verified
+instamart.brandportal,auto_granular,,TOTAL_CONVERSIONS,1,2026-09-24,2026-09-25,metric,orders,assumed
+instamart.brandportal,auto_granular,,TOTAL_ROI,1,2026-09-24,2026-09-25,validator,roas,verified
+instamart.brandportal,auto_granular,,TOTAL_DIRECT_GMV_7_DAYS,1,2026-09-24,2026-09-25,ext,revenue_direct_7d,verified
+instamart.brandportal,auto_granular,,TOTAL_DIRECT_ROI_7_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct_7d,verified
+instamart.brandportal,auto_granular,,TOTAL_DIRECT_GMV_14_DAYS,1,2026-09-24,2026-09-25,metric,revenue_direct,assumed
+instamart.brandportal,auto_granular,,TOTAL_DIRECT_ROI_14_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct,verified
+instamart.brandportal,auto_granular,,AD_RANK,1,2026-09-24,2026-09-25,reported,ad_rank,verified
+instamart.brandportal,auto_placement,,CAMPAIGN_ID,1,2026-09-24,2026-09-25,dimension,campaign_id,verified
+instamart.brandportal,auto_placement,,CAMPAIGN_NAME,1,2026-09-24,2026-09-25,dimension,campaign_name,verified
+instamart.brandportal,auto_placement,,CAMPAIGN_START_DATE,1,2026-09-24,2026-09-25,dimension,campaign_start_date,verified
+instamart.brandportal,auto_placement,,CAMPAIGN_END_DATE,1,2026-09-24,2026-09-25,dimension,campaign_end_date,verified
+instamart.brandportal,auto_placement,,CAMPAIGN_STATUS,1,2026-09-24,2026-09-25,dimension,campaign_status,verified
+instamart.brandportal,auto_placement,,BIDDING_TYPE,1,2026-09-24,2026-09-25,dimension,bidding_type,verified
+instamart.brandportal,auto_placement,,BUDGET_TYPE,1,2026-09-24,2026-09-25,dimension,budget_type,verified
+instamart.brandportal,auto_placement,,AD_PROPERTY,1,2026-09-24,2026-09-25,dimension,ad_property,verified
+instamart.brandportal,auto_placement,,CITY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_placement,,KEYWORD,1,2026-09-24,2026-09-25,dimension,keyword,verified
+instamart.brandportal,auto_placement,,MATCH_TYPE,1,2026-09-24,2026-09-25,dimension,match_type,verified
+instamart.brandportal,auto_placement,,L1_CATEGORY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_placement,,L2_CATEGORY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_placement,,PRODUCT_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_placement,,BRAND_NAME,1,2026-09-24,2026-09-25,brand,brand_name,verified
+instamart.brandportal,auto_placement,,eCPM,1,2026-09-24,2026-09-25,validator,ecpm,verified
+instamart.brandportal,auto_placement,,eCPC,1,2026-09-24,2026-09-25,validator,ecpc,verified
+instamart.brandportal,auto_placement,,TOTAL_IMPRESSIONS,1,2026-09-24,2026-09-25,metric,impressions,verified
+instamart.brandportal,auto_placement,,TOTAL_BUDGET,1,2026-09-24,2026-09-25,reported,budget_total,verified
+instamart.brandportal,auto_placement,,TOTAL_BUDGET_BURNT,1,2026-09-24,2026-09-25,metric,spend,verified
+instamart.brandportal,auto_placement,,TOTAL_CLICKS,1,2026-09-24,2026-09-25,metric,clicks,verified
+instamart.brandportal,auto_placement,,BRANDED_SEARCHES_CLICKS,1,2026-09-24,2026-09-25,ext,branded_clicks,unknown
+instamart.brandportal,auto_placement,,TOTAL_CTR,1,2026-09-24,2026-09-25,validator,ctr,verified
+instamart.brandportal,auto_placement,,TOTAL_A2C,1,2026-09-24,2026-09-25,metric,atc,verified
+instamart.brandportal,auto_placement,,A2C_RATE,1,2026-09-24,2026-09-25,validator,atc_rate,verified
+instamart.brandportal,auto_placement,,TOTAL_GMV,1,2026-09-24,2026-09-25,metric,revenue,verified
+instamart.brandportal,auto_placement,,TOTAL_CONVERSIONS,1,2026-09-24,2026-09-25,metric,orders,assumed
+instamart.brandportal,auto_placement,,TOTAL_ROI,1,2026-09-24,2026-09-25,validator,roas,verified
+instamart.brandportal,auto_placement,,TOTAL_DIRECT_GMV_7_DAYS,1,2026-09-24,2026-09-25,ext,revenue_direct_7d,verified
+instamart.brandportal,auto_placement,,TOTAL_DIRECT_ROI_7_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct_7d,verified
+instamart.brandportal,auto_placement,,TOTAL_DIRECT_GMV_14_DAYS,1,2026-09-24,2026-09-25,metric,revenue_direct,assumed
+instamart.brandportal,auto_placement,,TOTAL_DIRECT_ROI_14_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct,verified
+instamart.brandportal,auto_placement,,AD_RANK,1,2026-09-24,2026-09-25,reported,ad_rank,verified
+instamart.brandportal,auto_product,,CAMPAIGN_ID,1,2026-09-24,2026-09-25,dimension,campaign_id,verified
+instamart.brandportal,auto_product,,CAMPAIGN_NAME,1,2026-09-24,2026-09-25,dimension,campaign_name,verified
+instamart.brandportal,auto_product,,CAMPAIGN_START_DATE,1,2026-09-24,2026-09-25,dimension,campaign_start_date,verified
+instamart.brandportal,auto_product,,CAMPAIGN_END_DATE,1,2026-09-24,2026-09-25,dimension,campaign_end_date,verified
+instamart.brandportal,auto_product,,CAMPAIGN_STATUS,1,2026-09-24,2026-09-25,dimension,campaign_status,verified
+instamart.brandportal,auto_product,,BIDDING_TYPE,1,2026-09-24,2026-09-25,dimension,bidding_type,verified
+instamart.brandportal,auto_product,,BUDGET_TYPE,1,2026-09-24,2026-09-25,dimension,budget_type,verified
+instamart.brandportal,auto_product,,AD_PROPERTY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_product,,CITY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_product,,KEYWORD_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_product,,PRODUCT_ID,1,2026-09-24,2026-09-25,dimension,product_id,verified
+instamart.brandportal,auto_product,,PRODUCT_NAME,1,2026-09-24,2026-09-25,dimension,product_name,verified
+instamart.brandportal,auto_product,,BRAND_NAME,1,2026-09-24,2026-09-25,brand,brand_name,verified
+instamart.brandportal,auto_product,,eCPM,1,2026-09-24,2026-09-25,validator,ecpm,verified
+instamart.brandportal,auto_product,,eCPC,1,2026-09-24,2026-09-25,validator,ecpc,verified
+instamart.brandportal,auto_product,,TOTAL_IMPRESSIONS,1,2026-09-24,2026-09-25,metric,impressions,verified
+instamart.brandportal,auto_product,,TOTAL_BUDGET,1,2026-09-24,2026-09-25,reported,budget_total,verified
+instamart.brandportal,auto_product,,TOTAL_BUDGET_BURNT,1,2026-09-24,2026-09-25,metric,spend,verified
+instamart.brandportal,auto_product,,TOTAL_CLICKS,1,2026-09-24,2026-09-25,metric,clicks,verified
+instamart.brandportal,auto_product,,BRANDED_SEARCHES_CLICKS,1,2026-09-24,2026-09-25,ext,branded_clicks,unknown
+instamart.brandportal,auto_product,,TOTAL_CTR,1,2026-09-24,2026-09-25,validator,ctr,verified
+instamart.brandportal,auto_product,,TOTAL_A2C,1,2026-09-24,2026-09-25,metric,atc,verified
+instamart.brandportal,auto_product,,A2C_RATE,1,2026-09-24,2026-09-25,validator,atc_rate,verified
+instamart.brandportal,auto_product,,TOTAL_GMV,1,2026-09-24,2026-09-25,metric,revenue,verified
+instamart.brandportal,auto_product,,TOTAL_CONVERSIONS,1,2026-09-24,2026-09-25,metric,orders,assumed
+instamart.brandportal,auto_product,,TOTAL_ROI,1,2026-09-24,2026-09-25,validator,roas,verified
+instamart.brandportal,auto_product,,TOTAL_DIRECT_GMV_7_DAYS,1,2026-09-24,2026-09-25,ext,revenue_direct_7d,verified
+instamart.brandportal,auto_product,,TOTAL_DIRECT_ROI_7_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct_7d,verified
+instamart.brandportal,auto_product,,TOTAL_DIRECT_GMV_14_DAYS,1,2026-09-24,2026-09-25,metric,revenue_direct,assumed
+instamart.brandportal,auto_product,,TOTAL_DIRECT_ROI_14_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct,verified
+instamart.brandportal,auto_product,,AD_RANK,1,2026-09-24,2026-09-25,reported,ad_rank,verified
+instamart.brandportal,auto_search_query,,METRICS_DATE,1,2026-09-24,2026-09-25,date,date,verified
+instamart.brandportal,auto_search_query,,CAMPAIGN_ID,1,2026-09-24,2026-09-25,dimension,campaign_id,verified
+instamart.brandportal,auto_search_query,,CAMPAIGN_NAME,1,2026-09-24,2026-09-25,dimension,campaign_name,verified
+instamart.brandportal,auto_search_query,,CAMPAIGN_START_DATE,1,2026-09-24,2026-09-25,dimension,campaign_start_date,verified
+instamart.brandportal,auto_search_query,,CAMPAIGN_END_DATE,1,2026-09-24,2026-09-25,dimension,campaign_end_date,verified
+instamart.brandportal,auto_search_query,,CAMPAIGN_STATUS,1,2026-09-24,2026-09-25,dimension,campaign_status,verified
+instamart.brandportal,auto_search_query,,BIDDING_TYPE,1,2026-09-24,2026-09-25,dimension,bidding_type,verified
+instamart.brandportal,auto_search_query,,BUDGET_TYPE,1,2026-09-24,2026-09-25,dimension,budget_type,verified
+instamart.brandportal,auto_search_query,,AD_PROPERTY,1,2026-09-24,2026-09-25,dimension,ad_property,verified
+instamart.brandportal,auto_search_query,,KEYWORD,1,2026-09-24,2026-09-25,dimension,keyword,verified
+instamart.brandportal,auto_search_query,,MATCH_TYPE,1,2026-09-24,2026-09-25,dimension,match_type,verified
+instamart.brandportal,auto_search_query,,SEARCH_QUERY,1,2026-09-24,2026-09-25,dimension,search_query,verified
+instamart.brandportal,auto_search_query,,L1_CATEGORY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_search_query,,L2_CATEGORY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_search_query,,PRODUCT_NAME,1,2026-09-24,2026-09-25,dimension,product_name,verified
+instamart.brandportal,auto_search_query,,BRAND_NAME,1,2026-09-24,2026-09-25,brand,brand_name,verified
+instamart.brandportal,auto_search_query,,CITY_COUNT,1,2026-09-24,2026-09-25,ignore,,verified
+instamart.brandportal,auto_search_query,,eCPM,1,2026-09-24,2026-09-25,validator,ecpm,verified
+instamart.brandportal,auto_search_query,,eCPC,1,2026-09-24,2026-09-25,validator,ecpc,verified
+instamart.brandportal,auto_search_query,,TOTAL_IMPRESSIONS,1,2026-09-24,2026-09-25,metric,impressions,verified
+instamart.brandportal,auto_search_query,,TOTAL_BUDGET,1,2026-09-24,2026-09-25,reported,budget_total,verified
+instamart.brandportal,auto_search_query,,TOTAL_BUDGET_BURNT,1,2026-09-24,2026-09-25,metric,spend,verified
+instamart.brandportal,auto_search_query,,TOTAL_CLICKS,1,2026-09-24,2026-09-25,metric,clicks,verified
+instamart.brandportal,auto_search_query,,TOTAL_CTR,1,2026-09-24,2026-09-25,validator,ctr,verified
+instamart.brandportal,auto_search_query,,TOTAL_A2C,1,2026-09-24,2026-09-25,metric,atc,verified
+instamart.brandportal,auto_search_query,,A2C_RATE,1,2026-09-24,2026-09-25,validator,atc_rate,verified
+instamart.brandportal,auto_search_query,,TOTAL_GMV,1,2026-09-24,2026-09-25,metric,revenue,verified
+instamart.brandportal,auto_search_query,,TOTAL_CONVERSIONS,1,2026-09-24,2026-09-25,metric,orders,assumed
+instamart.brandportal,auto_search_query,,TOTAL_ROI,1,2026-09-24,2026-09-25,validator,roas,verified
+instamart.brandportal,auto_search_query,,TOTAL_DIRECT_GMV_7_DAYS,1,2026-09-24,2026-09-25,ext,revenue_direct_7d,verified
+instamart.brandportal,auto_search_query,,TOTAL_DIRECT_ROI_7_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct_7d,verified
+instamart.brandportal,auto_search_query,,TOTAL_DIRECT_GMV_14_DAYS,1,2026-09-24,2026-09-25,metric,revenue_direct,assumed
+instamart.brandportal,auto_search_query,,TOTAL_DIRECT_ROI_14_DAYS,1,2026-09-24,2026-09-25,validator,roas_direct,verified
+instamart.brandportal,auto_search_query,,AD_RANK,1,2026-09-24,2026-09-25,reported,ad_rank,verified
+instamart.brandportal,auto_summary,,CAMPAIGN_ID,1,2026-09-15,2026-09-21,dimension,campaign_id,verified
+instamart.brandportal,auto_summary,,CAMPAIGN_NAME,1,2026-09-15,2026-09-21,dimension,campaign_name,verified
+instamart.brandportal,auto_summary,,CAMPAIGN_START_DATE,1,2026-09-15,2026-09-21,dimension,campaign_start_date,verified
+instamart.brandportal,auto_summary,,CAMPAIGN_END_DATE,1,2026-09-15,2026-09-21,dimension,campaign_end_date,verified
+instamart.brandportal,auto_summary,,CAMPAIGN_STATUS,1,2026-09-15,2026-09-21,dimension,campaign_status,verified
+instamart.brandportal,auto_summary,,BIDDING_TYPE,1,2026-09-15,2026-09-21,dimension,bidding_type,verified
+instamart.brandportal,auto_summary,,BUDGET_TYPE,1,2026-09-15,2026-09-21,dimension,budget_type,verified
+instamart.brandportal,auto_summary,,AD_PROPERTY_COUNT,1,2026-09-15,2026-09-21,ignore,,verified
+instamart.brandportal,auto_summary,,CITY_COUNT,1,2026-09-15,2026-09-21,ignore,,verified
+instamart.brandportal,auto_summary,,KEYWORD_COUNT,1,2026-09-15,2026-09-21,ignore,,verified
+instamart.brandportal,auto_summary,,PRODUCT_COUNT,1,2026-09-15,2026-09-21,ignore,,verified
+instamart.brandportal,auto_summary,,BRAND_NAME,1,2026-09-15,2026-09-21,brand,brand_name,verified
+instamart.brandportal,auto_summary,,eCPM,1,2026-09-15,2026-09-21,validator,ecpm,verified
+instamart.brandportal,auto_summary,,eCPC,1,2026-09-15,2026-09-21,validator,ecpc,verified
+instamart.brandportal,auto_summary,,TOTAL_IMPRESSIONS,1,2026-09-15,2026-09-21,metric,impressions,verified
+instamart.brandportal,auto_summary,,TOTAL_BUDGET,1,2026-09-15,2026-09-21,reported,budget_total,verified
+instamart.brandportal,auto_summary,,TOTAL_BUDGET_BURNT,1,2026-09-15,2026-09-21,metric,spend,verified
+instamart.brandportal,auto_summary,,TOTAL_CLICKS,1,2026-09-15,2026-09-21,metric,clicks,verified
+instamart.brandportal,auto_summary,,TOTAL_CTR,1,2026-09-15,2026-09-21,validator,ctr,verified
+instamart.brandportal,auto_summary,,TOTAL_A2C,1,2026-09-15,2026-09-21,metric,atc,verified
+instamart.brandportal,auto_summary,,A2C_RATE,1,2026-09-15,2026-09-21,validator,atc_rate,verified
+instamart.brandportal,auto_summary,,TOTAL_GMV,1,2026-09-15,2026-09-21,metric,revenue,verified
+instamart.brandportal,auto_summary,,TOTAL_CONVERSIONS,1,2026-09-15,2026-09-21,metric,orders,assumed
+instamart.brandportal,auto_summary,,TOTAL_ROI,1,2026-09-15,2026-09-21,validator,roas,verified
+instamart.brandportal,auto_summary,,TOTAL_DIRECT_GMV_7_DAYS,1,2026-09-15,2026-09-21,ext,revenue_direct_7d,verified
+instamart.brandportal,auto_summary,,TOTAL_DIRECT_ROI_7_DAYS,1,2026-09-15,2026-09-21,validator,roas_direct_7d,verified
+instamart.brandportal,auto_summary,,TOTAL_DIRECT_GMV_14_DAYS,1,2026-09-15,2026-09-21,metric,revenue_direct,assumed
+instamart.brandportal,auto_summary,,TOTAL_DIRECT_ROI_14_DAYS,1,2026-09-15,2026-09-21,validator,roas_direct,verified
+zepto.ads,sb.campaign_performance,,CampaignName,0,,,dimension,campaign_name,verified
+zepto.ads,sb.campaign_performance,,BrandID,0,,,brand,brand_id,verified
+zepto.ads,sb.campaign_performance,,BrandName,0,,,brand,brand_name,verified
+zepto.ads,sb.campaign_performance,,CampaignType,0,,,dimension,campaign_type,verified
+zepto.ads,sb.campaign_performance,,Atc,0,,,metric,atc,assumed
+zepto.ads,sb.campaign_performance,,Clicks,0,,,metric,clicks,verified
+zepto.ads,sb.campaign_performance,,Cpm,0,,,validator,cpm,verified
+zepto.ads,sb.campaign_performance,,Daily_budget,0,,,reported,daily_budget_setting,verified
+zepto.ads,sb.campaign_performance,,Impressions,0,,,metric,impressions,verified
+zepto.ads,sb.campaign_performance,,New_to_brand_user_percentage,0,,,reported,ntb_pct,unknown
+zepto.ads,sb.campaign_performance,,Orders,0,,,metric,orders,assumed
+zepto.ads,sb.campaign_performance,,Other_skus,0,,,validator,orders_indirect,verified
+zepto.ads,sb.campaign_performance,,Revenue,0,,,metric,revenue,verified
+zepto.ads,sb.campaign_performance,,Roas,0,,,validator,roas,verified
+zepto.ads,sb.campaign_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sb.campaign_performance,,Same_skus,0,,,metric,orders_direct,verified
+zepto.ads,sb.campaign_performance,,Spend,0,,,metric,spend,verified
+zepto.ads,sb.campaign_performance,,Status,0,,,dimension,campaign_status,verified
+zepto.ads,sb.campaign_performance,,Unique_considerations,0,,,reported,unique_considerations,unknown
+zepto.ads,sb.campaign_performance,,Unique_reach,0,,,reported,unique_reach,unknown
+zepto.ads,sb.category_performance,,BrandID,0,,,brand,brand_id,verified
+zepto.ads,sb.category_performance,,BrandName,0,,,brand,brand_name,verified
+zepto.ads,sb.category_performance,,Atc,0,,,metric,atc,assumed
+zepto.ads,sb.category_performance,,Campaign_id,0,,,dimension,campaign_id,verified
+zepto.ads,sb.category_performance,,Campaign_name,0,,,dimension,campaign_name,verified
+zepto.ads,sb.category_performance,,Category,0,,,dimension,category,verified
+zepto.ads,sb.category_performance,,Clicks,0,,,metric,clicks,verified
+zepto.ads,sb.category_performance,,Cpm,0,,,validator,cpm,verified
+zepto.ads,sb.category_performance,,Impressions,0,,,metric,impressions,verified
+zepto.ads,sb.category_performance,,Orders,0,,,metric,orders,assumed
+zepto.ads,sb.category_performance,,Other_skus,0,,,validator,orders_indirect,verified
+zepto.ads,sb.category_performance,,Revenue,0,,,metric,revenue,verified
+zepto.ads,sb.category_performance,,Roas,0,,,validator,roas,verified
+zepto.ads,sb.category_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sb.category_performance,,Same_skus,0,,,metric,orders_direct,verified
+zepto.ads,sb.category_performance,,Spend,0,,,metric,spend,verified
+zepto.ads,sb.city_performance,,CityName,0,,,dimension,city,verified
+zepto.ads,sb.city_performance,,BrandID,0,,,brand,brand_id,verified
+zepto.ads,sb.city_performance,,BrandName,0,,,brand,brand_name,verified
+zepto.ads,sb.city_performance,,Atc,0,,,metric,atc,assumed
+zepto.ads,sb.city_performance,,Clicks,0,,,metric,clicks,verified
+zepto.ads,sb.city_performance,,Cpm,0,,,validator,cpm,verified
+zepto.ads,sb.city_performance,,Impressions,0,,,metric,impressions,verified
+zepto.ads,sb.city_performance,,Orders,0,,,metric,orders,assumed
+zepto.ads,sb.city_performance,,Other_skus,0,,,validator,orders_indirect,verified
+zepto.ads,sb.city_performance,,Revenue,0,,,metric,revenue,verified
+zepto.ads,sb.city_performance,,Roas,0,,,validator,roas,verified
+zepto.ads,sb.city_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sb.city_performance,,Same_skus,0,,,metric,orders_direct,verified
+zepto.ads,sb.city_performance,,Spend,0,,,metric,spend,verified
+zepto.ads,sb.keyword_performance,,KeywordName,0,,,dimension,keyword,verified
+zepto.ads,sb.keyword_performance,,KeywordMatchType,0,,,dimension,match_type,verified
+zepto.ads,sb.keyword_performance,,BrandID,0,,,brand,brand_id,verified
+zepto.ads,sb.keyword_performance,,BrandName,0,,,brand,brand_name,verified
+zepto.ads,sb.keyword_performance,,Atc,0,,,metric,atc,assumed
+zepto.ads,sb.keyword_performance,,Campaign_id,0,,,dimension,campaign_id,verified
+zepto.ads,sb.keyword_performance,,Campaign_name,0,,,dimension,campaign_name,verified
+zepto.ads,sb.keyword_performance,,Clicks,0,,,metric,clicks,verified
+zepto.ads,sb.keyword_performance,,Cpm,0,,,validator,cpm,verified
+zepto.ads,sb.keyword_performance,,Ctr,0,,,validator,ctr,verified
+zepto.ads,sb.keyword_performance,,Impressions,0,,,metric,impressions,verified
+zepto.ads,sb.keyword_performance,,Orders,0,,,metric,orders,assumed
+zepto.ads,sb.keyword_performance,,Other_skus,0,,,validator,orders_indirect,verified
+zepto.ads,sb.keyword_performance,,Revenue,0,,,metric,revenue,verified
+zepto.ads,sb.keyword_performance,,Roas,0,,,validator,roas,verified
+zepto.ads,sb.keyword_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sb.keyword_performance,,Same_skus,0,,,metric,orders_direct,verified
+zepto.ads,sb.keyword_performance,,Spend,0,,,metric,spend,verified
+zepto.ads,sb.page_performance,,PageName,0,,,dimension,placement,verified
+zepto.ads,sb.page_performance,,BrandID,0,,,brand,brand_id,verified
+zepto.ads,sb.page_performance,,BrandName,0,,,brand,brand_name,verified
+zepto.ads,sb.page_performance,,Atc,0,,,metric,atc,assumed
+zepto.ads,sb.page_performance,,Clicks,0,,,metric,clicks,verified
+zepto.ads,sb.page_performance,,Cpm,0,,,validator,cpm,verified
+zepto.ads,sb.page_performance,,Impressions,0,,,metric,impressions,verified
+zepto.ads,sb.page_performance,,Orders,0,,,metric,orders,assumed
+zepto.ads,sb.page_performance,,Other_skus,0,,,validator,orders_indirect,verified
+zepto.ads,sb.page_performance,,Revenue,0,,,metric,revenue,verified
+zepto.ads,sb.page_performance,,Roas,0,,,validator,roas,verified
+zepto.ads,sb.page_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sb.page_performance,,Same_skus,0,,,metric,orders_direct,verified
+zepto.ads,sb.page_performance,,Spend,0,,,metric,spend,verified
+zepto.ads,sb.product_performance,,ProductID,0,,,dimension,product_id,verified
+zepto.ads,sb.product_performance,,ProductName,0,,,dimension,product_name,verified
+zepto.ads,sb.product_performance,,BrandID,0,,,brand,brand_id,verified
+zepto.ads,sb.product_performance,,BrandName,0,,,brand,brand_name,verified
+zepto.ads,sb.product_performance,,Atc,0,,,metric,atc,assumed
+zepto.ads,sb.product_performance,,Campaign_id,0,,,dimension,campaign_id,verified
+zepto.ads,sb.product_performance,,Campaign_name,0,,,dimension,campaign_name,verified
+zepto.ads,sb.product_performance,,Category,0,,,dimension,product_category,verified
+zepto.ads,sb.product_performance,,Clicks,0,,,metric,clicks,verified
+zepto.ads,sb.product_performance,,Cpm,0,,,validator,cpm,verified
+zepto.ads,sb.product_performance,,Ctr,0,,,validator,ctr,verified
+zepto.ads,sb.product_performance,,Impressions,0,,,metric,impressions,verified
+zepto.ads,sb.product_performance,,Orders,0,,,metric,orders,assumed
+zepto.ads,sb.product_performance,,Other_skus,0,,,validator,orders_indirect,verified
+zepto.ads,sb.product_performance,,Revenue,0,,,metric,revenue,verified
+zepto.ads,sb.product_performance,,Roas,0,,,validator,roas,verified
+zepto.ads,sb.product_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sb.product_performance,,Same_skus,0,,,metric,orders_direct,verified
+zepto.ads,sb.product_performance,,Spend,0,,,metric,spend,verified
+zepto.ads,sd.campaign_performance,,CampaignName,0,,,dimension,campaign_name,unknown
+zepto.ads,sd.campaign_performance,,BrandID,0,,,brand,brand_id,unknown
+zepto.ads,sd.campaign_performance,,BrandName,0,,,brand,brand_name,unknown
+zepto.ads,sd.campaign_performance,,CampaignType,0,,,dimension,campaign_type,unknown
+zepto.ads,sd.campaign_performance,,Atc,0,,,metric,atc,unknown
+zepto.ads,sd.campaign_performance,,Clicks,0,,,metric,clicks,unknown
+zepto.ads,sd.campaign_performance,,Cpc,0,,,validator,cpc,unknown
+zepto.ads,sd.campaign_performance,,Cpm,0,,,validator,cpm,unknown
+zepto.ads,sd.campaign_performance,,Daily_budget,0,,,reported,daily_budget_avg,unknown
+zepto.ads,sd.campaign_performance,,Impressions,0,,,metric,impressions,unknown
+zepto.ads,sd.campaign_performance,,New_to_brand_user_percentage,0,,,reported,ntb_pct,unknown
+zepto.ads,sd.campaign_performance,,Orders,0,,,metric,orders,unknown
+zepto.ads,sd.campaign_performance,,Other_skus,0,,,validator,orders_indirect,unknown
+zepto.ads,sd.campaign_performance,,Revenue,0,,,metric,revenue,unknown
+zepto.ads,sd.campaign_performance,,Roas,0,,,validator,roas,unknown
+zepto.ads,sd.campaign_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sd.campaign_performance,,Same_skus,0,,,metric,orders_direct,unknown
+zepto.ads,sd.campaign_performance,,Spend,0,,,metric,spend,unknown
+zepto.ads,sd.campaign_performance,,Status,0,,,dimension,campaign_status,unknown
+zepto.ads,sd.campaign_performance,,Unique_considerations,0,,,reported,unique_considerations,unknown
+zepto.ads,sd.campaign_performance,,Unique_reach,0,,,reported,unique_reach,unknown
+zepto.ads,sd.category_performance,,BrandID,0,,,brand,brand_id,unknown
+zepto.ads,sd.category_performance,,BrandName,0,,,brand,brand_name,unknown
+zepto.ads,sd.category_performance,,Atc,0,,,metric,atc,unknown
+zepto.ads,sd.category_performance,,Campaign_id,0,,,dimension,campaign_id,unknown
+zepto.ads,sd.category_performance,,Campaign_name,0,,,dimension,campaign_name,unknown
+zepto.ads,sd.category_performance,,Category,0,,,dimension,category,unknown
+zepto.ads,sd.category_performance,,Clicks,0,,,metric,clicks,unknown
+zepto.ads,sd.category_performance,,Cpc,0,,,validator,cpc,unknown
+zepto.ads,sd.category_performance,,Cpm,0,,,validator,cpm,unknown
+zepto.ads,sd.category_performance,,Impressions,0,,,metric,impressions,unknown
+zepto.ads,sd.category_performance,,Orders,0,,,metric,orders,unknown
+zepto.ads,sd.category_performance,,Other_skus,0,,,validator,orders_indirect,unknown
+zepto.ads,sd.category_performance,,Revenue,0,,,metric,revenue,unknown
+zepto.ads,sd.category_performance,,Roas,0,,,validator,roas,unknown
+zepto.ads,sd.category_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sd.category_performance,,Same_skus,0,,,metric,orders_direct,unknown
+zepto.ads,sd.category_performance,,Spend,0,,,metric,spend,unknown
+zepto.ads,sd.city_performance,,CityName,0,,,dimension,city,unknown
+zepto.ads,sd.city_performance,,BrandID,0,,,brand,brand_id,unknown
+zepto.ads,sd.city_performance,,BrandName,0,,,brand,brand_name,unknown
+zepto.ads,sd.city_performance,,Atc,0,,,metric,atc,unknown
+zepto.ads,sd.city_performance,,Clicks,0,,,metric,clicks,unknown
+zepto.ads,sd.city_performance,,Cpc,0,,,validator,cpc,unknown
+zepto.ads,sd.city_performance,,Cpm,0,,,validator,cpm,unknown
+zepto.ads,sd.city_performance,,Impressions,0,,,metric,impressions,unknown
+zepto.ads,sd.city_performance,,Orders,0,,,metric,orders,unknown
+zepto.ads,sd.city_performance,,Other_skus,0,,,validator,orders_indirect,unknown
+zepto.ads,sd.city_performance,,Revenue,0,,,metric,revenue,unknown
+zepto.ads,sd.city_performance,,Roas,0,,,validator,roas,unknown
+zepto.ads,sd.city_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sd.city_performance,,Same_skus,0,,,metric,orders_direct,unknown
+zepto.ads,sd.city_performance,,Spend,0,,,metric,spend,unknown
+zepto.ads,sd.keyword_performance,,KeywordName,0,,,dimension,keyword,unknown
+zepto.ads,sd.keyword_performance,,KeywordMatchType,0,,,dimension,match_type,unknown
+zepto.ads,sd.keyword_performance,,BrandID,0,,,brand,brand_id,unknown
+zepto.ads,sd.keyword_performance,,BrandName,0,,,brand,brand_name,unknown
+zepto.ads,sd.keyword_performance,,Atc,0,,,metric,atc,unknown
+zepto.ads,sd.keyword_performance,,Campaign_id,0,,,dimension,campaign_id,unknown
+zepto.ads,sd.keyword_performance,,Campaign_name,0,,,dimension,campaign_name,unknown
+zepto.ads,sd.keyword_performance,,Clicks,0,,,metric,clicks,unknown
+zepto.ads,sd.keyword_performance,,Cpc,0,,,validator,cpc,unknown
+zepto.ads,sd.keyword_performance,,Cpm,0,,,validator,cpm,unknown
+zepto.ads,sd.keyword_performance,,Ctr,0,,,validator,ctr,unknown
+zepto.ads,sd.keyword_performance,,Impressions,0,,,metric,impressions,unknown
+zepto.ads,sd.keyword_performance,,Orders,0,,,metric,orders,unknown
+zepto.ads,sd.keyword_performance,,Other_skus,0,,,validator,orders_indirect,unknown
+zepto.ads,sd.keyword_performance,,Revenue,0,,,metric,revenue,unknown
+zepto.ads,sd.keyword_performance,,Roas,0,,,validator,roas,unknown
+zepto.ads,sd.keyword_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sd.keyword_performance,,Same_skus,0,,,metric,orders_direct,unknown
+zepto.ads,sd.keyword_performance,,Spend,0,,,metric,spend,unknown
+zepto.ads,sd.page_performance,,PageName,0,,,dimension,placement,unknown
+zepto.ads,sd.page_performance,,BrandID,0,,,brand,brand_id,unknown
+zepto.ads,sd.page_performance,,BrandName,0,,,brand,brand_name,unknown
+zepto.ads,sd.page_performance,,Atc,0,,,metric,atc,unknown
+zepto.ads,sd.page_performance,,Clicks,0,,,metric,clicks,unknown
+zepto.ads,sd.page_performance,,Cpc,0,,,validator,cpc,unknown
+zepto.ads,sd.page_performance,,Cpm,0,,,validator,cpm,unknown
+zepto.ads,sd.page_performance,,Impressions,0,,,metric,impressions,unknown
+zepto.ads,sd.page_performance,,Orders,0,,,metric,orders,unknown
+zepto.ads,sd.page_performance,,Other_skus,0,,,validator,orders_indirect,unknown
+zepto.ads,sd.page_performance,,Revenue,0,,,metric,revenue,unknown
+zepto.ads,sd.page_performance,,Roas,0,,,validator,roas,unknown
+zepto.ads,sd.page_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sd.page_performance,,Same_skus,0,,,metric,orders_direct,unknown
+zepto.ads,sd.page_performance,,Spend,0,,,metric,spend,unknown
+zepto.ads,sd.product_performance,,ProductID,0,,,dimension,product_id,unknown
+zepto.ads,sd.product_performance,,ProductName,0,,,dimension,product_name,unknown
+zepto.ads,sd.product_performance,,BrandID,0,,,brand,brand_id,unknown
+zepto.ads,sd.product_performance,,BrandName,0,,,brand,brand_name,unknown
+zepto.ads,sd.product_performance,,Atc,0,,,metric,atc,unknown
+zepto.ads,sd.product_performance,,Campaign_id,0,,,dimension,campaign_id,unknown
+zepto.ads,sd.product_performance,,Campaign_name,0,,,dimension,campaign_name,unknown
+zepto.ads,sd.product_performance,,Category,0,,,dimension,product_category,unknown
+zepto.ads,sd.product_performance,,Clicks,0,,,metric,clicks,unknown
+zepto.ads,sd.product_performance,,Cpc,0,,,validator,cpc,unknown
+zepto.ads,sd.product_performance,,Cpm,0,,,validator,cpm,unknown
+zepto.ads,sd.product_performance,,Ctr,0,,,validator,ctr,unknown
+zepto.ads,sd.product_performance,,Impressions,0,,,metric,impressions,unknown
+zepto.ads,sd.product_performance,,Orders,0,,,metric,orders,unknown
+zepto.ads,sd.product_performance,,Other_skus,0,,,validator,orders_indirect,unknown
+zepto.ads,sd.product_performance,,Revenue,0,,,metric,revenue,unknown
+zepto.ads,sd.product_performance,,Roas,0,,,validator,roas,unknown
+zepto.ads,sd.product_performance,,Robas,0,,,reported,robas,unknown
+zepto.ads,sd.product_performance,,Same_skus,0,,,metric,orders_direct,unknown
+zepto.ads,sd.product_performance,,Spend,0,,,metric,spend,unknown
+zepto.ads,sp.campaign_performance,,CampaignName,18,2026-08-30,2026-09-29,dimension,campaign_name,verified
+zepto.ads,sp.campaign_performance,,BrandID,18,2026-08-30,2026-09-29,brand,brand_id,verified
+zepto.ads,sp.campaign_performance,,BrandName,18,2026-08-30,2026-09-29,brand,brand_name,verified
+zepto.ads,sp.campaign_performance,,CampaignType,18,2026-08-30,2026-09-29,dimension,campaign_type,verified
+zepto.ads,sp.campaign_performance,,Atc,18,2026-08-30,2026-09-29,metric,atc,assumed
+zepto.ads,sp.campaign_performance,,Clicks,18,2026-08-30,2026-09-29,metric,clicks,verified
+zepto.ads,sp.campaign_performance,,Cpc,18,2026-08-30,2026-09-29,validator,cpc,verified
+zepto.ads,sp.campaign_performance,,Cpm,18,2026-08-30,2026-09-29,validator,cpm,verified
+zepto.ads,sp.campaign_performance,,Daily_budget,18,2026-08-30,2026-09-29,reported,daily_budget_avg,verified
+zepto.ads,sp.campaign_performance,,Impressions,18,2026-08-30,2026-09-29,metric,impressions,verified
+zepto.ads,sp.campaign_performance,,New_to_brand_user_percentage,18,2026-08-30,2026-09-29,reported,ntb_pct,unknown
+zepto.ads,sp.campaign_performance,,Orders,18,2026-08-30,2026-09-29,metric,orders,assumed
+zepto.ads,sp.campaign_performance,,Other_skus,18,2026-08-30,2026-09-29,validator,orders_indirect,verified
+zepto.ads,sp.campaign_performance,,Revenue,18,2026-08-30,2026-09-29,metric,revenue,verified
+zepto.ads,sp.campaign_performance,,Roas,18,2026-08-30,2026-09-29,validator,roas,verified
+zepto.ads,sp.campaign_performance,,Robas,18,2026-08-30,2026-09-29,reported,robas,unknown
+zepto.ads,sp.campaign_performance,,Same_skus,18,2026-08-30,2026-09-29,metric,orders_direct,verified
+zepto.ads,sp.campaign_performance,,Spend,18,2026-08-30,2026-09-29,metric,spend,verified
+zepto.ads,sp.campaign_performance,,Status,18,2026-08-30,2026-09-29,dimension,campaign_status,verified
+zepto.ads,sp.campaign_performance,,Unique_considerations,18,2026-08-30,2026-09-29,reported,unique_considerations,unknown
+zepto.ads,sp.campaign_performance,,Unique_reach,18,2026-08-30,2026-09-29,reported,unique_reach,unknown
+zepto.ads,sp.category_performance,,BrandID,17,2026-08-30,2026-09-29,brand,brand_id,verified
+zepto.ads,sp.category_performance,,BrandName,17,2026-08-30,2026-09-29,brand,brand_name,verified
+zepto.ads,sp.category_performance,,Atc,17,2026-08-30,2026-09-29,metric,atc,assumed
+zepto.ads,sp.category_performance,,Campaign_id,17,2026-08-30,2026-09-29,dimension,campaign_id,verified
+zepto.ads,sp.category_performance,,Campaign_name,17,2026-08-30,2026-09-29,dimension,campaign_name,verified
+zepto.ads,sp.category_performance,,Category,17,2026-08-30,2026-09-29,dimension,category,verified
+zepto.ads,sp.category_performance,,Clicks,17,2026-08-30,2026-09-29,metric,clicks,verified
+zepto.ads,sp.category_performance,,Cpc,17,2026-08-30,2026-09-29,validator,cpc,verified
+zepto.ads,sp.category_performance,,Cpm,17,2026-08-30,2026-09-29,validator,cpm,verified
+zepto.ads,sp.category_performance,,Impressions,17,2026-08-30,2026-09-29,metric,impressions,verified
+zepto.ads,sp.category_performance,,Orders,17,2026-08-30,2026-09-29,metric,orders,assumed
+zepto.ads,sp.category_performance,,Other_skus,17,2026-08-30,2026-09-29,validator,orders_indirect,verified
+zepto.ads,sp.category_performance,,Revenue,17,2026-08-30,2026-09-29,metric,revenue,verified
+zepto.ads,sp.category_performance,,Roas,17,2026-08-30,2026-09-29,validator,roas,verified
+zepto.ads,sp.category_performance,,Robas,17,2026-08-30,2026-09-29,reported,robas,unknown
+zepto.ads,sp.category_performance,,Same_skus,17,2026-08-30,2026-09-29,metric,orders_direct,verified
+zepto.ads,sp.category_performance,,Spend,17,2026-08-30,2026-09-29,metric,spend,verified
+zepto.ads,sp.city_performance,,CityName,18,2026-08-30,2026-10-01,dimension,city,verified
+zepto.ads,sp.city_performance,,BrandID,18,2026-08-30,2026-10-01,brand,brand_id,verified
+zepto.ads,sp.city_performance,,BrandName,18,2026-08-30,2026-10-01,brand,brand_name,verified
+zepto.ads,sp.city_performance,,Atc,18,2026-08-30,2026-10-01,metric,atc,assumed
+zepto.ads,sp.city_performance,,Clicks,18,2026-08-30,2026-10-01,metric,clicks,verified
+zepto.ads,sp.city_performance,,Cpc,18,2026-08-30,2026-10-01,validator,cpc,verified
+zepto.ads,sp.city_performance,,Cpm,18,2026-08-30,2026-10-01,validator,cpm,verified
+zepto.ads,sp.city_performance,,Impressions,18,2026-08-30,2026-10-01,metric,impressions,verified
+zepto.ads,sp.city_performance,,Orders,18,2026-08-30,2026-10-01,metric,orders,assumed
+zepto.ads,sp.city_performance,,Other_skus,18,2026-08-30,2026-10-01,validator,orders_indirect,verified
+zepto.ads,sp.city_performance,,Revenue,18,2026-08-30,2026-10-01,metric,revenue,verified
+zepto.ads,sp.city_performance,,Roas,18,2026-08-30,2026-10-01,validator,roas,verified
+zepto.ads,sp.city_performance,,Robas,18,2026-08-30,2026-10-01,reported,robas,unknown
+zepto.ads,sp.city_performance,,Same_skus,18,2026-08-30,2026-10-01,metric,orders_direct,verified
+zepto.ads,sp.city_performance,,Spend,18,2026-08-30,2026-10-01,metric,spend,verified
+zepto.ads,sp.keyword_performance,,KeywordName,16,2026-08-30,2026-09-29,dimension,keyword,verified
+zepto.ads,sp.keyword_performance,,KeywordMatchType,16,2026-08-30,2026-09-29,dimension,match_type,verified
+zepto.ads,sp.keyword_performance,,BrandID,16,2026-08-30,2026-09-29,brand,brand_id,verified
+zepto.ads,sp.keyword_performance,,BrandName,16,2026-08-30,2026-09-29,brand,brand_name,verified
+zepto.ads,sp.keyword_performance,,Atc,16,2026-08-30,2026-09-29,metric,atc,assumed
+zepto.ads,sp.keyword_performance,,Campaign_id,16,2026-08-30,2026-09-29,dimension,campaign_id,verified
+zepto.ads,sp.keyword_performance,,Campaign_name,16,2026-08-30,2026-09-29,dimension,campaign_name,verified
+zepto.ads,sp.keyword_performance,,Clicks,16,2026-08-30,2026-09-29,metric,clicks,verified
+zepto.ads,sp.keyword_performance,,Cpc,16,2026-08-30,2026-09-29,validator,cpc,verified
+zepto.ads,sp.keyword_performance,,Cpm,16,2026-08-30,2026-09-29,validator,cpm,verified
+zepto.ads,sp.keyword_performance,,Ctr,16,2026-08-30,2026-09-29,validator,ctr,verified
+zepto.ads,sp.keyword_performance,,Impressions,16,2026-08-30,2026-09-29,metric,impressions,verified
+zepto.ads,sp.keyword_performance,,Orders,16,2026-08-30,2026-09-29,metric,orders,assumed
+zepto.ads,sp.keyword_performance,,Other_skus,16,2026-08-30,2026-09-29,validator,orders_indirect,verified
+zepto.ads,sp.keyword_performance,,Revenue,16,2026-08-30,2026-09-29,metric,revenue,verified
+zepto.ads,sp.keyword_performance,,Roas,16,2026-08-30,2026-09-29,validator,roas,verified
+zepto.ads,sp.keyword_performance,,Robas,16,2026-08-30,2026-09-29,reported,robas,unknown
+zepto.ads,sp.keyword_performance,,Same_skus,16,2026-08-30,2026-09-29,metric,orders_direct,verified
+zepto.ads,sp.keyword_performance,,Spend,16,2026-08-30,2026-09-29,metric,spend,verified
+zepto.ads,sp.page_performance,,PageName,16,2026-08-30,2026-09-29,dimension,placement,verified
+zepto.ads,sp.page_performance,,BrandID,16,2026-08-30,2026-09-29,brand,brand_id,verified
+zepto.ads,sp.page_performance,,BrandName,16,2026-08-30,2026-09-29,brand,brand_name,verified
+zepto.ads,sp.page_performance,,Atc,16,2026-08-30,2026-09-29,metric,atc,assumed
+zepto.ads,sp.page_performance,,Clicks,16,2026-08-30,2026-09-29,metric,clicks,verified
+zepto.ads,sp.page_performance,,Cpc,16,2026-08-30,2026-09-29,validator,cpc,verified
+zepto.ads,sp.page_performance,,Cpm,16,2026-08-30,2026-09-29,validator,cpm,verified
+zepto.ads,sp.page_performance,,Impressions,16,2026-08-30,2026-09-29,metric,impressions,verified
+zepto.ads,sp.page_performance,,Orders,16,2026-08-30,2026-09-29,metric,orders,assumed
+zepto.ads,sp.page_performance,,Other_skus,16,2026-08-30,2026-09-29,validator,orders_indirect,verified
+zepto.ads,sp.page_performance,,Revenue,16,2026-08-30,2026-09-29,metric,revenue,verified
+zepto.ads,sp.page_performance,,Roas,16,2026-08-30,2026-09-29,validator,roas,verified
+zepto.ads,sp.page_performance,,Robas,16,2026-08-30,2026-09-29,reported,robas,unknown
+zepto.ads,sp.page_performance,,Same_skus,16,2026-08-30,2026-09-29,metric,orders_direct,verified
+zepto.ads,sp.page_performance,,Spend,16,2026-08-30,2026-09-29,metric,spend,verified
+zepto.ads,sp.product_performance,,ProductID,15,2026-08-30,2026-09-29,dimension,product_id,verified
+zepto.ads,sp.product_performance,,ProductName,15,2026-08-30,2026-09-29,dimension,product_name,verified
+zepto.ads,sp.product_performance,,BrandID,15,2026-08-30,2026-09-29,brand,brand_id,verified
+zepto.ads,sp.product_performance,,BrandName,15,2026-08-30,2026-09-29,brand,brand_name,verified
+zepto.ads,sp.product_performance,,Atc,15,2026-08-30,2026-09-29,metric,atc,assumed
+zepto.ads,sp.product_performance,,Campaign_id,15,2026-08-30,2026-09-29,dimension,campaign_id,verified
+zepto.ads,sp.product_performance,,Campaign_name,15,2026-08-30,2026-09-29,dimension,campaign_name,verified
+zepto.ads,sp.product_performance,,Category,15,2026-08-30,2026-09-29,dimension,product_category,verified
+zepto.ads,sp.product_performance,,Clicks,15,2026-08-30,2026-09-29,metric,clicks,verified
+zepto.ads,sp.product_performance,,Cpc,15,2026-08-30,2026-09-29,validator,cpc,verified
+zepto.ads,sp.product_performance,,Cpm,15,2026-08-30,2026-09-29,validator,cpm,verified
+zepto.ads,sp.product_performance,,Ctr,15,2026-08-30,2026-09-29,validator,ctr,verified
+zepto.ads,sp.product_performance,,Impressions,15,2026-08-30,2026-09-29,metric,impressions,verified
+zepto.ads,sp.product_performance,,Orders,15,2026-08-30,2026-09-29,metric,orders,assumed
+zepto.ads,sp.product_performance,,Other_skus,15,2026-08-30,2026-09-29,validator,orders_indirect,verified
+zepto.ads,sp.product_performance,,Revenue,15,2026-08-30,2026-09-29,metric,revenue,verified
+zepto.ads,sp.product_performance,,Roas,15,2026-08-30,2026-09-29,validator,roas,verified
+zepto.ads,sp.product_performance,,Robas,15,2026-08-30,2026-09-29,reported,robas,unknown
+zepto.ads,sp.product_performance,,Same_skus,15,2026-08-30,2026-09-29,metric,orders_direct,verified
+zepto.ads,sp.product_performance,,Spend,15,2026-08-30,2026-09-29,metric,spend,verified

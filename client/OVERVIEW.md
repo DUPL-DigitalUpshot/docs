@@ -6,6 +6,9 @@ Digital Upshot Pvt Ltd
 > The short version. For the full walkthrough — setup in detail, what happens
 > inside a collection, platform coverage and the decisions we need — see
 > [`FLOW.md`](FLOW.md).
+>
+> **Watch it working:** a two-minute narrated walkthrough of the admin console,
+> recorded on the live system — [`videos/demo/admin-walkthrough/`](videos/demo/admin-walkthrough/).
 
 ---
 

@@ -3,6 +3,9 @@
 **A walkthrough for approval**
 Prepared by Digital Upshot · 22 September 2026 · Version 1.0
 
+**Watch it working:** a two-minute narrated walkthrough of the admin console —
+[`videos/demo/admin-walkthrough/`](videos/demo/admin-walkthrough/).
+
 > The screens in this document are interface previews, not photographs of live
 > data. Brand names, email addresses and numbers are invented placeholders.
 > Screens marked **Designed — not yet built** show an agreed design that has

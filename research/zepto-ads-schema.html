@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Zepto Ads Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Tokens from docs/THEME.md. Plain-language companion to zepto-ads-schema.md. */
+  :root{
+    --brand-50:#eef3ff; --brand-300:#8eaaff; --brand-400:#5f80f7; --brand-500:#3d5ce8; --brand-600:#2a45cc;
+    --gray-0:#ffffff; --gray-25:#fafbfc; --gray-50:#f4f6f8; --gray-200:#dde2e8; --gray-300:#c4ccd5;
+    --gray-400:#97a2af; --gray-500:#6b7684; --gray-600:#4f5967; --gray-700:#3a424e; --gray-800:#262c35;
+    --gray-900:#171b21; --gray-950:#0d1014;
+
+    --bg-app:var(--gray-25); --bg-surface:var(--gray-0); --bg-subtle:var(--gray-50);
+    --border:var(--gray-200); --border-strong:var(--gray-300);
+    --text:var(--gray-900); --text-muted:var(--gray-600); --text-link:var(--brand-600);
+    --primary:var(--brand-600); --primary-soft:var(--brand-50); --focus-ring:var(--brand-400);
+    --success:#15803d; --success-soft:#dcfce7;
+    --warning:#b45309; --warning-soft:#fef3c7;
+    --zepto:#5b21b6;
+    --dim:var(--gray-400);
+
+    --font-sans:"Inter",ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",monospace;
+    --text-display:28px; --leading-display:36px; --text-h1:22px; --leading-h1:30px; --text-h2:17px; --leading-h2:26px; --text-body:14px; --leading-body:22px; --text-small:12.5px; --leading-small:18px;
+    --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-full:999px;
+    --shadow-sm:0 1px 2px rgb(16 24 40 / 0.06);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg-app:var(--gray-950); --bg-surface:var(--gray-900); --bg-subtle:var(--gray-800);
+      --border:var(--gray-800); --border-strong:var(--gray-700);
+      --text:var(--gray-50); --text-muted:var(--gray-400); --text-link:var(--brand-300);
+      --primary:var(--brand-500); --primary-soft:color-mix(in oklab, var(--brand-500) 18%, transparent);
+      --success:#4ade80; --success-soft:#052e16;
+      --warning:#fbbf24; --warning-soft:#451a03;
+      --dim:var(--gray-500);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg-app:var(--gray-950); --bg-surface:var(--gray-900); --bg-subtle:var(--gray-800);
+    --border:var(--gray-800); --border-strong:var(--gray-700);
+    --text:var(--gray-50); --text-muted:var(--gray-400); --text-link:var(--brand-300);
+    --primary:var(--brand-500); --primary-soft:color-mix(in oklab, var(--brand-500) 18%, transparent);
+    --success:#4ade80; --success-soft:#052e16;
+    --warning:#fbbf24; --warning-soft:#451a03;
+    --dim:var(--gray-500);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
+  body{
+    margin:0; background:var(--bg-app); color:var(--text);
+    font-family:var(--font-sans); font-size:var(--text-body); line-height:var(--leading-body);
+    -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;
+  }
+  h1,h2,h3,h4,b,strong{font-weight:600} small{font-size:var(--text-small); line-height:var(--leading-small)}
+  a{color:var(--text-link)}
+  :focus-visible{outline:2px solid var(--focus-ring); outline-offset:2px}
+  code{font-family:var(--font-mono); font-size:var(--text-small); line-height:var(--leading-small); background:var(--bg-subtle); padding:1px 5px; border-radius:4px}
+  .wrap{max-width:980px; margin-inline:auto; padding-inline:16px}
+
+  header{padding:56px 0 8px}
+  .eyebrow{font-size:var(--text-small); line-height:var(--leading-small); font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:8px}
+  .dot{width:9px; height:9px; border-radius:50%; background:var(--zepto)}
+  h1{font-size:var(--text-h1); line-height:var(--leading-h1); margin:12px 0 0}
+  .lead{font-size:var(--text-body); line-height:var(--leading-body); color:var(--text-muted); max-width:60ch; margin:12px 0 0}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px}
+  .chip{padding:3px 10px; border-radius:var(--radius-full); font-size:var(--text-small); line-height:var(--leading-small); font-weight:500}
+  .chip.ok{background:var(--success-soft); color:var(--success)}
+  .chip.wait{background:var(--warning-soft); color:var(--warning)}
+
+  section{padding:44px 0 0}
+  h2{font-size:var(--text-h2); line-height:var(--leading-h2); margin:0;}
+  .sub{color:var(--text-muted); margin:6px 0 18px; max-width:68ch}
+  .card{background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm)}
+  .pad{padding:18px 20px}
+  .muted{color:var(--text-muted)}
+
+  /* report cards */
+  .reports{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px}
+  .report{padding:16px 18px}
+  .report h3{margin:0; font-size:var(--text-h2); line-height:var(--leading-h2); display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .tag{font-size:var(--text-small); line-height:var(--leading-small); font-weight:600; padding:1px 8px; border-radius:var(--radius-full)}
+  .tag.camp{background:var(--primary-soft); color:var(--primary)}
+  .tag.brand{background:var(--bg-subtle); color:var(--text-muted)}
+  .report .row{margin:6px 0 0; font-weight:500}
+  .report p{margin:4px 0 0; font-size:var(--text-body); line-height:var(--leading-body); color:var(--text-muted)}
+
+  /* overlap diagram */
+  .venn{width:100%; max-width:760px; height:auto; display:block; margin:0 auto}
+  .venn text{font-family:var(--font-sans); fill:var(--text)}
+  .venn .mono{font-family:var(--font-mono)}
+  .venn .faint{fill:var(--text-muted)}
+  .venn .core circle{fill:color-mix(in oklab, var(--primary) 12%, transparent); stroke:var(--primary); stroke-width:1.5}
+  .venn .petal{cursor:pointer; outline:none}
+  .venn .petal circle{fill:color-mix(in oklab, var(--dim) 16%, transparent); stroke:var(--border-strong); stroke-width:1.5; transition:stroke .15s}
+  .venn .petal.on circle{stroke:var(--primary); stroke-width:2.5}
+  .venn .petal:focus-visible circle{stroke:var(--focus-ring); stroke-width:3}
+  .venn .band .arc{fill:none; stroke-width:22; stroke-linecap:round; stroke-opacity:.22}
+  .venn .band .tie{stroke-width:1.5; stroke-dasharray:3 4; stroke-opacity:.7}
+  .venn [data-m]{transition:opacity .15s}
+  .venn.has-sel [data-m]:not(.on){opacity:.18}
+  .venn-cap{text-align:center; margin:8px auto 0; max-width:62ch; min-height:3.2em; font-size:var(--text-body); line-height:var(--leading-body)}
+  .venn-list{display:none; gap:10px}
+  .venn-list div{border:1px solid var(--border); border-radius:var(--radius-md); padding:10px 12px; font-size:var(--text-small); line-height:var(--leading-small)}
+  .venn-list b{display:block; margin-bottom:2px}
+  @media (max-width:600px){.venn,.venn-cap{display:none} .venn-list{display:grid}}
+
+  /* tables */
+  .scroll{overflow-x:auto}
+  table{width:100%; border-collapse:collapse; font-size:var(--text-body); line-height:var(--leading-body)}
+  th,td{padding:10px 14px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top}
+  thead th{font-size:var(--text-small); line-height:var(--leading-small); font-weight:600; color:var(--text-muted); background:var(--bg-subtle)}
+  tbody tr:last-child td{border-bottom:0}
+  tr.group td{background:var(--bg-subtle); font-size:var(--text-small); line-height:var(--leading-small); font-weight:600; color:var(--text-muted); padding-block:6px}
+  td.m{white-space:nowrap; font-weight:600}
+  .calc{font-size:var(--text-small); line-height:var(--leading-small); font-weight:600; padding:1px 7px; border-radius:var(--radius-full); background:var(--warning-soft); color:var(--warning); margin-left:6px; white-space:nowrap}
+
+  /* coverage bars */
+  .cov{display:grid; gap:12px}
+  .cov-row{display:grid; grid-template-columns:90px 1fr 1fr; gap:14px; align-items:center}
+  .cov-head{font-size:var(--text-small); line-height:var(--leading-small); font-weight:600; color:var(--text-muted)}
+  .track{position:relative; height:26px; background:var(--bg-subtle); border-radius:var(--radius-sm); overflow:hidden}
+  .fill{height:100%; background:var(--primary)}
+  .fill.sb{background:var(--zepto)}
+  .val{position:absolute; top:0; bottom:0; left:10px; display:flex; align-items:center; font-size:var(--text-small); line-height:var(--leading-small); font-weight:600; color:var(--gray-0)}
+  .why{margin:16px 0 0; padding:0 0 0 18px; color:var(--text-muted); font-size:var(--text-body); line-height:var(--leading-body)}
+  .why li + li{margin-top:4px}
+  @media (max-width:600px){.cov-row{grid-template-columns:70px 1fr 1fr; gap:8px} .val{left:6px; font-size:var(--text-small); line-height:var(--leading-small)}}
+
+  /* tips */
+  .tips{display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px}
+  .tip{padding:16px 18px}
+  .tip h3{margin:0 0 4px; font-size:var(--text-body); line-height:var(--leading-body); font-weight:500}
+  .tip p{margin:0; font-size:var(--text-body); line-height:var(--leading-body); color:var(--text-muted)}
+
+  ol.qs{margin:0; padding:0 0 0 20px}
+  ol.qs li{padding:4px 0}
+  ol.qs span{color:var(--text-muted)}
+
+  footer{margin:56px 0 0; padding:20px 0 44px; border-top:1px solid var(--border); font-size:var(--text-small); line-height:var(--leading-small); color:var(--text-muted)}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="eyebrow"><span class="dot" aria-hidden="true"></span>Zepto Ads</div>
+  <h1>What's inside a Zepto Ads report</h1>
+  <p class="lead">Zepto gives six reports for each ad type. All six have the same metrics; they differ only in how the numbers are broken down.</p>
+  <div class="chips">
+    <span class="chip ok">Sponsored Products: checked</span>
+    <span class="chip ok">Sponsored Brands: checked</span>
+    <span class="chip wait">Sponsored Display: not seen yet</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="reports">
+    <h2>The six reports</h2>
+    <p class="sub">City and Page show the whole brand. They can't be split by campaign.</p>
+    <div class="reports" id="report-cards"></div>
+  </section>
+
+  <section id="overlap">
+    <h2>What every report shares</h2>
+    <p class="sub">The centre holds what every report has: the same 12 metrics, plus brand ID and name. Each outer circle shows what only that report adds. The bands show columns that a few reports share.</p>
+    <div class="card pad">
+      <svg id="venn" class="venn" viewBox="40 60 800 840" role="img" aria-labelledby="venn-title">
+        <title id="venn-title">Columns shared by all six Zepto Ads reports, by some, and by one</title>
+      </svg>
+      <p class="venn-cap" id="venn-cap" aria-live="polite"></p>
+      <div class="venn-list" id="venn-list"></div>
+    </div>
+  </section>
+
+  <section id="metrics">
+    <h2>The metrics</h2>
+    <p class="sub">These are Zepto's own column names. Metrics tagged <span class="calc">calculated</span> are worked out from other columns, so after you add rows together, recalculate them from the totals.</p>
+    <div class="card scroll">
+      <table style="min-width:560px">
+        <thead><tr><th>Column</th><th>What it means</th></tr></thead>
+        <tbody id="metric-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="coverage">
+    <h2>How much of the spend each report shows</h2>
+    <p class="sub">The Campaign report has the full spend. Some breakdowns cover less, and that is how Zepto reports it, not an error.</p>
+    <div class="card pad">
+      <div class="cov" id="cov"></div>
+      <ul class="why">
+        <li><b>Keyword, Sponsored Products (61%):</b> auto and category-targeted campaigns have no keywords.</li>
+        <li><b>Category and Product, Sponsored Brands (71%):</b> banner clicks aren't tied to a product.</li>
+        <li><b>City (99.8%):</b> a small share of traffic has no city.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="tips">
+    <h2>Things to know when reading the numbers</h2>
+    <div class="tips" id="tip-cards" style="margin-top:18px"></div>
+  </section>
+
+  <section id="sb">
+    <h2>Sponsored Products vs Sponsored Brands</h2>
+    <p class="sub">Both have the same six reports. These are the differences.</p>
+    <div class="card scroll">
+      <table style="min-width:520px">
+        <thead><tr><th></th><th>Sponsored Products</th><th>Sponsored Brands</th></tr></thead>
+        <tbody>
+          <tr><td class="m">Buying model</td><td>Cost per click (has a <code>Cpc</code> column)</td><td>Cost per 1,000 impressions (no <code>Cpc</code> column)</td></tr>
+          <tr><td class="m">Campaign type</td><td><code>AUCTION_UP_SELL</code>, <code>AUCTION_CROSS_SELL</code></td><td><code>PCA</code></td></tr>
+          <tr><td class="m">Placements</td><td>Twelve (Search, Home, Category, Cart…)</td><td>Search page only</td></tr>
+          <tr><td class="m">Daily budget</td><td>An average over active days</td><td>The budget as set</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2>Questions for Zepto</h2>
+    <p class="sub">The reports don't answer these. Each needs an answer before the metric goes on a client dashboard.</p>
+    <div class="card pad">
+      <ol class="qs">
+        <li><b>What is ROBAS?</b> <span>It can't be worked out from the other columns, and it is sometimes higher than ROAS, sometimes lower.</span></li>
+        <li><b>Is <code>Orders</code> orders or units?</b> <span>It is higher than add-to-carts on 18 of 20 campaigns (e.g. 2,116 orders vs 1,344 add-to-carts).</span></li>
+        <li><b>When do reach and new-to-brand fill in?</b> <span><code>Unique_reach</code>, <code>Unique_considerations</code> and <code>New_to_brand_user_percentage</code> are always 0 so far.</span></li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  Based on Zepto exports for Dinshaw's, 1 Jul – 19 Aug 2026. Technical detail: <a href="zepto-ads-schema.md">zepto-ads-schema.md</a> · full column lists: <a href="zepto-ads-sp-columns.md">zepto-ads-sp-columns.md</a>.
+</footer>
+
+<script>
+(() => {
+  const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+
+  // ----- the six reports
+  const REPORTS = [
+    {key:'campaign', label:'Campaign', cols:21, camp:true,  row:'One row per campaign', use:'Overall results, with status, campaign type and daily budget.'},
+    {key:'category', label:'Category', cols:17, camp:true,  row:'Campaign × product category', use:'Which categories (e.g. Cones, Kulfi) each campaign sells.'},
+    {key:'product',  label:'Product',  cols:20, camp:true,  row:'Campaign × product', use:'SKU-level results within each campaign.'},
+    {key:'keyword',  label:'Keyword',  cols:19, camp:true,  row:'Campaign × keyword × match type', use:'Keyword performance (Broad, Phrase, Exact). Keyword-targeted campaigns only.'},
+    {key:'city',     label:'City',     cols:15, camp:false, row:'One row per city', use:'Where the ads perform, across all campaigns.'},
+    {key:'page',     label:'Page',     cols:15, camp:false, row:'One row per placement', use:'Search, Home, Category, Cart… across all campaigns.'},
+  ];
+  document.getElementById('report-cards').innerHTML = REPORTS.map(r =>
+    `<article class="card report"><h3>${r.label}<span class="tag ${r.camp ? 'camp' : 'brand'}">${r.camp ? 'by campaign' : 'whole brand'}</span></h3>
+      <div class="row">${esc(r.row)}</div><p>${esc(r.use)}</p></article>`).join('');
+
+  // ----- overlap (flower) diagram
+  const CORE = ['BrandID','BrandName','Atc','Clicks','Cpc','Cpm','Impressions','Orders','Other_skus','Revenue','Roas','Robas','Same_skus','Spend'];
+  const PETALS = [
+    {r:'campaign', a:-90, own:['CampaignName','CampaignType','Status','Daily_budget','New_to_brand_user_percentage','Unique_considerations','Unique_reach']},
+    {r:'city',     a:-30, own:['CityName']},
+    {r:'page',     a:30,  own:['PageName']},
+    {r:'keyword',  a:90,  own:['KeywordName','KeywordMatchType']},
+    {r:'product',  a:150, own:['ProductID','ProductName']},
+    {r:'category', a:210, own:[]},
+  ];
+  const BANDS = [
+    {cols:['Ctr'], in:['keyword','product'], rad:372, a1:80, a2:160, at:120, color:'var(--success)'},
+    {cols:['Category'], in:['product','category'], rad:404, a1:140, a2:220, at:180, color:'var(--warning)'},
+    {cols:['Campaign_id','Campaign_name'], in:['keyword','product','category'], rad:436, a1:80, a2:220, at:120, color:'var(--zepto)'},
+  ];
+  const CX = 500, CY = 430, RING = 240, PR = 110, CORE_R = 150;
+  const pt = (deg, rad) => [CX + rad * Math.cos(deg * Math.PI / 180), CY + rad * Math.sin(deg * Math.PI / 180)];
+  const label = k => REPORTS.find(r => r.key === k).label;
+  const bandsOf = k => BANDS.filter(b => b.in.includes(k));
+  const totalOf = k => CORE.length + bandsOf(k).reduce((n, b) => n + b.cols.length, 0) + PETALS.find(p => p.r === k).own.length;
+
+  let svg = '';
+  BANDS.forEach((b, i) => {
+    const [x2, y2] = pt(b.a2, b.rad), [x1, y1] = pt(b.a1, b.rad);
+    const off = (b.a2 - b.at) / (b.a2 - b.a1) * 100;
+    svg += `<g class="band" data-m="${b.in.join(' ')}" data-band="${i}">
+      <path id="band-${i}" class="arc" d="M${x2} ${y2} A${b.rad} ${b.rad} 0 0 0 ${x1} ${y1}" style="stroke:${b.color}"/>`;
+    for (const k of b.in){
+      const a = PETALS.find(p => p.r === k).a;
+      const [tx1, ty1] = pt(a, RING + PR + 2), [tx2, ty2] = pt(a, b.rad - 11), [dx, dy] = pt(a, b.rad);
+      svg += `<line class="tie" x1="${tx1}" y1="${ty1}" x2="${tx2}" y2="${ty2}" style="stroke:${b.color}"/>
+        <circle cx="${dx}" cy="${dy}" r="6" style="fill:${b.color}; stroke:var(--bg-surface); stroke-width:2"/>`;
+    }
+    svg += `<text font-size="12.5" font-weight="600" dominant-baseline="central"><textPath href="#band-${i}" startOffset="${off}%" text-anchor="middle" class="mono">${b.cols.join(' · ')}</textPath></text></g>`;
+  });
+  for (const p of PETALS){
+    const [x, y] = pt(p.a, RING), rep = REPORTS.find(r => r.key === p.r);
+    const lines = p.own.length ? p.own : ['nothing extra'];
+    const top = y - 14 - (lines.length - 1) * 6.5;
+    svg += `<g class="petal" data-m="${p.r}" data-petal="${p.r}" tabindex="0" aria-label="${rep.label} report: ${rep.cols} columns">
+      <circle cx="${x}" cy="${y}" r="${PR}"/>
+      <text x="${x}" y="${top - 22}" text-anchor="middle" font-size="14.5" font-weight="700">${rep.label}</text>
+      <text x="${x}" y="${top - 6}" text-anchor="middle" font-size="11" class="faint">${rep.cols} columns</text>
+      ${lines.map((c, i) => `<text x="${x}" y="${top + 12 + i * 13}" text-anchor="middle" font-size="10.5" class="${p.own.length ? 'mono' : 'faint'}">${c}</text>`).join('')}
+    </g>`;
+  }
+  const half = Math.ceil(CORE.length / 2);
+  svg += `<g class="core"><circle cx="${CX}" cy="${CY}" r="${CORE_R}"/>
+    <text x="${CX}" y="${CY - 72}" text-anchor="middle" font-size="15" font-weight="700">In every report</text>
+    <text x="${CX}" y="${CY - 55}" text-anchor="middle" font-size="11" class="faint">12 metrics + brand ID and name</text>
+    ${CORE.map((c, i) => {
+      const col = i < half ? 0 : 1, row = i % half;
+      return `<text x="${CX + (col ? 10 : -10)}" y="${CY - 30 + row * 14.5}" text-anchor="${col ? 'start' : 'end'}" font-size="11" class="mono">${c === 'Cpc' ? 'Cpc†' : c}</text>`;
+    }).join('')}
+  </g>`;
+  const vennEl = document.getElementById('venn');
+  vennEl.insertAdjacentHTML('beforeend', svg);
+
+  const cap = document.getElementById('venn-cap');
+  const DEFAULT_CAP = 'Hover a report to see what it contains. † Sponsored Brands reports have no <code>Cpc</code>.';
+  cap.innerHTML = DEFAULT_CAP;
+  const select = (keys, html) => {
+    vennEl.classList.toggle('has-sel', keys.length > 0);
+    vennEl.querySelectorAll('[data-m]').forEach(el => {
+      const m = el.dataset.m.split(' ');
+      el.classList.toggle('on', el.dataset.petal ? keys.includes(el.dataset.petal) : keys.length > 0 && keys.every(k => m.includes(k)));
+    });
+    cap.innerHTML = html || DEFAULT_CAP;
+  };
+  vennEl.querySelectorAll('.petal').forEach(el => {
+    const k = el.dataset.petal, p = PETALS.find(x => x.r === k);
+    const extra = [...bandsOf(k).flatMap(b => b.cols), ...p.own];
+    const html = `<b>${label(k)}</b>: the shared metrics${extra.length ? ' + ' + extra.map(c => `<code>${c}</code>`).join(', ') : ', nothing extra'}. ${totalOf(k)} columns in all.`;
+    const on = () => select([k], html), off = () => select([]);
+    el.addEventListener('mouseenter', on); el.addEventListener('focus', on);
+    el.addEventListener('mouseleave', off); el.addEventListener('blur', off);
+  });
+  vennEl.querySelectorAll('.band').forEach(el => {
+    const b = BANDS[+el.dataset.band];
+    el.addEventListener('mouseenter', () => {
+      vennEl.classList.add('has-sel');
+      vennEl.querySelectorAll('[data-m]').forEach(x => x.classList.toggle('on', x === el || b.in.includes(x.dataset.petal)));
+      cap.innerHTML = `${b.cols.map(c => `<code>${c}</code>`).join(' and ')}: only in <b>${b.in.map(label).join(', ')}</b>.`;
+    });
+    el.addEventListener('mouseleave', () => select([]));
+  });
+  document.getElementById('venn-list').innerHTML =
+    `<div><b>In every report</b><code>${CORE.join(', ')}</code></div>` +
+    BANDS.map(b => `<div><b>${b.in.map(label).join(' + ')}</b><code>${b.cols.join(', ')}</code></div>`).join('') +
+    PETALS.map(p => `<div><b>${label(p.r)} only</b>${p.own.length ? `<code>${p.own.join(', ')}</code>` : 'Nothing extra'}</div>`).join('');
+  PETALS.forEach(p => { if (totalOf(p.r) !== REPORTS.find(r => r.key === p.r).cols) console.error('venn count mismatch', p.r); });
+
+  // ----- metrics glossary
+  const METRICS = [
+    ['In every report'],
+    ['Impressions', 'Times the ad was shown.'],
+    ['Clicks', 'Clicks on the ad.'],
+    ['Spend', 'Ad spend in ₹, whole rupees.'],
+    ['Cpc', 'Cost per click: Spend ÷ Clicks, rounded to whole ₹. Not in Sponsored Brands.', true],
+    ['Cpm', 'Cost per 1,000 impressions, rounded to whole ₹.', true],
+    ['Atc', 'Add-to-carts.'],
+    ['Same_skus', 'Direct orders: the advertised product itself.'],
+    ['Other_skus', 'Halo orders: the brand\'s other products.'],
+    ['Orders', 'Same_skus + Other_skus.', true],
+    ['Revenue', 'Sales attributed to the ads, ₹.'],
+    ['Roas', 'Revenue ÷ Spend.', true],
+    ['Robas', 'Not defined by Zepto, and it can\'t be calculated from the other columns. See questions below.'],
+    ['Keyword and Product reports only'],
+    ['Ctr', 'Click-through rate: Clicks ÷ Impressions × 100. Easy to work out for the other reports.', true],
+    ['Campaign report only'],
+    ['Daily_budget', 'Sponsored Products: an average over the days the campaign ran, not the budget you set.'],
+    ['Status / CampaignType', 'Active or paused · auction up-sell or cross-sell.'],
+    ['Unique_reach, Unique_considerations, New_to_brand_user_percentage', 'Always 0 so far.'],
+  ];
+  document.getElementById('metric-rows').innerHTML = METRICS.map(([m, d, calc]) => d === undefined
+    ? `<tr class="group"><td colspan="2">${esc(m)}</td></tr>`
+    : `<tr><td class="m"><code>${esc(m)}</code>${calc ? '<span class="calc">calculated</span>' : ''}</td><td>${esc(d)}</td></tr>`).join('');
+
+  // ----- share of campaign spend each report shows
+  const COV = [
+    {r:'Category', sp:100, sb:71.4}, {r:'Product', sp:100, sb:71.4}, {r:'Page', sp:100, sb:100},
+    {r:'City', sp:99.8, sb:100}, {r:'Keyword', sp:61, sb:100},
+  ];
+  const bar = (v, cls) => `<div class="track"><div class="fill ${cls}" style="width:${v}%"></div><span class="val">${v}%</span></div>`;
+  document.getElementById('cov').innerHTML =
+    '<div class="cov-row"><span></span><span class="cov-head">Sponsored Products</span><span class="cov-head">Sponsored Brands</span></div>' +
+    COV.map(c => `<div class="cov-row"><b style="font-weight:500">${c.r}</b>${bar(c.sp, '')}${bar(c.sb, 'sb')}</div>`).join('');
+
+  // ----- tips
+  const TIPS = [
+    ['There are no dates inside the file', 'Each row is a total for the date range you picked. For a daily trend, pull one file per day. Our tool does this for you.'],
+    ['Never average ROAS, CPC, CPM or CTR', 'Add up Spend, Clicks, Impressions and Revenue first, then divide. Zepto also rounds CPC and CPM to whole rupees.'],
+    ['Breakdowns don\'t always add up to the campaign total', 'See the spend chart above. Use the Campaign report for totals.'],
+    ['Orders include halo', 'Orders = direct (Same_skus) + halo (Other_skus). Use Same_skus for the advertised product only.'],
+    ['Most keyword rows have no clicks', '63% of keyword rows only have impressions. They are still useful for finding search terms.'],
+    ['Page names are inconsistent', 'Clean names (Search Page, Home Page) are mixed with codes like post_search or page_in_page. We group these into clean placement names.'],
+  ];
+  document.getElementById('tip-cards').innerHTML = TIPS.map(([t, p]) =>
+    `<article class="card tip"><h3>${esc(t)}</h3><p>${esc(p)}</p></article>`).join('');
+})();
+</script>
+</body>
+</html>

@@ -32,7 +32,9 @@ Every screen groups the same way: **Platform first, then category (Ads or Sales)
 ◉ Users & access
 ◉ Settings (SMTP, system)
 ◉ Audit log
+◉ Unified data   (admins and the toggle admin; /data → Needs attention | Reports | Imports; 2026-10-03)
 ```
+The **This brand** group also has **Data** (2026-10-03): the brand's twin of Unified data. Picking a brand while on `/data/*` lands on `/brands/{id}/data`; *All brands* from there goes back to `/data` (brand users, who have no `/data`, go to the brand list).
 Top of the sidebar, under the logo: **brand switcher** (search; avatar only when collapsed). Global header: navigation toggle, the trail of where you are, **Run now** button, live-runs indicator ("2 running"), user menu.
 
 **Where am I (added 2026-09-26).** The header trail names the page: `Del Monte › Runs` on a brand, `Runs › Run #1286` elsewhere. Picking a brand keeps the section and drops the detail — Del Monte's runs become Dinshaw's runs, all runs become one brand's runs — but never carries a run id or a filter across, because the same id on another brand is a different thing. Pages below the trail do not repeat it with "back" links.
@@ -198,9 +200,11 @@ Create/edit form:
 ```
 The preview line that shows the resolved date range removes most scheduling mistakes.
 
+Range presets include **Week to date** (added 2026-10-02): the Monday of yesterday's week, or the 1st if later, through yesterday. Fired on Mondays and on the 1st, it pulls calendar weeks cut at month ends — the tiles the warehouse's weekly range check needs.
+
 ### 3.8 Report library
 
-Top-level tabs: **Ads | Sales**. Filter bar under the tab: brand · platform · report type · period · "Latest only" toggle (on by default). The table shows file name, brand, platform chip, report, period, extracted at, size, badges (Latest, Columns changed) and a download button. Multi-select gives **Download as zip**. A row menu shows *Versions* (older pulls of the same period), *Open run* and the portal's original filename.
+Top-level tabs: **Ads | Sales**. Filter bar under the tab: brand · platform · report type · period · "Latest only" toggle (on by default). The table shows file name, brand, platform chip, report, period, extracted at, size, badges (Latest, Columns changed), the *Data status* badge (§3.16) and a download button. Multi-select gives **Download as zip**. A row menu shows *Versions* (older pulls of the same period), *Open run* and the portal's original filename.
 
 **The filename is generated, not the portal's:** `<brand>_<platform>_<category>_<report>_<start>_<end>.<ext>`. The stored bytes are never touched, so the period has to live in the name and in the metadata — several portals return uninformative or colliding names, and Zepto's files carry no date column at all. `report_files.original_filename` keeps what the portal called it.
 
@@ -248,11 +252,85 @@ SMTP form with *Send test email*. Notification toggles (failure alerts, daily di
 ```
 It also shows a read-only run history, and a Run now button only if `can_trigger_runs` is granted.
 
+### 3.14 Unified data (`/data`, admins; rewritten 2026-10-03)
+
+**Words.** Every user-visible word comes from one glossary, `frontend/src/lib/words.ts` (DECISIONS 2026-10-03). An *import* is one downloaded file going into unified data. Statuses: *Checking…* · *Waiting for your OK* · *Publishing…* · *Published* · *Held back* · *Pulled back* · *Same as an earlier file*. Actions: **Publish** · **Hold back** · **Import again** · **Re-pull** · **Mark as handled**. Enum names, keys, ids, file names, hashes and versions appear only under *Technical detail*; a test (`findJargon`) fails any page that shows them elsewhere. `/warehouse/*` links redirect here with their query.
+
+Page shell: h1 is the page name; tabs **Needs attention | Reports | Imports**; the trail reads `Unified data › …`.
+
+**Needs attention** (`/data/attention`, the landing page; refreshes every 30 s and on focus)
+```
+ Waiting for your OK
+ ┌ Zepto · Ads   Sponsored Products — Campaign   21–27 Sep 2026 ───────────────┐
+ │ 7 imports, all checks passed                    [ Review ]  [ Publish all ] │
+ └─────────────────────────────────────────────────────────────────────────────┘
+ Held back
+ ┌ Zepto · Ads   Sponsored Products — Campaign   21–27 Sep 2026 ───────────────┐
+ │ The day files don't add up to the weekly pull.                              │
+ │ [ Re-pull ]  [ Import again ]  [ Mark as handled ]                          │
+ └─────────────────────────────────────────────────────────────────────────────┘
+ Publishing automatically      Campaign performance ▓▓▓▓▓▓░░░░ 9 of 14 clean days
+```
+- **Waiting** cards: brand → report → calendar week (cut at month ends). **Publish all** confirms with *Applies to* (brand, report, week) and summarises in words ("6 published, 1 held back after a last check").
+- **Held back** cards: one sentence, the facts in words, and **Re-pull** (confirm states what will be pulled, e.g. "21–27 Sep 2026, one file per day"; the toast links *Watch the run*), **Import again**, **Mark as handled** (a note is required).
+- Empty: *All caught up*, with links to Imports and Reports.
+
+**Reports** (`/data/reports`, was Feeds)
+- One section per platform, one card per category. Per report: switch **Feeds unified data** (optimistic; disabled until its columns are *Ready*), the columns word (*Ready* / *Columns being reviewed* / *Not supported yet*), **Weekly cross-check** with its explanation in view, **Pulled by:** (schedule links, *One file per day*) or *No schedule yet*, *Time per brand: about 35 s a day*, *Last import*.
+- *Figures may still change for N days* sits under **Advanced** (it decides when brand users see *Provisional*).
+- **Set up a brand**: preview (*Will pull 12 reports*, schedules *New* / *Adds N reports* / *No change* with their timing in words, *Can't pull:* with the reason, time per day) → **Create schedules for <Brand>** → the result with links; *Already set up* when nothing would change. At most three schedules: daily 06:00 for yesterday, one file per day; Mondays and the 1st at 07:00, *Week to date* (the weekly cross-check). The one-report *Create recommended schedule* dialog stays.
+
+**Imports** (`/data/imports`, was Loads)
+- Chips **Waiting for your OK · Held back** (held and pulled back) **· Published · All**, filters as data in the URL, header sort in the URL. Rows are named by report and period; no ids.
+- Select waiting rows → sticky bar *N selected · Publish selected · Clear*. Refreshes every 10 s while a row is *Checking…*.
+- The drawer (`?load=`; Back and Esc close it): title = report + period, status; *What happened*; checks in words (hard first, then *Worth a look*); *What it changed* (counts only); *The file* (the shared download buttons, as in the Library); footer actions the status allows (**Publish**, **Hold back** with a reason, **Import again**, **Re-pull**); links *Open the run* and *See in Library*. A publish that ends held gives a warning toast, never a success. Refusals are worded from the API's `code`.
+
+### 3.15 Brand Data tab (`/brands/{id}/data`, everyone who can see the brand; added 2026-10-03)
+
+- **Status** (everyone): Platform → Category → Report, each with *Data through 1 Oct* or *No data yet*, *2 days held back, being re-pulled*, *Provisional from 18 Sep: figures may still change*; a report that doesn't feed is muted (*Doesn't feed unified data yet*). Words and dates only — never a figure from the warehouse (dashboards come in phase 4–5). Category grants apply: an Ads-only manager sees Ads only. Works at 390 px.
+- **Needs attention** and **Imports** (admins, when *Unified data* and *Data status* are visible): the same panels as §3.14, fixed to this brand — no other brand's card or import can appear. Header action **Set up unified data for <Brand>**.
+- Empty: *This brand's reports don't feed unified data yet* (admins also get *Set up*).
+
+### 3.16 Data status elsewhere (added 2026-10-03)
+
+- **Report library**: a *Data status* badge per file (*Checked* · *Being checked* · *Held back, being re-pulled* · *Provisional*, each with a tooltip) and a *Data status* filter; nothing when the file doesn't feed or isn't the current version. *Columns changed* (was "Header changed").
+- **Schedules**: a *Feeds unified data* badge on schedules that pull a feeding report; pausing or deleting the brand's only running schedule behind one warns first ("…will stop reaching unified data for <Brand>"); a partial last run is amber; *One file per day* everywhere (Run now, schedule dialog, list).
+
+### 3.17 Analytics (`/analytics`, everyone with an Ads grant; added 2026-10-03)
+
+The no-code dashboard builder; full design in `docs/unified-db/24-analytics-builder.md`.
+```
+ Analytics › Dinshaw's overview                     [ Saved views ▾ ] [ Share ] [ Edit ]
+ [Brands ▾] [Platforms ▾] [Ad type ▾] [Last 30 days ▾] [vs previous period ▾]
+ Data through 1 Oct · 2 days provisional
+ ┌ Ad spend ────┐┌ Ad revenue ──┐┌ ROAS ────────┐┌ Orders ──────┐
+ │ ₹4.2 L ▲12% ││ ₹13.1 L ▲8%  ││ 3.1× ▼4%     ││ 2,140 ▲6%    │
+ └──────────────┘└──────────────┘└──────────────┘└──────────────┘
+ ┌ Spend and ROAS by week ──────────────────┐┌ Top campaigns ─────────────┐
+ │  (combo chart, provisional days hatched) ││  ranked table              │
+ └──────────────────────────────────────────┘└────────────────────────────┘
+ Editing a chart opens the side panel:
+ ┌ Fields ─────────┐  Rows / X     [Week ×]          Chart  ★Line ★Combo Bar Area Pie …
+ │ Money           │  Split by     [Platform ×]
+ │  Ad spend       │  Values       [Ad spend · Sum ▾] [ROAS · from totals ▾]
+ │ Rates  ROAS …   │  Filters      [Campaign contains "diwali" · keeps 64% of spend ×]
+ │ Time · Where …  │  ▸ Advanced
+ └─────────────────┘  Ad spend and ROAS by week · Dinshaw's · Zepto · 1–30 Sep 2026 · 1 filter
+```
+- A 12-column grid; move by dragging, resize from the corner. On phones the dashboard is view-only and stacks into one column.
+- Dashboard filters live in the URL. A chart's own overrides show as a badge on that chart.
+- Every chart: View as table; Source files (originals behind a point); Provisional / Partial / Restated / Data through.
+- Save · Save as · Reset · Undo · My charts · Templates · Saved views · Share (viewer's own grants).
+- Sidebar item **Analytics**; the brand twin is the brand's **Analytics** tab; switchboard section `analytics`.
+
 ## 4. Shared components
 
 | Component | Used in |
 |---|---|
-| `StatusBadge` (queued/running/awaiting_otp/succeeded/partial/failed/cancelled) | runs, overview, library |
+| `StatusBadge` (icon + word; import statuses from `lib/words.ts`) | unified data |
+| `DataStatusBadge` + `Hint` (icon + word, tooltip on hover, focus or tap) | library, brand Data tab |
+| `DownloadActions` (*Download with dates* / *Download original*, `download` attribute) | library, import drawer |
+| `Switch` (optimistic toggle) | unified data reports |
 | `HealthDot` (healthy/needs_attention/untested/not_connected) | matrix, accounts, connections |
 | `PlatformChip` (platform colour + name, optional `· Ads` / `· Sales` suffix) | everywhere a platform appears |
 | `CategoryTabs` (Ads \| Sales, extendable) | library, SPOC home |
@@ -263,6 +341,8 @@ It also shows a read-only run history, and a Run now button only if `can_trigger
 | `SecretInput` (masked, write-only, "Change" affordance) | accounts, mailboxes, SMTP |
 | `CronBuilder` with next-runs preview | schedules |
 | `EmptyState` with one clear next action | every list |
+| `DataTable` opt-in column menu (`columnToggle`, `initiallyHidden`), row selection (`selected` / `onSelectedChange` / `canSelectRow`) and URL-driven sort (`sort` / `onSortChange`) | imports, library |
+| `useUrlFilters(defaults, {push})`: keys in `push` add a history entry, so Back closes a drawer | imports |
 
 ## 4a. "Applies to" (added 2026-09-26)
 
