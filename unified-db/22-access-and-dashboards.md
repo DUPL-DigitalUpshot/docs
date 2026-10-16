@@ -4,7 +4,7 @@
 
 | Who | Unified-store abilities |
 |---|---|
-| Super admin, Admin | everything below, plus: the **mapping screen** (unmapped and new columns, edit a mapping, activate a version, rebuild); brand aliases; the **Loads** and **Warehouse feeds** screens (§7): approve or quarantine loads, set what feeds the warehouse; see every brand |
+| Super admin, Admin | everything below, plus: the **mapping screen** (unmapped and new columns, edit a mapping, activate a version, rebuild; **Admin drafts and previews, Super admin activates and rolls back**, [26](26-mapping-maintenance.md)); brand aliases; the **Loads** and **Warehouse feeds** screens (§7): approve or quarantine loads, set what feeds the warehouse; see every brand |
 | toggle_admin | everything an Admin can (PRD:78), plus the visibility switchboard. The switchboard may hide or lock the analytics nav section per audience; that is presentation only, never access (PRD §4a) |
 | Member with a **Manager** grant on a brand | dashboards and drill-downs for that brand; their own saved views and dashboards; see load status and freshness for that brand |
 | Member with an **Executive** grant on a brand | dashboards and drill-downs for that brand; their own saved views and dashboards |

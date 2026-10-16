@@ -136,7 +136,7 @@ Two deliberate irregularities:
 - **`flipkart.sellerhub` breaks the `platform_key` prefix convention.** `seller.flipkart.com` is Flipkart-wide, not Minutes-specific, and may later serve another platform; its `platform_key` stays `fkminutes`. Nothing may assume `key.split('.')[0] == platform_key`.
 - **`zepto.vendor` is not a separate login.** It is a portal row so that the vendor adapter and its health are separate from Ads, but it shares one browser session with `zepto.ads`: the vendor API reads the ads session cookie and takes the brand from the JWT, not from a selector. The executor must never open a second browser or perform a second login for it.
 
-BigBasket gets its key when it comes off hold.
+- **`bigbasket.nucleus`** (`nucleus.bigbasket.com`) signs in with email plus a mailed code, and serves its reports from the Osmos ads app (`bigbasket-ops.osmos.ai`) on the same session, so it is one portal, like `zepto.vendor` on `zepto.ads`. It uses the bootstrap login below (DECISIONS 2026-10-12).
 
 Key points:
 - **Platform → Category → Report type** is what the UI groups by. **Portal** is the technical source: it owns the login, adapter, OTP rule and health. Each report type records all four, so the library can filter by category without knowing which portal produced a file.
@@ -180,7 +180,7 @@ class PlatformAdapter(ABC):
     otp: OtpRule                # sender pattern, subject pattern, code/link regex
     capabilities: set[str] = {"download"}   # Module 2 adds "actions"
     session_mode: Literal["storage_state", "persistent_profile"] = "storage_state"
-    login_mode: Literal["automatic", "bootstrap"] = "automatic"   # bootstrap = one-time human login (e.g. Google SSO)
+    login_mode: Literal["automatic", "bootstrap"] = "automatic"   # bootstrap = a person finishes a refused sign-in (BigBasket)
 
     async def is_logged_in(self, page: Page) -> bool: ...
     async def login(self, page: Page, creds: Credentials, ctx: RunContext) -> None: ...
@@ -238,7 +238,12 @@ So `select_brand()` verifies rather than assumes: after selecting, read back whi
 
 Where the portal offers no selector at all — `zepto.vendor` takes the brand from the JWT, `instamart.brandportal` filters by brand inside the report form — the adapter still verifies that the identity the session reports is the expected one.
 
-**Bootstrap login** (BigBasket pattern): for portals that need a human step such as Google sign-in, an Admin runs a one-time headed login from the setup wizard; afterwards runs reuse the saved session headlessly until it expires, and the account turns *Needs attention* when it does.
+**Bootstrap login** (BigBasket pattern): for portals that refuse an automated sign-in. BigBasket's reCAPTCHA v3 flags the browser after a correct code.
+- The adapter raises `BotChallenge` (`BOT_CHALLENGE`), never retried.
+- A **Test login** then waits up to 10 minutes for a person to finish signing in from the live browser view (`needs_person` step). It polls `signed_in_here`, which must not navigate, then confirms with `is_logged_in` and saves the session.
+- Download runs reuse that session and never wait for a person: on a challenge they fail fast and the account turns *Needs attention*.
+- Between runs, the scheduler has the worker touch the session every `UNIQCAI_SESSION_TOUCH_HOURS` (default 4). It opens the profile, checks it, and saves it again, never signing in.
+- The profile is kept on failure (`keep_profile_on_failure`). The adapter may declare `browser_channel`, `viewport` and `ignore_default_args` to match the browser the portal last accepted. The registry refuses a bootstrap adapter without `signed_in_here`.
 
 ## 5. Run execution flow
 

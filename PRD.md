@@ -256,7 +256,7 @@ Priority: **P0** = must ship in Stage A, **P1** = should ship, **P2** = nice to 
 3. PartnersBiz (`blinkit.partnersbiz`) and the Flipkart Seller Hub (`flipkart.sellerhub`): which report types exist and are needed? Overlaps Q7 for the Flipkart half.
 4. Do any portals show captchas when logging in from a new or datacenter IP? This affects hosting choice.
 5. How long must raw files be retained?
-6. BigBasket: outcome of the discussion with BigBasket on the Google sign-in + 2FA issue (proposal §12 lists this as a blocking client input).
+6. ~~BigBasket: outcome of the discussion with BigBasket on the Google sign-in + 2FA issue.~~ Answered 2026-10-06/12: sign-in is email plus a mailed code. The open question is now the client's approval for standing Osmos email schedules (DECISIONS 2026-10-12), and whether BigBasket's reCAPTCHA keeps accepting a person-refreshed session.
 7. Which Flipkart Seller Hub reports are needed for Flipkart Minutes · Sales? (Zepto, Blinkit and Instamart Sales are already working in the prototypes.) The surface is mapped — `legacy/fkminutes/docs/ads-report-flow.md` records the Report Centre at `#dashboard/metrics/report-centre` carrying Fulfilment, Invoices, Listings, Payment and Tax — but nothing there is automated yet, and the existing pipeline pulls only the eight *ads* reports. The client picks which Report Centre reports count as Sales.
 8. Can a Brand Executive ever add credentials for their own brand, or is that strictly Digital Upshot staff (Manager level)?
 9. Working-flow §3.2.3 "click-and-opt related handling": confirm the wording. Is this click-to-verify login links, opt-in consent screens, or something else?

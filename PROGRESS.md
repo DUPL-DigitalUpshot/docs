@@ -8,7 +8,7 @@
 | 3 Adapter framework + **Zepto Ads** + live runs | 2.2, 3.1–3.2 | ☑ | `zepto.ads` downloads end to end — run 64, session reused, brand verified, file stored with checksum |
 | 4 **Zepto Sales** + schedules, T-15, notifications | 2.2 | ◐ | **Schedules are done** (table, API, preview, firing, stale-run sweep). Left: `zepto.vendor` — a JSON API on the `zepto.ads` session, no second login — plus T-15 and notifications |
 | 5 Zepto review gate | 2.3 | ☐ | Gate covers Ads **and** Sales |
-| 6 Rollout: Blinkit Ads/Sales, FK-Minutes Ads, Instamart Ads/Sales, FK-Minutes Sales | 4.2 | ◐ | Started ahead of the plan. **Instamart Ads downloads** (run 115, 23 Sep; the adapter was built from a live capture of the portal, since the prototype engine code (Q13) was never found). **Blinkit Ads** (Brand Central) stores its MTD search report (26 Sep). **FK-Minutes Ads**: adapter built, but Del Monte's connection currently fails `WRONG_ACCOUNT` (no ad account matches the mapped selector). Blinkit Sales, Instamart Sales and FK-Minutes Sales not yet run end to end |
+| 6 Rollout: Blinkit Ads/Sales, FK-Minutes Ads, Instamart Ads/Sales, FK-Minutes Sales | 4.2 | ◐ | Started ahead of the plan. **Instamart Ads downloads** (run 115, 23 Sep; the adapter was built from a live capture of the portal, since the prototype engine code (Q13) was never found). **Blinkit Ads** (Brand Central) stores its MTD search report (26 Sep) and, from 14 Oct, the emailed **Overview report** (run 224: `Report_2026-10-01_to_2026-10-12.xlsx`, 3 sheets, rows dated exactly 1–12 Oct) — both of the prototype's Blinkit Ads reports. **FK-Minutes Ads**: adapter built, but Del Monte's connection currently fails `WRONG_ACCOUNT` (no ad account matches the mapped selector). Blinkit Sales, Instamart Sales and FK-Minutes Sales not yet run end to end. **BigBasket Ads** (`bigbasket.nucleus`) signs in fully automatically in Google Chrome past its reCAPTCHA check (run 206, 12 Oct) and **downloads all 13 Ads reports in one run** (run 228, 14 Oct: 8 min, every file 5–11 Oct) |
 | 7 Hardening, UAT, deploy | 5.1–5.3 | ☐ | |
 | B0 Unified Ads DB — correct the design | `unified-db/30` phase 0 | ☑ | 2 Oct: design reviewed against every stored original and the Stage A code; docs/unified-db rewritten (v2); 15 DECISIONS entries; CLAUDE.md scope amended (owner approved). 37 mapping seeds (`backend/ingest/mappings/`) and `tools/column_inventory.py`, which classifies every stored ads header and fails on the mislabelled file (A2) |
 | B1 Unified Ads DB — Stage A prerequisites | phase 1 | ☑ | 2 Oct: verified, merged and applied on dev; emptied days re-pulled and checked against range pulls (Zepto SP 17–28 Sep complete, 72 files). Left for later: Blinkit past-month probe (supervised) before the month-close pull is built |
@@ -741,3 +741,52 @@ merged or deployed.**
 - Backup rehearsal passed: `backups/20261004T023148Z` restored into the
   throwaway database with matching key-table counts, and all 170 stored files
   matched their SHA-256 hashes.
+
+## BigBasket sign-in and the bot check (12 Oct 2026)
+
+| Check | Result |
+|---|---|
+| OTP mail | HTML-only, with the code in a `<span>`; the rule now reads it from both live mails of the day (it found none before) |
+| Bot Alert | Recognised as `BOT_CHALLENGE` (no retry; the profile is kept) instead of a misleading `OTP_TIMEOUT` 3 min later |
+| Browser | Worker image ships Google Chrome 155 beside Chromium 131; BigBasket launches `channel="chrome"` at 1440×900 without `--enable-automation` |
+| Bootstrap login | A Test login refused by the bot check waits up to 10 min for a person in the live view (`needs_person` step, still hand icon) |
+| Session touch | Scheduler sends `touch_session` every 4 h for healthy bootstrap sessions; never signs in |
+| Migration 0022 | Report policies for BigBasket's 13 Ads reports (`feed_warehouse=false`, 5-day window) |
+| Live | Run 205 reused a session that had been finished by hand; after both saved sessions were deleted, **run 206 signed in fully automatically** with no Bot Alert |
+| Tests | Backend 2,406 pass (16 skipped), including 31 new in `test_bot_challenge.py` and `test_session_touch.py`; frontend 903 pass; ruff, tsc and eslint clean |
+
+Left:
+- Download one Product Ads report (on demand).
+- Watch the first session touch at +4 h.
+- Learn BigBasket's real session lifetime.
+- Osmos email delivery for the 9 scheduled reports (waits on the client's approval).
+- A non-root worker so Chrome runs sandboxed. `--no-sandbox` shows a warning bar; the page can't see it, but the browser runs less safely.
+
+
+## B3 — Unified Ads DB, phase 3 for Blinkit Ads (15 Oct 2026)
+
+The owner approved phase 3 for Blinkit Ads only, with the month-to-date report as the source (DECISIONS 2026-10-15). The Overview report is still downloaded, but not loaded.
+
+| Piece | What is now true | Verified by |
+|---|---|---|
+| Reader | `ingest/formats/blinkit.py`: one table per sheet, xlsx only; registered in `loader.READERS` | `test_ingest_blinkit_reader.py` (4) |
+| Mapping | Product Recommendation v2: sub-campaign → ad group, Asset → ad-group name, Title ignored. `make seed-mappings apply=1 activate=1` activates this run's drafts through `warehouse/mappings.activate_version`, which validates the draft, retires the old version and audits | `test_ingest_blinkit.py` (11): sheets map, bid rows summed, brand mismatch held, restatement, marts, activation refusals, every loadable dimension has a place |
+| 0024 | Del Monte (1) merged into Delmonte (5): 17 files, 36 runs, Instamart and FK Minutes connections. Duplicate Blinkit connection and 3 dead Zepto schedules disabled. Blinkit selector `FIELD FRESH FOODS PVT LTD`. Guarded (a no-op elsewhere), audited, reversible | the live log and audit row; the test DB logs "nothing changed" |
+| 0025 | Four Blinkit headline sheets; restatement window 10 days; ad-type house groups | migration tests |
+| Analytics | Catalogue lists ad types per platform; the dashboard platform filter starts on all platforms; ad-type options come from the catalogue (`adTypeOptions.ts`) | `adTypeOptions.test.ts` (3) |
+
+| Check | Result |
+|---|---|
+| Live deploy | Backup `backups/20261015T150156Z`; migrate 0024 and 0025; Product Recommendation v2 active; feed on (audited) |
+| Loads | 11 Delmonte MTD files (1–22 Sep, 1–25 Sep, 1–12 Oct, with repeat downloads): all validated, every hard and soft check passed, all published |
+| Restatement (exit check) | The 25 Sep pull restated 20 day-slices of the 22 Sep pull (`platform`) |
+| Reconciliation | Σ daily spend = MTD Served Budget within ₹1 for 254 of 262 campaigns (96.9%). The 4 large gaps are budget top-ups; the one-day Overview exports agree with our daily sums to within ₹4 |
+| Dashboards | Current facts = `mart.ad_daily` on every sheet. A query of Delmonte 1–12 Oct gives ₹21,67,737.53 spend and 2.65 ROAS. CTR, CPC and orders show as not reported for Blinkit; 5–12 Oct are provisional |
+| Tests | Backend 2,447 passed, 16 skipped. The 8 tests that pinned the pre-0025 seeds (Zepto-only headlines, Blinkit window 5, head 0023) were updated. Frontend 909 passed; ruff, tsc and eslint clean |
+
+Left:
+- 26–30 Sep has no MTD file; fill it with an Overview backfill.
+- The Σ daily = Served Budget control, built as soft (DECISIONS 2026-10-15).
+- Match Type `SMART` / `NA` handling, to do together with any Overview feed (11-mapping §7).
+- Instamart's `ad_property` mapping has no place on a row; fix it before Instamart ingest (12-mapping §6).
+- Check the Analytics page with Blinkit selected in the browser.

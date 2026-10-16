@@ -39,7 +39,7 @@ The load goes to `quarantined` with a `quarantine_reason` and a re-pull suggesti
 
 | check_key | What | Why it is hard |
 |---|---|---|
-| `header` | every header has a row in the active mapping version (mapped or `ignore`), and every `metric` column of that version is present. A header change also sets FR-41's "Columns changed" | an unmapped column is listed on the admin mapping screen; nothing is guessed |
+| `header` | every header has a row in the active mapping version (mapped or `ignore`), and every `metric` column of that version is present. A header change also sets FR-41's "Columns changed" | an unmapped column is listed on the admin mapping screen with a suggested match, and the hint is "Map the new column", not Re-pull ([26](26-mapping-maintenance.md)); nothing is guessed. Today the names are kept in `ingest.checks.detail` but the UI shows only "Columns changed" |
 | `row_count` | rows parsed = data rows in the file (preamble excluded) | a reader that skips rows loads too little |
 | `control_total` | Σspend, Σimpressions, Σrevenue in the raw file = Σ in the facts for that load. Summing duplicate rows to the grain ([04](04-grain-and-double-counting.md) §4) must not change these totals | the mapping lost or doubled money |
 | `formula` | recompute the platform's own ratios from base columns: Zepto Roas, Cpc and Cpm (half-to-even); Blinkit Direct/Total RoAS; Instamart TOTAL_ROI, eCPM; FK ROI (Direct/Indirect), Action Rate, CVR; BigBasket ROAS, CPM. Fails above tolerance on more than 1% of rows | a column is mapped to the wrong target |

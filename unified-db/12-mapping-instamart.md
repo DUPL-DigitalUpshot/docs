@@ -100,3 +100,10 @@ Headline = **`auto_date`** (daily). Compared on overlapping actual dates (§1):
 ## 5. Open questions
 
 ❓Q3 attribution window · ❓Q8 conversions = orders? · ❓Q14 restatement window (measured ~3 days) · ❓Q23 how deep to drill into granular · ❓Q24 branded searches · ❓Q25 what `AUTO_` means.
+
+## 6. Before Instamart ingest (phase 3)
+
+Found on 2026-10-15, while the Blinkit Ads feed was built.
+- **The gap:** the seeded `auto_placement`, `auto_search_query` and `auto_granular` mappings send `AD_PROPERTY` to a dimension target `ad_property`. A canonical row has no place for that target (`ingest/canonical.py` `_HOMES`), so the first load of those reports would stop.
+- **The fix:** map it to the row's ad product, as §3 intends. That means the mapping spec's `ad_product: {from: AD_PROPERTY}` plus `role: ignore` on the column (the Zepto pattern), or a `_HOMES` entry. The fix is a new mapping version.
+- **The guard:** `make seed-mappings apply=1 activate=1` refuses to activate a version with a homeless dimension. The test `test_every_loadable_seed_dimension_has_a_place` covers every portal with a reader, so it starts covering Instamart when its reader is added.

@@ -4,6 +4,8 @@ Source: 2 exports, manufacturer "FIELD FRESH FOODS PVT LTD"
 Status: **ground truth** — read directly from the files.
 Compare against `zepto-ads-schema.md`. The two platforms are structurally very different.
 
+**Updated 2026-10-14** from the 5 distinct Blinkit files stored by UniQCAI. See [October 2026 update](#october-2026-update) at the end. Every column with its dependent/independent status: [blinkit-ads-columns.md](blinkit-ads-columns.md).
+
 ---
 
 ## What arrived
@@ -96,6 +98,8 @@ served_budget_consumed      MTD sheet
 
 ## The finding that matters most for the pipeline
 
+> **Withdrawn (2026-10-02).** This compared two *different* exports downloaded on different days, not two pulls of the same export (`docs/DECISIONS.md`, 2026-10-02, restatement windows). On the stored October files, the month-to-date report and the dashboard export give identical numbers for the same day and download time. The restatement itself is real; see "October 2026 update" below for the measured window.
+
 **The two exports disagree on overlapping campaign-days.**
 
 For the three dates present in both files (17–19 Aug), 38 campaign-days can be compared. Only **15 match exactly**. Differences run up to ₹2.30 per campaign-day — for example campaign 469845 on 17 Aug: ₹408.55 in the MTD file, ₹410.85 in the dashboard export.
@@ -173,3 +177,98 @@ Derive at query time: `roas_direct`, `roas_total`, `ctr_blinkit` (unique clicks 
 3. What is `Claimables` versus `served_budget_consumed`?
 4. Is there a city / dark-store report, and a SKU-level report? Neither appeared here.
 5. Is total (non-unique) click data available anywhere, or is unique-clicks-on-reach all Blinkit offers?
+
+---
+
+## October 2026 update
+
+Measured 2026-10-14 on the files UniQCAI stored for Del Monte (manufacturer FIELD FRESH FOODS PVT LTD, the same one as above). The 13 `report_files` rows hold **5 distinct files** (equal checksums):
+
+| File | Report | Data | Downloaded |
+|---|---|---|---|
+| S22 | `mtd_search_report` | 09-01 → 09-22 | 09-23 |
+| S25 | `mtd_search_report` | 09-01 → 09-25 | 09-26 |
+| O12 | `mtd_search_report` | 10-01 → 10-12 | 10-13 |
+| D1012 | `dashboard_export` | 10-01 → 10-12 | 10-13 |
+| D0929 | `dashboard_export` | 09-29 → 10-13 | 10-14 |
+
+**Sheets.**
+- **Category Targeting:** only in the September files. October had no category campaigns, and Blinkit leaves out a sheet with no rows; this isn't a download fault.
+- **Dashboard export:** now has three sheets: **PRODUCT_LISTING** (20 columns, new since August), BANNER_LISTING and PRODUCT_RECOMMENDATION.
+- **Sheet pairs between the two exports:**
+  - Keyword Targeting ↔ PRODUCT_LISTING
+  - Listing Spotlight ↔ BANNER_LISTING
+  - Product Recommendation ↔ PRODUCT_RECOMMENDATION. Here `Asset` becomes `Targeting Type`, and two "Repeat Order Suggestions" assets merge into one label.
+- **Same numbers:** for the same day and download time, O12 and D1012 agree on all 4,966 keyword keys and every metric.
+
+**Dependent columns,** re-measured on every row of the distinct files:
+
+| Column | Formula | Holds on |
+|---|---|---|
+| Direct RoAS | Direct Sales ÷ Estimated Budget Consumed | 100% (all 6 sheets that have it) |
+| Total RoAS | (Direct + Indirect Sales) ÷ Estimated Budget Consumed | 100% |
+| CTR % / CTR | Unique Clicks ÷ Reach × 100 | 100% (÷ Impressions: 39–59%) |
+| Claimables | min(served_budget_consumed, Total Budget) | 100% |
+| served_budget_consumed | Σ daily Estimated Budget Consumed of the campaign | 97.7% |
+
+Everything else carries its own information.
+- **CPM is a bid.** Spend = CPM × Impressions ÷ 1000 holds on all rows of Listing Spotlight, Product Recommendation and BANNER_LISTING, but only on 55–75% of Keyword Targeting, Category Targeting and PRODUCT_LISTING rows, where a day holds several bids.
+- **Total Budget is a daily budget.** Spend exceeds it on 41–48% of campaign-days.
+
+**Restatement: longer than recorded.**
+- **Impressions and spend:** change only in the last 2 days, and only upward.
+- **Sales, add-to-carts, units and new users:** change for up to **7 days**, by up to ₹4,426 on one key. 3–10% of the changes are decreases.
+- **Day 8 onward:** no changes, across about 3,900 keyword keys.
+- **Conflicting decision:** DECISIONS 2026-10-02 recorded "trailing 3 days (up to ₹24.70)" and set Blinkit's restatement window to **5 days**. That fits spend, but it would freeze sales figures before they settle. **Proposed:** a 10-day window. This needs the owner's decision.
+- **Refresh:** Blinkit refreshes once a day: files taken hours apart within one refresh are identical.
+
+**Grain.**
+- **Keyword Targeting and Category Targeting:** have bid-level duplicates on (date, Campaign ID, keyword or category). The rows differ in CPM and Most Viewed Position, and are summed (`duplicates: sum`, as mapped).
+- **PRODUCT_LISTING:** is never unique, even with those columns, so it must be summed too.
+- **Proposed dashboard grains:**
+  - BANNER_LISTING: (Date, Campaign ID, Targeting Value)
+  - PRODUCT_RECOMMENDATION: (Date, Campaign ID, Targeting Type)
+
+**Data quality.**
+- **Dates:** `date_ist` is ISO text; the dashboard's `Date` is `DD-MM-YYYY` text, so don't sort it as text.
+- **`latest on hold timestamp`:**
+  - It is `0` or a timestamp string, and marks when the daily budget ran out.
+  - Its date always equals the row's date.
+- **`CTR %`** is text with one decimal.
+- **`Title`** is always `#-NA`.
+- **Enumerations:**
+  - Match Type is always EXACT; Pacing Type is always DAILY.
+  - Campaign Type ∈ {Product Booster, Listing Spotlight, Recommendation Ads}, which maps one-to-one to sheets.
+- **Campaign Name is not a key:** 5 IDs carry several names, and 4 names are shared by 2 IDs.
+
+**Found by a dry run of the existing mappings** (in-memory, no database writes: `samples/blinkit/make_stored_example.py`). Both block Blinkit ingest (phase 3):
+1. **The brand check fails on every sheet** (`no_expected_brand`): the Blinkit connections have no brand selector, and the file names a manufacturer (Q21).
+2. **Product Recommendation can't be mapped:** `dimension target 'subcampaign_id' has no canonical home` (`backend/ingest/canonical.py`, `_HOMES`). `asset` and `title` are missing too.
+
+**Brand records.** "Del Monte" (id 1, archived) and "Delmonte" (id 5) are the same client on the same Blinkit login: 13 campaign IDs appear under both, and the September and October files sit under different ids. Merge them before Blinkit facts are loaded.
+
+### Re-measured with the legacy downloads (2026-10-14)
+
+After the changes to `legacy/blinkit/report_engine.py`, the prototype's 10 workbooks (1 Jul → 13 Oct 2026, including a run on the updated code on 14 Oct) were added to the 5 stored files.
+
+- **Headers:** no column was added, removed, renamed or reordered in any sheet from August to October. PRODUCT_LISTING was already in the August dashboard exports; the 21 Aug export lacked it only because of the filter below.
+- **Second advertiser:** the filename prefix is the advertiser ID. `85_` is FIELD FRESH FOODS PVT LTD. `14946_` is Dinshaw's Dairy Foods, with 0 campaign IDs shared. Two late-August dashboard exports belong to Dinshaw's, and nothing in a dashboard export names the advertiser. Only the MTD `Manufacturer` column and the filename prefix do. This matters for CLAUDE.md rule 9 (WRONG_ACCOUNT).
+- **Campaign-type filter:** the 21 Aug run asked for "Product Booster" and received the other two types. The old `set_campaign_types` logged a failed selection and carried on. It now raises, which is the right fix. The app adapter doesn't filter campaign types.
+- **Formulas still hold on August data:**
+  - RoAS (direct and total) and CTR: 100%.
+  - Claimables = min(served, Total Budget): 555/555.
+  - `served_budget_consumed` counts spend **since the campaign's last budget reset**, not always from the 1st. Every mismatch equals the spend up to a reset date.
+  - MTD "Total Budget" = the sum of daily budgets over active days (92%).
+- **Restatement:**
+  - Outcomes (sales, ATC, units) change up to 7 days in every pair, with one +1-unit change at day 8 in a Dinshaw's export.
+  - Delivery (impressions, spend) reached day 3 once.
+  - Blinkit's data refreshes once a day, in the morning IST.
+  - The proposed 10-day re-pull covers all of this.
+- **New traps:**
+  - A dashboard export spanning two months repeats the 1st of the month as **exact duplicate rows**. Drop them before summing bid-level rows.
+  - The MTD Listing Spotlight sheet folds small keywords into `Others`.
+  - Match Type also takes `SMART` (July) and `NA` (category rows).
+  - The two exports are the same data, so load one, never both.
+  - The legacy manifests don't always match their folders, because same-day runs overwrote them. That's now fixed by one folder per run.
+
+Blinkit Sales (PartnersBiz) columns are inventoried separately: [blinkit-sales-columns.md](blinkit-sales-columns.md).

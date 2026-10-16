@@ -202,9 +202,63 @@ The preview line that shows the resolved date range removes most scheduling mist
 
 Range presets include **Week to date** (added 2026-10-02): the Monday of yesterday's week, or the 1st if later, through yesterday. Fired on Mondays and on the 1st, it pulls calendar weeks cut at month ends — the tiles the warehouse's weekly range check needs.
 
-### 3.8 Report library
+### 3.8 Reports (`/library`, and each brand's Reports tab; rewritten 2026-10-05)
 
-Top-level tabs: **Ads | Sales**. Filter bar under the tab: brand · platform · report type · period · "Latest only" toggle (on by default). The table shows file name, brand, platform chip, report, period, extracted at, size, badges (Latest, Columns changed), the *Data status* badge (§3.16) and a download button. Multi-select gives **Download as zip**. A row menu shows *Versions* (older pulls of the same period), *Open run* and the portal's original filename.
+One page, called **Reports** everywhere. It groups files and **lists every file inside its group**.
+
+```
+ Dinshaw's reports                                   (one brand: the brand is in the title)
+ Ads | Sales                    View by:  Platform · Date
+ [Platform ▾] [Report ▾] [Last 30 days ▾] [Status ▾] [Clear]
+ ┌ Zepto · Ads · data through 1 Oct ────── 540 files · 18 reports ──[⬇ All latest]┐
+ │ ▾ Sponsored Products — Campaign                                                │
+ │    1 Oct 2026        ✓ Checked                                          [⬇]    │
+ │   30 Sep 2026        ✓ Checked                                          [⬇]    │
+ │   … Show 20 more                                                               │
+ └────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**View by** (`?by=`):
+- **Brand:** several brands only. Each brand section keeps its heading (count, data through, ⬇ All latest) and reads **brand → date** by default: month headings and the same day rows as the Date view, for that brand only ("N of M reports · Keyword missing" from that brand's own daily reports, *Zip day* for that brand and day, a tick box). A **Group by: Date | Platform** switch on every brand heading (`?inner=platform`, one choice for all brands, Back returns) flips to brand → platform → report. Open days are `brand>day` in `?open=`.
+  - **Ticking days across brands** zips exactly the ticked (brand, day) pairs (`brand_days`), never the cross product of their brands and days, within the same 200-file and 62-day limits. Ticks clear when the filters, view or inner grouping change.
+  - ```
+    ▾ Dinshaw's   540 files · data through 1 Oct     Group by: [Date] Platform   [⬇ All latest]
+        October 2026
+        ☐ ▾ 1 Oct 2026   18 reports · ✓ all checked                               [⬇ Zip day]
+              Sponsored Products   Campaign ✓ [⬇] · Category ✓ [⬇] · Keyword ✓ [⬇]
+        ☐ ▸ 30 Sep 2026  17 of 18 reports · Keyword missing                       [⬇ Zip day]
+    ```
+- **Platform:** platform · category, then report, then files, newest period first.
+- **Date:** one row per date, under month headings, bucketed by the period's **end** date. A week running from September into October sits under October only.
+  - **The row:** "1 Oct 2026 · 18 reports · ✓ all checked · ⬇ Zip day". When a report usually pulled one day at a time has no file that day, the row says "17 of 18 reports · Keyword missing". Weekly and range reports never mark the days in between as missing.
+  - **Opened:** the day's reports, grouped by brand (only with several), then ad type (Sponsored Products → Campaign, Category, Keyword…), then report, each with its own download.
+  - **Zips:** *Zip day* holds the newest file of every report ending that day. Tick several days and download them together, with one file per report per day, at most 200 files and 62 days. Zip names say what they hold: `<brand>_<YYYY-MM-DD>_reports.zip`, `reports_<from>_<to>.zip`, or `_original` for originals.
+  - **Phone:** each day is a card.
+
+**It adapts to what you can see:**
+- **One brand** (a manager or an executive): the title is "<Brand>'s reports", the default view is by Platform (executives: by Date), and there is never a brand filter, a brand view or a brand on a row.
+- **Several brands, and admins:** the default view is by Brand (executives: by Date), with a brand multi-select (with search, listing every brand). There is no brand column; the brand is the group heading.
+- **On a brand's page:** the brand header names it; there is no brand control.
+
+**Filters** live in the URL: brand · platform · report (grouped Platform → Category → Report) · period (PeriodPicker; default last 30 days, matching files whose period overlaps it) · data status (filtered on the server).
+- Ads | Sales tabs appear only for the categories you hold. Clear never resets the tab.
+- The switchboard's hidden platforms, categories and reports are left out of counts, lists and zips, not just out of the filter options.
+
+**Rows** show what the file is, its data-status badge, and one download. The ⋯ menu holds:
+- downloaded at · size;
+- Columns changed;
+- with dates / original;
+- earlier versions;
+- Open the run;
+- the original file name (under Technical detail).
+
+**Group headings** show counts from the server, so they always match the list, plus "data through". Each heading has **⬇ All latest**: the newest file of every report in the group, at most 200 files.
+
+**Lists, selection and limits:**
+- Groups fold. Open groups live in the URL, and each group pages 20 files at a time.
+- Select mode gives Download N as zip and Originals as zip, capped at 200.
+- A zip says how many files were missing from storage, if any.
+- A link to a brand you can't see says so plainly, instead of erroring.
 
 **The filename is generated, not the portal's:** `<brand>_<platform>_<category>_<report>_<start>_<end>.<ext>`. The stored bytes are never touched, so the period has to live in the name and in the metadata — several portals return uninformative or colliding names, and Zepto's files carry no date column at all. `report_files.original_filename` keeps what the portal called it.
 
@@ -237,20 +291,11 @@ Role and grant level are different things and the copy keeps them apart: the rol
 
 SMTP form with *Send test email*. Notification toggles (failure alerts, daily digest). Audit log is a filterable table (who, action, entity, when).
 
-### 3.13 SPOC home
+### 3.13 SPOC home (rewritten 2026-10-05)
 
-```
- Del Monte — Reports                               Last updated 06:14 today
- [ Ads ]  [ Sales ]                                 freshness: ● today ● ≤2d ● older
- ┌────────────┬────────────┬────────────┐
- │ Zepto      │ Blinkit    │ Instamart  │
- │ ● today    │ ● today    │ ● 3 days   │
- │ 12 reports │ 2 reports  │ 7 reports  │
- └────────────┴────────────┴────────────┘
- Latest Ads files          [ Download all latest (zip) ]
- …table as in Report library, scoped to their brand…
-```
-It also shows a read-only run history, and a Run now button only if `can_trigger_runs` is granted.
+An executive's home **is the Reports view (§3.8)**, opened **by Date**, for their brand or brands, with a strip of per-platform cards above it ("Zepto · Ads · 18 reports · data through 1 Oct · ⬇ All latest").
+- **One-brand executives** get the brand card and a **This brand** group (Analytics, Reports, Data status, Run history). They never get the Connections, Schedules or Access pages; typing one of those URLs lands on the brand's Reports.
+- **The switchboard decides:** *Report library* off means no files anywhere. *SPOC home* off with the library on means the executive lands on `/library`.
 
 ### 3.14 Unified data (`/data`, admins; rewritten 2026-10-03)
 
@@ -294,6 +339,7 @@ Page shell: h1 is the page name; tabs **Needs attention | Reports | Imports**; t
 ### 3.16 Data status elsewhere (added 2026-10-03)
 
 - **Report library**: a *Data status* badge per file (*Checked* · *Being checked* · *Held back, being re-pulled* · *Provisional*, each with a tooltip) and a *Data status* filter; nothing when the file doesn't feed or isn't the current version. *Columns changed* (was "Header changed").
+- **Analytics charts** (added 2026-10-16): in *Data details*, each *missing days* line offers **Re-pull** (one per report) to whoever may start runs for that brand's Ads — admins, managers, executives with *Can start runs*. While a run covers those days the line reads *Re-pull in progress*; the toast links to the run only where *Runs* is visible to the viewer.
 - **Schedules**: a *Feeds unified data* badge on schedules that pull a feeding report; pausing or deleting the brand's only running schedule behind one warns first ("…will stop reaching unified data for <Brand>"); a partial last run is amber; *One file per day* everywhere (Run now, schedule dialog, list).
 
 ### 3.17 Analytics (`/analytics`, everyone with an Ads grant; added 2026-10-03)
@@ -322,6 +368,40 @@ The no-code dashboard builder; full design in `docs/unified-db/24-analytics-buil
 - Every chart: View as table; Source files (originals behind a point); Provisional / Partial / Restated / Data through.
 - Save · Save as · Reset · Undo · My charts · Templates · Saved views · Share (viewer's own grants).
 - Sidebar item **Analytics**; the brand twin is the brand's **Analytics** tab; switchboard section `analytics`.
+
+### 3.18 Mappings (`/data/mappings`, admins; designed 2026-10-15, not built)
+
+Design and rules: [docs/unified-db/26-mapping-maintenance.md](unified-db/26-mapping-maintenance.md). Added as a fourth tab of Unified data: **Needs attention | Reports | Imports | Mappings**.
+
+**List** (`/data/mappings`)
+```
+ Zepto · Ads
+   Sponsored Products — Campaign            Ready
+   Sponsored Products — Keyword             Columns changed · 1 new column     [ Fix ]
+ Blinkit · Ads
+   Month-to-date report — Keyword Targeting Draft waiting for a super admin    [ Open ]
+```
+- One section per platform, one row per report (and sheet). Chips: *Ready* · *Columns changed* · *Draft waiting*.
+- Filters as data in the URL (platform, chip).
+
+**Detail** (`?map=<portal>/<report>/<sheet>`, a drawer; Back and Esc close it)
+```
+ Sponsored Products — Keyword                         Columns changed
+ ┌ Their column            Our field               Kind               ┐
+ │ Spend · also: Spends    Spend                   Stored as number   │
+ │ Spends ⚠ new            → looks like "Spend"    [ Use as Spend ]   │
+ │ Robas                   ROBAS                   Kept as-is         │
+ └─────────────────────────────────────────────────────────────────────
+ [ Edit ]  [ Preview ]  [ Activate ]  (Activate: super admins only)
+```
+- **New or renamed columns** are listed first, with a suggested match; one click adds the new name as an alias of the existing column.
+- **Edit:** pick *Our field* from a list (never free text for numbers); set the kind; mark *Not used*.
+- **Preview:** runs the draft on the held file(s) without saving anything. It shows checks in words and totals before and after ("Spend ₹2,31,540 → ₹2,31,540; all checks pass").
+- **Activate:** for super admins. It confirms with *Applies to* (platform, report, every stored file of it, which will be read again) and the toast links *Watch the imports*. Admins see **Waiting for a super admin**.
+- **History:** versions with what changed and who changed it, and *Roll back* (super admins).
+- **Wording:** no version numbers or jargon on the main screen; they sit under *Technical detail* (`findJargon`).
+- **Entry points:** **Needs attention** and the import drawer link here from a *Columns changed* hold, with the hint *Map the new column* instead of Re-pull.
+- **States:** empty, loading, error and no-permission, as on every list.
 
 ## 4. Shared components
 
@@ -359,7 +439,7 @@ This is the human side of CLAUDE.md rule 9: the adapter refuses to download for 
 
 ## 6. Responsive
 
-Desktop-first (1280px+) for admins. The SPOC home and report library must work on a phone (cards instead of tables below 768px), since SPOCs may just want to grab a file.
+Desktop-first (1280px+) for admins. The SPOC home and report library must work on a phone (cards instead of tables below 768px), since SPOCs may just want to grab a file. Reports does this: below 768 px each file is a card, group headings stick, filters fold into a *Filters (n)* sheet, and View by is a segmented control — no sideways scroll at 390 px (2026-10-05).
 
 ## 7. Build order for the frontend
 

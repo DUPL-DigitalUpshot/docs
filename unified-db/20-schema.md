@@ -35,6 +35,7 @@ ingest.column_mappings (
   id                 bigserial PK,
   mapping_version_id bigint NOT NULL REFERENCES ingest.mapping_versions(id),
   source_column      text NOT NULL,              -- exact header text, trimmed
+  source_aliases     text[] NOT NULL DEFAULT '{}', -- other header texts for the same column (renames); designed 2026-10-15, not built ([26](26-mapping-maintenance.md))
   role               text NOT NULL CHECK (role IN
                        ('metric','ext','reported','dimension','date','brand','validator','ignore')),
                                                  -- 'metric' = Kind base in 02 §1
@@ -53,6 +54,10 @@ Rules:
 - **Several rows may feed one target, and one column may feed several targets.** A target's value is Σ (weight × transformed source value). If any source value is NULL, the target is NULL (NULL ≠ 0).
 - `status = unknown` is allowed for `reported`, `validator` or `ignore` roles. It is never allowed for a `metric` role.
 - Mappings are data, so admins can edit them and they are versioned (PRD B1). They are seeded from reviewed YAML in `backend/ingest/mappings/<portal>/<report>[.<sheet>].yaml`, generated from files 10–13 and tested against fixtures.
+  - After the first seed, the database is the source of truth: the seeder only creates mappings that don't exist yet, and `make export-mappings` writes active versions back to YAML for review.
+  - A renamed platform column is an **alias** on its existing row, so old and new files load under one version.
+  - Admins draft and preview; super admins activate and roll back.
+  - Design: [26-mapping-maintenance.md](26-mapping-maintenance.md) (designed 2026-10-15, not built).
 - **Format readers are code**, one per platform (`backend/ingest/formats/<platform>.py`): preamble detection by content, sheets, `NA` → NULL, `%`, enum prefixes, text numbers and the three date formats. They know no URLs or selectors (CLAUDE.md rule 3) and never import Playwright.
 
 ## ingest — loads, slices, checks, policies

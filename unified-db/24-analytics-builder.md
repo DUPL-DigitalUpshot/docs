@@ -187,6 +187,7 @@ A 40-slice pie is still allowed. It comes with a hint: "Too many slices to read 
 | `GET /catalogue` | metrics (with kind, unit, allowed aggregations), dimensions (spine / breakdown), per-platform availability, chart types with their wells, recommendation rules |
 | `POST /query` | spec → `{rows, totals, compare_rows, coverage, freshness, provisional_days, restated, source_file_ids?, took_ms}`; refusals carry `{detail, code}` |
 | `POST /filter-impact` | spec + a filter → what it keeps |
+| `POST /repull` | `{brand_id, report_type_key, date_start, date_end}` → a manual run re-pulling a headline report's missing days (one file per day where the report supports it). Permission of *Run now* (FR-5, FR-5a); `repull_pending` (409) when an unfinished run already covers those days. Each `coverage.missing` entry of `/query` carries `portal_key`, `report_type_key` and this viewer's `can_repull` / `repull_pending`, set after the shared cache |
 | `GET/POST/PATCH/DELETE /dashboards…` | CRUD, versions, duplicate, reset, shares, saved views, templates, my charts |
 
 **Limits:**

@@ -13,7 +13,7 @@ Every fact row carries a `breakdown`. The values are `campaign`, `keyword`, `sea
 | Platform | Headline sources (portal · report · sheet) | Why (measured) |
 |---|---|---|
 | Zepto | `zepto.ads` · `sp.campaign_performance`, `sb.campaign_performance` (+ `sd.campaign_performance` once verified) | SP category, page and product match it within ±₹3 on the same dates ([10](10-mapping-zepto.md) §4) |
-| Blinkit | `blinkit.brandcentral` · `mtd_search_report` · Keyword Targeting, Category Targeting, Listing Spotlight, Product Recommendation | Σ daily spend = `MTD Claimables.served_budget_consumed` within ₹1 for 95% of campaigns; Product Booster runs higher and is flagged, not held ([11](11-mapping-blinkit.md)) |
+| Blinkit | `blinkit.brandcentral` · `mtd_search_report` · Keyword Targeting, Category Targeting, Listing Spotlight, Product Recommendation | Σ daily spend = `MTD Claimables.served_budget_consumed` within ₹1 for 95–100% of campaigns once Product Recommendation loads; Product Booster (and Listing Spotlight, proposed) runs higher after a budget reset and is flagged, not held ([11](11-mapping-blinkit.md)) |
 | Instamart | `instamart.brandportal` · `auto_date` | summary, city, product, placement and granular agree exactly |
 | FK Minutes | `fkminutes.ads` · `daily` | fsn and placement agree exactly |
 | Flipkart marketplace | `daily` (no portal yet, P1; same site as `fkminutes.ads` with scope "Flipkart") | fsn, placement and order lines agree exactly |
@@ -102,13 +102,13 @@ A **slice** is (brand_id, portal_key, report_key, sheet, period_start, period_en
 - A file whose sha256 equals that of a file already published for the same brand, portal, report and period is not loaded at all (`skipped_duplicate`).
 
 **Measured restatements (2026-10-02):**
-- **Blinkit** changes only its trailing ~3 days, by up to ₹24.70. In two pairs of pulls, 141 of 1,754 and 109 of 2,004 campaign-days differed, all of them in the last 3 days. The earlier "15 of 38 matched, ±₹2.30" compared two different exports, not two pulls of the same one.
+- **Blinkit** changes its **spend** for only the trailing ~3 days, by up to ₹24.70. In two pairs of pulls, 141 of 1,754 and 109 of 2,004 campaign-days differed, all in the last 3 days. **Outcomes take longer.** Re-checked 2026-10-14 on all metrics: sales, ATC, units and new users change for up to **7 days**, by up to ₹4,426 per key, and 3–10% of changes are decreases. Confirmed on 2026-10-15 against settled per-day pulls: nothing changed 8 or more days back, so the minimum window is 8 days ([11](11-mapping-blinkit.md) §4). The earlier "15 of 38 matched, ±₹2.30" compared two different exports, not two pulls of the same one.
 - **Instamart** restates too: the trailing ~3 days, by up to ₹90.
 - **FK Minutes** never changed spend, but attributed revenue (direct + indirect) kept growing: +13% to +17% for a month re-pulled a few days later, and 24 Aug grew +19.5% between the day being 7 and 11 days old ([13](13-mapping-fk-minutes.md)). ⚠ Proposed: a 14-day window for `fkminutes.ads` until ❓Q14 is answered.
 - **Zepto** is not yet measured (❓Q14). ⚠ Default 5 days until two pulls of the same days are compared.
 
 **Rules:**
-- The restatement window is set **per portal**, on its reports in `ingest.report_policies.restatement_window_days`: Blinkit 5 days, Instamart 5, FK Minutes 14 ⚠, Zepto 5 ⚠ (unmeasured). It is not T-15 everywhere. Stage A's "Refresh last 15 days" preset (FR-28a) still works; it simply re-observes more slices.
+- The restatement window is set **per portal**, on its reports in `ingest.report_policies.restatement_window_days`: Blinkit 5 days (covers spend, not outcomes: 10 proposed, ❓Q14), Instamart 5, FK Minutes 14 ⚠, Zepto 5 ⚠ (unmeasured). It is not T-15 everywhere. Stage A's "Refresh last 15 days" preset (FR-28a) still works; it simply re-observes more slices.
 - Days inside the window are drawn as **provisional** (icon + word).
 - `wh.restatements` lists every slice whose numbers changed, with the old value, the new value and both source files, so a client question like "why did last Tuesday change?" can be answered with evidence.
 
